@@ -40,7 +40,7 @@ public class NeverEver extends Chronicle implements Live {
 
     @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent event) {
-        if (event.getPlayer().getWorld().getName().contains("_nether"))
-            main().challenges().award(event.getPlayer(), this);
+        if (isNetherWorld(event.getPlayer().getWorld()))
+            main().challenges().complete(event.getPlayer(), this);
     }
 }

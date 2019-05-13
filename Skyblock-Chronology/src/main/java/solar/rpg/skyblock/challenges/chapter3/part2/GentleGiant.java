@@ -6,8 +6,8 @@ import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
 import solar.rpg.skyblock.island.chronology.criteria.item.Single;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.island.chronology.reward.TrailReward;
 
@@ -20,13 +20,13 @@ public class GentleGiant extends Chronicle {
     }
 
     public Criteria[] getCriteria() {
-        return new Criteria[]{new ItemCrit(new Multiple(Material.ICE, 8),
-                new Multiple(Material.QUARTZ_ORE, 4),
-                new Multiple(Material.COAL_ORE, 2),
-                new Multiple(Material.LAPIS_ORE, 2),
-                new Multiple(Material.REDSTONE_ORE, 2),
-                new Multiple(Material.IRON_ORE, 1),
-                new Multiple(Material.GOLD_ORE, 1),
+        return new Criteria[]{new ItemCrit(new Stack(Material.ICE, 8),
+                new Stack(Material.QUARTZ_ORE, 4),
+                new Stack(Material.COAL_ORE, 2),
+                new Stack(Material.LAPIS_ORE, 2),
+                new Stack(Material.REDSTONE_ORE, 2),
+                new Stack(Material.IRON_ORE, 1),
+                new Stack(Material.GOLD_ORE, 1),
                 new Single(Material.DIAMOND_ORE, 48),
                 new Single(Material.EMERALD_ORE, 24)
         )};

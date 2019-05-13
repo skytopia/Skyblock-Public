@@ -49,6 +49,6 @@ public class DMs extends Chronicle implements Live {
     public void onDamage(PlayerCompleteMinigameEvent event) {
         if (event.isGold())
             if (event.getMinigame().getName().equals("Tile Swap"))
-                main().challenges().award(event.getPlayer(), this);
+                main().challenges().complete(event.getPlayer(), this);
     }
 }

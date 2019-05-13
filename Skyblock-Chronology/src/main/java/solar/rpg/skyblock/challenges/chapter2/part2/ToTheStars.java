@@ -56,14 +56,11 @@ public class ToTheStars extends Chronicle implements Live {
     @EventHandler
     public void onPrime(final ExplosionPrimeEvent event) {
         if (!(event.getEntity() instanceof TNTPrimed)) return;
-        for (final Entity nearby : event.getEntity().getNearbyEntities(8, 8, 8))
+        for (Entity nearby : event.getEntity().getNearbyEntities(8, 8, 8))
             if (nearby instanceof Player)
                 if (!from.containsKey(nearby.getUniqueId())) {
                     from.put(nearby.getUniqueId(), nearby.getLocation());
-                    Bukkit.getScheduler().runTaskLater(main.plugin(), () -> {
-                        if (from.containsKey(nearby.getUniqueId()))
-                            from.remove(nearby.getUniqueId());
-                    }, 165L);
+                    Bukkit.getScheduler().runTaskLater(main.plugin(), () -> from.remove(nearby.getUniqueId()), 165L);
                 }
     }
 
@@ -77,10 +74,11 @@ public class ToTheStars extends Chronicle implements Live {
                 if (frm == null) return;
                 from.remove(event.getEntity().getUniqueId());
                 double dist = frm.distance(event.getEntity().getLocation());
+                //TODO: Test, remove debug
                 Main.log("Checked, " + dist + " launched");
                 if (dist >= 100) {
                     Main.log("to the stars!");
-                    main.challenges().award((Player) event.getEntity(), main.challenges().findChallenge("To The Stars!"));
+                    main.challenges().complete((Player) event.getEntity(), main.challenges().findChallenge("To The Stars!"));
                 }
             }, 40L);
     }

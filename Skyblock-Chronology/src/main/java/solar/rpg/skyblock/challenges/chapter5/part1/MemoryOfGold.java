@@ -39,6 +39,6 @@ public class MemoryOfGold extends Chronicle implements Live {
     public void onDamage(PlayerCompleteMinigameEvent event) {
         if (event.isGold())
             if (event.getMinigame().getName().equals("Taking Notes"))
-                main().challenges().award(event.getPlayer(), this);
+                main().challenges().complete(event.getPlayer(), this);
     }
 }

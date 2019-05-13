@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
-import solar.rpg.skyblock.island.chronology.reward.DummyReward;
+import solar.rpg.skyblock.island.chronology.reward.AbilityReward;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.util.ItemUtility;
@@ -62,12 +62,7 @@ public class ForTheRecord extends Chronicle {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new DummyReward() {
-                    @Override
-                    public String getReward() {
-                        return "Unlocks \"Creeper Parry\" Combat Skill";
-                    }
-                }
+                new AbilityReward("Creeper Parry")
         };
     }
 

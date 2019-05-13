@@ -43,9 +43,9 @@ public class Charter extends Chronicle implements Live {
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-        if (event.getTo().getWorld().getName().contains("_nether"))
+        if (isNetherWorld(event.getTo().getWorld()))
             if (isOver(event.getTo()))
-                main().challenges().award(event.getPlayer(), this);
+                main().challenges().complete(event.getPlayer(), this);
     }
 
     private boolean isOver(Location to) {

@@ -66,7 +66,7 @@ public class SlickMeander extends Chronicle implements Live {
                 if (streak.containsKey(event.getPlayer().getUniqueId())) {
                     streak.put(event.getPlayer().getUniqueId(), streak.get(event.getPlayer().getUniqueId()) + 1);
                     if (streak.get(event.getPlayer().getUniqueId()) == 4000)
-                        main.challenges().award(event.getPlayer(), this);
+                        main.challenges().complete(event.getPlayer(), this);
                 } else streak.put(event.getPlayer().getUniqueId(), 1);
         } else if (streak.containsKey(event.getPlayer().getUniqueId()))
             streak.remove(event.getPlayer().getUniqueId());

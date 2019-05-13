@@ -9,7 +9,7 @@ import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.Live;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
-import solar.rpg.skyblock.island.chronology.reward.DummyReward;
+import solar.rpg.skyblock.island.chronology.reward.AbilityReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 
 import java.util.HashMap;
@@ -29,12 +29,7 @@ public class FeelMyFury extends Chronicle implements Live {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new DummyReward() {
-                    @Override
-                    public String getReward() {
-                        return "Unlocks \"Huge Fist Damage\" Combat Skill";
-                    }
-                }
+                new AbilityReward("Huge Fist Damage")
         };
     }
 
@@ -58,7 +53,7 @@ public class FeelMyFury extends Chronicle implements Live {
         else {
             double strk = streak.get(event.getDamager().getUniqueId()) + event.getFinalDamage();
             if (strk >= 500)
-                main.challenges().award((Player) event.getDamager(), this);
+                main.challenges().complete((Player) event.getDamager(), this);
             else
                 streak.put(event.getDamager().getUniqueId(), strk);
         }

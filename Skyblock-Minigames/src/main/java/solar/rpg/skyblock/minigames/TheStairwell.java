@@ -2,19 +2,17 @@ package solar.rpg.skyblock.minigames;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
+import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.FlawlessEnabled;
-import solar.rpg.skyblock.island.minigames.MinigameMain;
-import solar.rpg.skyblock.island.minigames.task.DefaultMinigameTask;
-import solar.rpg.skyblock.island.minigames.task.Difficulty;
-import solar.rpg.skyblock.island.minigames.task.Minigame;
+import solar.rpg.skyblock.island.minigames.Minigame;
+import solar.rpg.skyblock.minigames.tasks.DefaultMinigameTask;
 import solar.rpg.skyblock.util.Utility;
 
 import java.util.List;
@@ -22,19 +20,23 @@ import java.util.UUID;
 
 public class TheStairwell extends Minigame implements FlawlessEnabled {
 
+    @Override
     public void start(Island island, List<UUID> participants, Difficulty difficulty) {
-        main.getActiveTasks().add(new StairRun(this, island, participants, main, difficulty).start());
+        main.getActiveTasks().add(new TheStairwellTask(this, island, participants, main, difficulty).start());
         getRunning().add(island);
     }
 
+    @Override
     public String getName() {
         return "The Stairwell";
     }
 
+    @Override
     public ItemStack getIcon() {
         return new ItemStack(Material.BRICK_STAIRS);
     }
 
+    @Override
     public String[] getDescription() {
         return new String[]{"The higher they rise, the harder they fall!",
                 ChatColor.ITALIC + "You're at the bottom of a stairwell!",
@@ -42,50 +44,61 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
                 ChatColor.ITALIC + "The higher you get, the more points."};
     }
 
+    @Override
     public Difficulty[] getDifficulties() {
         return new Difficulty[]{Difficulty.NORMAL};
     }
 
+    @Override
     public String getSummary() {
         return "Parkour up to the top!";
     }
 
+    @Override
     public String getObjectiveWord() {
         return "blocks scaled";
     }
 
+    @Override
     public int getDuration() {
         return 0;
     }
 
+    @Override
     public int getGold() {
         return 175;
     }
 
+    @Override
     public boolean isScoreDivisible() {
         return false;
     }
 
+    @Override
     public int getFlawless() {
         return 250;
     }
 
+    @Override
     public int getMaxReward() {
         return 8000;
     }
 
-    private class StairRun extends DefaultMinigameTask implements Listener {
+    private class TheStairwellTask extends DefaultMinigameTask {
 
-        private Location gen;
+        /* The highest Y value reached. */
         private int highest;
+
+        /* The Y value of the next slice of blocks that will be removed. */
         private int yRemove;
-        StairRun(Minigame owner, Island island, List<UUID> participants, MinigameMain main, Difficulty difficulty) {
+
+        TheStairwellTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty);
             rules.put("placing", false);
             rules.put("breaking", false);
             rules.put("flying", false);
             rules.put("gliding", false);
-            rules.put("modules", false);
+            rules.put("commands", false);
         }
 
         @Override
@@ -98,6 +111,7 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
             return highest;
         }
 
+        @Override
         public void onStart() {
             highest = 1;
             yRemove = -15;
@@ -105,6 +119,7 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
             gen = generateLocation(100, 70, 140, false, false);
             gen.setY(0);
 
+            // Generate walls and floor.
             for (int x = 0; x < 16; x++)
                 for (int y = 0; y <= 250; y++)
                     for (int z = 0; z < 16; z++)
@@ -121,6 +136,7 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
                             placed.add(at);
                         }
 
+            // Randomly select and place the predefined parkour schematics.
             for (int f = 0; f < 25; f++) {
                 gen.setY(f * 10);
                 String schematic = "schematics/";
@@ -142,11 +158,14 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
                 Bukkit.getPlayer(part).teleport(gen.clone().add(8.5, 1, 8.5));
         }
 
+        @Override
         public void onFinish() {
             returnParticipants();
         }
 
+        @Override
         public void onTick() {
+            /* Remove slices of the tower at a rate of 1 block per second. */
             yRemove++;
             if (yRemove >= 0 && yRemove <= 255) {
                 for (int x = 0; x < 16; x++)

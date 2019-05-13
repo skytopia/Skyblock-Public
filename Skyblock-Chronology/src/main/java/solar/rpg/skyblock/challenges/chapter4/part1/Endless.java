@@ -10,9 +10,8 @@ import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.Live;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
-import solar.rpg.skyblock.island.chronology.reward.DummyReward;
+import solar.rpg.skyblock.island.chronology.reward.AbilityReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
-import solar.rpg.skyblock.stored.Settings;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -32,16 +31,15 @@ public class Endless extends Chronicle implements Live {
     }
 
     public Criteria[] getCriteria() {
-        return new Criteria[]{new DummyCrit("Remain in the End for 45+ Minutes", "(return back to island to get reward)")};
+        return new Criteria[]{new DummyCrit(
+                "Go to, and remain in",
+                "the End for 45+ Minutes",
+                "(return back to island to get reward)")};
     }
 
     public Reward[] getReward() {
         return new Reward[]{
-                new DummyReward() {
-                    public String getReward() {
-                        return "Endermen will no longer target you";
-                    }
-                }
+                new AbilityReward("Herobrine Eyes")
         };
     }
 
@@ -55,16 +53,14 @@ public class Endless extends Chronicle implements Live {
 
     @EventHandler
     public void onChange(PlayerChangedWorldEvent event) {
-        if (event.getPlayer().getWorld().getName().equals(Settings.ADMIN_WORLD_ID + "_end")) {
+        if (isEndWorld(event.getPlayer().getWorld())) {
             streak.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
         } else {
             if (!streak.containsKey(event.getPlayer().getUniqueId())) return;
             long time = streak.get(event.getPlayer().getUniqueId());
             streak.remove(event.getPlayer().getUniqueId());
-            System.out.println("[Anvil] " + event.getPlayer().getName() + " exited the End with a " + TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) + " duration");
-            if (TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - time) >= 45) {
-                main().challenges().award(event.getPlayer(), this);
-            }
+            if (TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - time) >= 45)
+                main().challenges().complete(event.getPlayer(), this);
         }
     }
 

@@ -43,6 +43,6 @@ public class HighStrikes extends Chronicle implements Live {
             if (((Creeper) event.getEntity()).isPowered())
                 if (event.getDamager() instanceof Player)
                     if (event.getDamage() >= ((Creeper) event.getEntity()).getHealth())
-                        main.challenges().award((Player) event.getDamager(), this);
+                        main.challenges().complete((Player) event.getDamager(), this);
     }
 }

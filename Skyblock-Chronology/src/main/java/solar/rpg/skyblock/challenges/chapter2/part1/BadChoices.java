@@ -46,6 +46,6 @@ public class BadChoices extends Chronicle implements Live {
             if (!found.chronicles().has(getName()))
                 for (Entity nearby : event.getEntity().getNearbyEntities(7, 7, 7))
                     if (found.members().isMember(nearby.getUniqueId()))
-                        main().challenges().award((Player) nearby, this);
+                        main().challenges().complete((Player) nearby, this);
     }
 }

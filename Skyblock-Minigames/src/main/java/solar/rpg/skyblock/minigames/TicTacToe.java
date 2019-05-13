@@ -5,19 +5,18 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.BoardGame;
-import solar.rpg.skyblock.island.minigames.MinigameMain;
+import solar.rpg.skyblock.island.minigames.Difficulty;
+import solar.rpg.skyblock.island.minigames.Minigame;
 import solar.rpg.skyblock.island.minigames.NewbieFriendly;
-import solar.rpg.skyblock.island.minigames.task.AttemptsMinigameTask;
-import solar.rpg.skyblock.island.minigames.task.Difficulty;
-import solar.rpg.skyblock.island.minigames.task.Minigame;
 import solar.rpg.skyblock.minigames.extra.tictactoe.AIPlayerMinimax;
 import solar.rpg.skyblock.minigames.extra.tictactoe.TicTacToeBoard;
+import solar.rpg.skyblock.minigames.tasks.AttemptsMinigameTask;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,19 +24,23 @@ import java.util.UUID;
 
 public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
 
+    @Override
     public void start(Island island, List<UUID> participants, Difficulty difficulty) {
-        main.getActiveTasks().add(new TicTacRun(this, island, participants, main, difficulty).start());
+        main.getActiveTasks().add(new TicTacToeTask(this, island, participants, main, difficulty).start());
         getRunning().add(island);
     }
 
+    @Override
     public String getName() {
         return "Tic Tac Toe";
     }
 
+    @Override
     public ItemStack getIcon() {
         return new ItemStack(Material.STRUCTURE_VOID);
     }
 
+    @Override
     public String[] getDescription() {
         return new String[]{"First they take our noughts.. and then our crosses!",
                 ChatColor.ITALIC + "Beat an AI in a two-round match of Tic Tac Toe!",
@@ -45,73 +48,78 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
                 ChatColor.ITALIC + "Round 2: AI moves first"};
     }
 
+    @Override
     public Difficulty[] getDifficulties() {
         return new Difficulty[]{Difficulty.NORMAL};
     }
 
+    @Override
     public String getSummary() {
         return "Outsmart the Tic Tac Toe AI!";
     }
 
+    @Override
     public String getObjectiveWord() {
         return "points awarded";
     }
 
+    @Override
     public int getDuration() {
         return 240;
     }
 
+    @Override
     public int getGold() {
         return 3;
     }
 
+    @Override
     public boolean isScoreDivisible() {
         return false;
     }
 
+    @Override
     public int getMaxReward() {
         return 2500;
     }
 
-    private class TicTacRun extends AttemptsMinigameTask implements Listener {
+    private class TicTacToeTask extends AttemptsMinigameTask {
 
-        TicTacToeBoard board;
-        TicTacToeBoard.GameState currentState;
-        TicTacToeBoard.Seed currentPlayer;
-        boolean round2 = false;
+        /* Tic Tac Toe implementation classes. */
+        private TicTacToeBoard board;
+        private TicTacToeBoard.GameState currentState;
+        private TicTacToeBoard.Seed playerSeed;
+
+        /* True when the second round is playing. */
+        private boolean round2 = false;
+
+        /* Holds all blocks where moves can be made. */
         private HashMap<Block, Short> clickable;
-        private Location gen;
-        private boolean canMove;
 
-        TicTacRun(Minigame owner, Island island, List<UUID> participants, MinigameMain main, Difficulty difficulty) {
+        TicTacToeTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty, 1);
         }
 
+        @Override
         public void onStart() {
             clickable = new HashMap<>();
 
             board = new TicTacToeBoard();
             currentState = TicTacToeBoard.GameState.PLAYING;
-            currentPlayer = TicTacToeBoard.Seed.CROSS;
+            playerSeed = TicTacToeBoard.Seed.CROSS;
             canMove = true;
 
             gen = generateLocation(100, 20, 140, true, false);
-            for (int x = 0; x <= 11; x++)
-                for (int z = 0; z <= 13; z++)
-                    if (gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY(), gen.getBlockZ() + z).getType() != Material.AIR) {
-                        error();
-                        return;
-                    }
 
-            for (int x = 0; x <= 11; x++)
-                for (int z = 0; z <= 13; z++) {
-                    Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY(), gen.getBlockZ() + z);
-                    bl.setType(Material.SMOOTH_BRICK);
-                    placed.add(bl);
-                }
+            if (!isEmpty(gen, 11, 6, 13)) {
+                error();
+                return;
+            }
+
+            makePlatform(gen, 11, 13, Material.SMOOTH_BRICK);
 
             for (short i = 1; i <= 9; i++)
-                registerClicks(generateGridLocation(i, gen), i);
+                registerClicks(generateGridLocation(i), i);
 
             for (UUID in : getParticipants())
                 Bukkit.getPlayer(in).teleport(gen.clone().add(5, 2, 5));
@@ -120,11 +128,12 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
         }
 
         /**
-         * Updates the state of the game based on the state of the board.
+         * Checks if there is a winner or a tie.
+         * Notifies participants if there is.
          *
          * @param theSeed Who we're checking for the win.
          */
-        void updateGame(TicTacToeBoard.Seed theSeed) {
+        private void checkWinner(TicTacToeBoard.Seed theSeed) {
             if (board.hasWon(theSeed)) {  // check for win
                 currentState = (theSeed == TicTacToeBoard.Seed.CROSS) ? TicTacToeBoard.GameState.CROSS_WON : TicTacToeBoard.GameState.NOUGHT_WON;
                 main.messageAll(getParticipants(), ChatColor.GRAY + theSeed.name + " has won this round!");
@@ -139,15 +148,15 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
         /**
          * Performs a move.
          *
-         * @param row     The row number. (x)
-         * @param col     The column number. (y)
-         * @param theSeed The player.
-         * @return Whether or not it was a valid move.
+         * @param row  The row number. (x)
+         * @param col  The column number. (y)
+         * @param seed The player who made the move.
+         * @return True if the move was valid.
          */
-        boolean playerMove(int row, int col, TicTacToeBoard.Seed theSeed) {
+        private boolean playerMove(int row, int col, TicTacToeBoard.Seed seed) {
             if (row >= 0 && row < TicTacToeBoard.ROWS && col >= 0 && col < TicTacToeBoard.COLS
                     && board.cells[row][col].content == TicTacToeBoard.Seed.EMPTY) {
-                board.cells[row][col].content = theSeed;
+                board.cells[row][col].content = seed;
                 board.currentRow = row;
                 board.currentCol = col;
                 return true;
@@ -155,10 +164,10 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
         }
 
         /**
-         * Moves onto round 2.
-         * CPU moves first.
+         * When playing, there are two rounds.
+         * Once the first round is complete, the AI will move first.
          */
-        void nextRound() {
+        private void nextRound() {
             addPoints();
             if (round2) {
                 stop();
@@ -166,12 +175,11 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
             } else
                 round2 = true;
 
-
             board.init();
-            currentPlayer = TicTacToeBoard.Seed.NOUGHT;
+            playerSeed = TicTacToeBoard.Seed.NOUGHT;
             currentState = TicTacToeBoard.GameState.PLAYING;
             for (short i = 1; i <= 9; i++)
-                clearSquare(i);
+                resetTile(i);
 
             Bukkit.getScheduler().runTaskLater(main.main().plugin(), () -> {
                 AIPlayerMinimax ai = new AIPlayerMinimax(board); // Create an AI to decide the move for this turn.
@@ -180,7 +188,7 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
 
                 playerMove(move[0], move[1], ai.getSeed());
                 colorSquare(gridToAlloc(move), ai.getSeed()); // Color the square.
-                updateGame(ai.getSeed()); // Update the game.
+                checkWinner(ai.getSeed()); // Update the game.
                 main.soundAll(getParticipants(), Sound.ENTITY_CREEPER_PRIMED, 2F);
                 selectPlayer(); // Select the next player.
                 canMove = true;
@@ -188,64 +196,75 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
         }
 
         /**
-         * Player won: 2 points
-         * Player tied/died: 1 point
+         * Adds points after the winner has been decided.
+         * <p>
+         * Player wins: 2 points
+         * Player tied: 1 point
          * Player lost: no points
          */
-        void addPoints() {
+        private void addPoints() {
             switch (currentState) {
                 case DRAW:
                     points += 1;
                     break;
                 case NOUGHT_WON:
-                    if (currentPlayer == TicTacToeBoard.Seed.NOUGHT)
+                    if (playerSeed == TicTacToeBoard.Seed.NOUGHT)
                         points += 2;
                     break;
                 case CROSS_WON:
-                    if (currentPlayer == TicTacToeBoard.Seed.CROSS)
+                    if (playerSeed == TicTacToeBoard.Seed.CROSS)
                         points += 2;
                     break;
             }
         }
 
         /**
-         * Called after a player clicks a square.
+         * Makes a move on the board.
          *
-         * @param block       What block was clicked.
-         * @param responsible Who clicked it.
+         * @param block  What block was clicked.
+         * @param player Who clicked it.
          */
-        void reveal(Block block, Player responsible) {
+        private void move(Block block, Player player) {
             if (!clickable.containsKey(block)) return;
             short ID = clickable.get(block);
             int[] grid = allocToGrid(ID);
 
-            if (!playerMove(grid[0], grid[1], currentPlayer)) {
-                responsible.sendMessage(ChatColor.RED + "This move was invalid. Try again.");
+            if (!playerMove(grid[0], grid[1], playerSeed)) {
+                player.sendMessage(ChatColor.RED + "This move was invalid. Try again.");
                 return;
             }
 
             canMove = false;
 
-            colorSquare(ID, currentPlayer);
-            updateGame(currentPlayer);
+            colorSquare(ID, playerSeed);
+            checkWinner(playerSeed);
 
             Bukkit.getScheduler().runTaskLater(main.main().plugin(), () -> {
                 if (currentState != TicTacToeBoard.GameState.PLAYING) {
                     Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::nextRound, 39L);
                 } else {
                     AIPlayerMinimax ai = new AIPlayerMinimax(board); // Create an AI to decide the move for this turn.
-                    ai.setSeed(currentPlayer == TicTacToeBoard.Seed.CROSS ? TicTacToeBoard.Seed.NOUGHT : TicTacToeBoard.Seed.CROSS); // Decide their seed.
-                    int[] move = ai.move(); // Calculate the move.
+                    ai.setSeed(playerSeed == TicTacToeBoard.Seed.CROSS ? TicTacToeBoard.Seed.NOUGHT : TicTacToeBoard.Seed.CROSS); // Decide their seed.
+                    int[] move;
+                    if (main.main().rng().nextInt(10) == 7) {
+                        // 1 out of 10 times, the AI will just select a random move.
+                        // Randomly generate moves until a valid one is played.
+                        move = randomMove();
+                        while (!playerMove(move[0], move[1], ai.getSeed()))
+                            move = randomMove();
+                    } else {
+                        // Calculate move and place it on the board.
+                        move = ai.move();
+                        playerMove(move[0], move[1], ai.getSeed());
+                    }
 
                     main.soundAll(getParticipants(), Sound.ENTITY_CREEPER_PRIMED, 2F);
-                    playerMove(move[0], move[1], ai.getSeed()); // Make the move on the board.
-
                     colorSquare(gridToAlloc(move), ai.getSeed()); // Color the square.
-                    updateGame(ai.getSeed()); // Update the game.
+                    checkWinner(ai.getSeed()); // Update the game.
 
-                    if (currentState != TicTacToeBoard.GameState.PLAYING) {
+                    if (currentState != TicTacToeBoard.GameState.PLAYING)
                         Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::nextRound, 39L);
-                    } else {
+                    else {
                         selectPlayer();
                         canMove = true;
                     }
@@ -255,10 +274,17 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
         }
 
         /**
-         * Registers clickable squares.
+         * @return A random move. Not checked.
+         */
+        private int[] randomMove() {
+            return new int[]{main.main().rng().nextInt(3), main.main().rng().nextInt(3)};
+        }
+
+        /**
+         * Registers locations for move selection so clicks can be listened for.
          *
-         * @param loc        The bottom left origination location.
-         * @param allocation The allocation from 1-9 given.
+         * @param loc        Location of a clickable tile block.
+         * @param allocation The board column index that this location corresponds to.
          */
         void registerClicks(Location loc, short allocation) {
             clickable.put(loc.getBlock(), allocation);
@@ -278,12 +304,12 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
         }
 
         /**
-         * Colors a square.
+         * Colors a tile with the player's color.
          *
          * @param allocation Square ID 1-9.
          */
-        void colorSquare(short allocation, TicTacToeBoard.Seed seed) {
-            Location loc = generateGridLocation(allocation, gen);
+        private void colorSquare(short allocation, TicTacToeBoard.Seed seed) {
+            Location loc = generateGridLocation(allocation);
 
             loc.getBlock().setType(Material.WOOL);
             loc.getBlock().setData(seed.color.getWoolData());
@@ -306,12 +332,12 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
         }
 
         /**
-         * Clears a square.
+         * Sets a tile back to bedrock.
          *
          * @param allocation Square ID 1-9.
          */
-        void clearSquare(short allocation) {
-            Location loc = generateGridLocation(allocation, gen);
+        private void resetTile(short allocation) {
+            Location loc = generateGridLocation(allocation);
 
             loc.getBlock().setType(Material.BEDROCK);
             loc.add(1, 0, 0);
@@ -323,17 +349,15 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
         }
 
         /**
-         * Translates an integer from 1 to 9 to a space on the board.
+         * Takes a board index number and returns the appropriate
+         * spot to place the clickable block so the player can make moves.
          *
          * @param allocation The integer allocation from 1-9.
-         * @param original   The bottom left of the board.
          * @return The grid location.
          */
-        Location generateGridLocation(short allocation, Location original) {
-            Location result = original.clone().add(2, 0, 4);
+        Location generateGridLocation(short allocation) {
+            Location result = gen.clone().add(2, 0, 4);
             switch (allocation) {
-                case 1:
-                    return result;
                 case 2:
                     return result.add(3, 0, 0);
                 case 3:
@@ -355,7 +379,14 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
             }
         }
 
-        int[] allocToGrid(short allocation) {
+        /**
+         * Takes a board index number and returns its
+         * x and y position in the board array.
+         *
+         * @param allocation The integer allocation from 1-9.
+         * @return The grid location.
+         */
+        private int[] allocToGrid(short allocation) {
             switch (allocation) {
                 case 1:
                     return new int[]{0, 0};
@@ -375,11 +406,19 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
                     return new int[]{1, 2};
                 case 9:
                     return new int[]{2, 2};
+                default:
+                    return new int[2];
             }
-            return new int[2];
         }
 
-        short gridToAlloc(int[] grid) {
+        /**
+         * Takes a grid location and returns its index
+         * allocation number.
+         *
+         * @param grid Grid location.
+         * @return Board index number.
+         */
+        private short gridToAlloc(int[] grid) {
             switch (grid[0]) {
                 case 0:
                     if (grid[1] == 0)
@@ -409,15 +448,17 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
             return 0;
         }
 
+        @Override
         public void onFinish() {
             returnParticipants();
             board = null;
             currentState = null;
-            currentPlayer = null;
+            playerSeed = null;
             clickable.clear();
             clickable = null;
         }
 
+        @Override
         public void onTick() {
         }
 
@@ -427,7 +468,7 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
             if (event.getClickedBlock() == null) return;
             if (event.getClickedBlock().getType() != Material.BEDROCK) return;
             if (canMove && canMove(event.getPlayer()))
-                reveal(event.getClickedBlock(), event.getPlayer());
+                move(event.getClickedBlock(), event.getPlayer());
         }
     }
 }

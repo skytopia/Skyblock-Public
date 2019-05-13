@@ -9,7 +9,6 @@ import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.Live;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
-import solar.rpg.skyblock.island.chronology.reward.DummyReward;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.island.minigames.FlawlessEnabled;
@@ -27,19 +26,7 @@ public class Sunglasses extends Chronicle implements Live {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new ItemReward(ItemUtility.createSpawnEgg(EntityType.CREEPER)),
-                new DummyReward() {
-                    @Override
-                    public String getReward() {
-                        return "Unlocks \"Minesweeper Hardmode\"";
-                    }
-                },
-                new DummyReward() {
-                    @Override
-                    public String getReward() {
-                        return "(ask Skyuh about it!)";
-                    }
-                }
+                new ItemReward(ItemUtility.createSpawnEgg(EntityType.CREEPER))
         };
     }
 
@@ -55,6 +42,6 @@ public class Sunglasses extends Chronicle implements Live {
     public void onDamage(PlayerCompleteMinigameEvent event) {
         if (event.getMinigame() instanceof FlawlessEnabled)
             if (event.getMinigame().getName().equals("Minesweeper") && event.getScore() >= ((FlawlessEnabled) event.getMinigame()).getFlawless())
-                main().challenges().award(event.getPlayer(), this);
+                main().challenges().complete(event.getPlayer(), this);
     }
 }

@@ -69,29 +69,6 @@ public class TicTacToeBoard {
                 && cells[2][0].content == theSeed);
     }
 
-    public class Cell {
-
-        private final int row;
-        private final int col;
-        public Seed content;
-
-        /**
-         * Constructor to initialize this cell
-         */
-        public Cell(int row, int col) {
-            this.row = row;
-            this.col = col;
-            clear();  // clear content
-        }
-
-        /**
-         * Clear the cell content to EMPTY
-         */
-        public void clear() {
-            content = Seed.EMPTY;
-        }
-    }
-
     /**
      * Store the seed for a player.
      */
@@ -115,5 +92,28 @@ public class TicTacToeBoard {
      */
     public enum GameState {
         PLAYING, DRAW, CROSS_WON, NOUGHT_WON
+    }
+
+    public class Cell {
+
+        private final int row;
+        private final int col;
+        public Seed content;
+
+        /**
+         * Constructor to initialize this cell
+         */
+        public Cell(int row, int col) {
+            this.row = row;
+            this.col = col;
+            clear();  // clear content
+        }
+
+        /**
+         * Clear the cell content to EMPTY
+         */
+        public void clear() {
+            content = Seed.EMPTY;
+        }
     }
 }

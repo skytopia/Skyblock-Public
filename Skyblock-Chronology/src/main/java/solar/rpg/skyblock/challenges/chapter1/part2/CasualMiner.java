@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.GadgetReward;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
@@ -21,11 +21,11 @@ public class CasualMiner extends Chronicle {
     public Criteria[] getCriteria() {
         return new Criteria[]{
                 new ItemCrit(
-                        new Multiple(Material.COBBLESTONE, 16),
-                        new Multiple(Material.DIRT, 3),
-                        new Multiple(Material.SAND, 3),
-                        new Multiple(Material.GRAVEL, 3),
-                        new Multiple(Material.COAL, 1)
+                        new Stack(Material.COBBLESTONE, 16),
+                        new Stack(Material.DIRT, 3),
+                        new Stack(Material.SAND, 3),
+                        new Stack(Material.GRAVEL, 3),
+                        new Stack(Material.COAL, 1)
                 )
         };
     }

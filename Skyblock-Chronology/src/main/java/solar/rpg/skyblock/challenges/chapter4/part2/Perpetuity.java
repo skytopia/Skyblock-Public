@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.GadgetReward;
 import solar.rpg.skyblock.island.chronology.reward.MoneyReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
@@ -18,13 +18,13 @@ public class Perpetuity extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Multiple(Material.LAPIS_BLOCK, (short) 0, 27),
-                new Multiple(Material.REDSTONE_BLOCK, (short) 0, 27),
-                new Multiple(Material.COAL_BLOCK, (short) 0, 27),
-                new Multiple(Material.IRON_BLOCK, (short) 0, 9),
-                new Multiple(Material.GOLD_BLOCK, (short) 0, 9),
-                new Multiple(Material.DIAMOND_BLOCK, (short) 0, 7),
-                new Multiple(Material.EMERALD_BLOCK, (short) 0, 2)
+                new Stack(Material.LAPIS_BLOCK, (short) 0, 27),
+                new Stack(Material.REDSTONE_BLOCK, (short) 0, 27),
+                new Stack(Material.COAL_BLOCK, (short) 0, 27),
+                new Stack(Material.IRON_BLOCK, (short) 0, 9),
+                new Stack(Material.GOLD_BLOCK, (short) 0, 9),
+                new Stack(Material.DIAMOND_BLOCK, (short) 0, 7),
+                new Stack(Material.EMERALD_BLOCK, (short) 0, 2)
         )};
     }
 

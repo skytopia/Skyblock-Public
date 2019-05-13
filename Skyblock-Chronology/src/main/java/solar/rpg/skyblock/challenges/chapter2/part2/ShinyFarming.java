@@ -7,8 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
 import solar.rpg.skyblock.island.chronology.criteria.item.Single;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.util.ItemUtility;
@@ -21,10 +21,10 @@ public class ShinyFarming extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Multiple(Material.EMERALD, 3),
-                new Multiple(Material.GOLDEN_CARROT, 2),
-                new Multiple(Material.SPECKLED_MELON, 2),
-                new Multiple(Material.BLAZE_POWDER, 2),
+                new Stack(Material.EMERALD, 3),
+                new Stack(Material.GOLDEN_CARROT, 2),
+                new Stack(Material.SPECKLED_MELON, 2),
+                new Stack(Material.BLAZE_POWDER, 2),
                 new Single(Material.EYE_OF_ENDER, 48),
                 new Single(Material.GHAST_TEAR, 12))
         };

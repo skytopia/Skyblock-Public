@@ -47,7 +47,7 @@ public class Aimbot extends Chronicle implements Live {
             if (count.containsKey(event.getPlayer().getUniqueId())) {
                 int amt = count.get(event.getPlayer().getUniqueId());
                 if (amt + 1 == 15)
-                    main.challenges().award(event.getPlayer(), this);
+                    main.challenges().complete(event.getPlayer(), this);
                 count.put(event.getPlayer().getUniqueId(), amt + 1);
             } else
                 count.put(event.getPlayer().getUniqueId(), 1);

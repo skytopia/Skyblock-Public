@@ -39,6 +39,6 @@ public class UnfamiliarFaces extends Chronicle implements Live {
 
     @EventHandler
     public void onVisit(PlayerVisitIslandEvent event) {
-        main().challenges().award(event.getVisitor(), this);
+        main().challenges().complete(event.getVisitor(), this);
     }
 }

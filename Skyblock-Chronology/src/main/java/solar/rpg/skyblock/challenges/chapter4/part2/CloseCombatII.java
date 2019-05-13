@@ -57,8 +57,8 @@ public class CloseCombatII extends Chronicle implements Live {
 
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
-        if (check(event.getEntity().getWorld())) return;
         if (!(event.getEntity() instanceof Blaze)) return;
+        if (isAnyIslandWorld(event.getEntity().getWorld())) return;
         if (event.getEntity().getKiller() != null) {
             if (!event.getEntity().getKiller().isOnline()) return;
             if (!streak.containsKey(event.getEntity().getKiller().getUniqueId()))
@@ -69,7 +69,7 @@ public class CloseCombatII extends Chronicle implements Live {
             if (current % 10 == 0)
                 event.getEntity().getWorld().spawnParticle(Particle.FLAME, event.getEntity().getLocation(), 8);
             if (current == 50)
-                main().challenges().award(event.getEntity().getKiller(), this);
+                main().challenges().complete(event.getEntity().getKiller(), this);
         }
     }
 

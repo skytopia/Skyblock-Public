@@ -11,9 +11,8 @@ import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.Live;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
-import solar.rpg.skyblock.island.chronology.reward.DummyReward;
+import solar.rpg.skyblock.island.chronology.reward.AbilityReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
-import solar.rpg.skyblock.stored.Settings;
 
 public class Silence extends Chronicle implements Live {
 
@@ -27,12 +26,7 @@ public class Silence extends Chronicle implements Live {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new DummyReward() {
-                    @Override
-                    public String getReward() {
-                        return "Mobs are less likely to spawn on your island";
-                    }
-                }
+                new AbilityReward("Silence")
         };
     }
 
@@ -46,12 +40,10 @@ public class Silence extends Chronicle implements Live {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent event) {
-        if (event.getBlock().getWorld().getName().startsWith(Settings.ADMIN_WORLD_ID))
-            if (event.getBlock().getType() == Material.MOB_SPAWNER) {
-                CreatureSpawner state = (CreatureSpawner) event.getBlock().getState();
-                if (state.getSpawnedType() != EntityType.PIG)
+        if (event.getBlock().getType() == Material.MOB_SPAWNER)
+            if (isAnyIslandWorld(event.getBlock().getWorld()))
+                if (((CreatureSpawner) event.getBlock().getState()).getSpawnedType() != EntityType.PIG)
                     if (main().islands().getIsland(event.getPlayer().getUniqueId()) != null)
-                        main().challenges().award(event.getPlayer(), this);
-            }
+                        main().challenges().complete(event.getPlayer(), this);
     }
 }

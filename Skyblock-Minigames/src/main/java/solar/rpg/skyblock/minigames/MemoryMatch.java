@@ -4,126 +4,130 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
-import solar.rpg.skyblock.island.minigames.BoardGame;
-import solar.rpg.skyblock.island.minigames.FlawlessEnabled;
-import solar.rpg.skyblock.island.minigames.MinigameMain;
-import solar.rpg.skyblock.island.minigames.NewbieFriendly;
-import solar.rpg.skyblock.island.minigames.task.Difficulty;
-import solar.rpg.skyblock.island.minigames.task.LeastAttemptsMinigameTask;
-import solar.rpg.skyblock.island.minigames.task.Minigame;
+import solar.rpg.skyblock.island.minigames.Difficulty;
+import solar.rpg.skyblock.island.minigames.*;
+import solar.rpg.skyblock.minigames.tasks.LeastAttemptsMinigameTask;
 import solar.rpg.skyblock.util.Utility;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame, NewbieFriendly {
 
+    @Override
     public void start(Island island, List<UUID> participants, Difficulty difficulty) {
-        main.getActiveTasks().add(new MemoryRun(this, island, participants, main, difficulty).start());
+        main.getActiveTasks().add(new MemoryMatchTask(this, island, participants, main, difficulty).start());
         getRunning().add(island);
     }
 
+    @Override
     public String getName() {
         return "Memory Match";
     }
 
+    @Override
     public ItemStack getIcon() {
         return new ItemStack(Material.TOTEM);
     }
 
+    @Override
     public String[] getDescription() {
         return new String[]{"Become a mastermind.. OF LUCK!",
-                ChatColor.ITALIC + "10 pairs of colors are hidden! Click to reveal them!",
-                ChatColor.ITALIC + "Get a match to reveal the pair until it's over!",
-                ChatColor.ITALIC + "Reveal all 10 pairs as efficiently as possible!"};
+                ChatColor.ITALIC + "10 data of colors are hidden! Click to move them!",
+                ChatColor.ITALIC + "Get a match to move the pair until it's over!",
+                ChatColor.ITALIC + "Reveal all 10 data as efficiently as possible!"};
     }
 
+    @Override
     public Difficulty[] getDifficulties() {
-        return new Difficulty[]{Difficulty.NORMAL, Difficulty.HARDER};
+        //TODO: Harder, add more dimensions.
+        return new Difficulty[]{Difficulty.NORMAL};
     }
 
+    @Override
     public String getSummary() {
-        return "Match 10 pairs efficiently!";
+        return "Match 10 data efficiently!";
     }
 
+    @Override
     public String getObjectiveWord() {
         return "guesses remaining";
     }
 
+    @Override
     public int getDuration() {
         return 240;
     }
 
+    @Override
     public int getGold() {
         return 20;
     }
 
+    @Override
     public boolean isScoreDivisible() {
         return false;
     }
 
+    @Override
     public int getFlawless() {
         return 30;
     }
 
+    @Override
     public int getMaxReward() {
         return 5000;
     }
 
-    private class MemoryRun extends LeastAttemptsMinigameTask implements Listener {
+    private class MemoryMatchTask extends LeastAttemptsMinigameTask {
 
-        //What number pertains to what number ID.
+        /* Maps clickable blocks to their corresponding grid index. */
         private HashMap<Block, Short> clickable;
-        //If 1 and 2 are paired, they are group 1. If 7 and 10 are paired, they are group 2, and so on.
+
+        /* Maps an index to a pair number. */
         private HashMap<Short, Short> groups;
 
-        private Location gen;
+        /* When making the first move, this stores the grid index of that square. */
         private Short revealed;
-        private ArrayList<Short> solved;
 
-        MemoryRun(Minigame owner, Island island, List<UUID> participants, MinigameMain main, Difficulty difficulty) {
+        /* List of solved data.*/
+        private Set<Short> solved;
+
+        MemoryMatchTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty, 1, 40);
         }
 
+        @Override
         public void onStart() {
             clickable = new HashMap<>();
             groups = new HashMap<>();
             cooldown = System.currentTimeMillis();
 
             revealed = -1;
-            solved = new ArrayList<>();
+            solved = new HashSet<>();
             gen = generateLocation(100, 20, 140, true, false);
-            for (int x = 0; x <= 15; x++)
-                for (int z = 0; z <= 19; z++)
-                    if (gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY(), gen.getBlockZ() + z).getType() != Material.AIR) {
-                        error();
-                        return;
-                    }
-            for (int x = 0; x <= 15; x++)
-                for (int z = 0; z <= 19; z++) {
-                    Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY(), gen.getBlockZ() + z);
-                    bl.setType(Material.SMOOTH_BRICK);
-                    placed.add(bl);
-                }
+            if (!isEmpty(gen, 15, 6, 19)) {
+                error();
+                return;
+            }
 
-            // Create a list of possible pairs, and vacant spaces on the board.
+            makePlatform(gen, 15, 19, Material.SMOOTH_BRICK);
+
+            // Adds all possible indexes to an array.
             ArrayList<Short> possiblePairs = new ArrayList<>();
             for (Short i = 1; i <= 20; i++)
                 possiblePairs.add(i);
 
-            // Create pairs from randomly selected numbers still in the lists above.
+            // Create data from randomly selected numbers still in the lists above.
             Short pairID = 0;
             while (possiblePairs.size() > 0) {
                 pairID++;
-                // Get 2 random unselected pairs, and remove them.
+                // Get 2 random unselected data, and remove them.
                 Short selection1 = possiblePairs.get(main.main().rng().nextInt(possiblePairs.size()));
                 possiblePairs.remove(selection1);
                 Short selection2 = possiblePairs.get(main.main().rng().nextInt(possiblePairs.size()));
@@ -133,10 +137,11 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
                 groups.put(selection1, pairID);
                 groups.put(selection2, pairID);
 
-                registerClicks(generateGridLocation(selection1, gen), selection1);
-                registerClicks(generateGridLocation(selection2, gen), selection2);
+                registerClicks(generateGridLocation(selection1), selection1);
+                registerClicks(generateGridLocation(selection2), selection2);
             }
 
+            // Teleports players on to the platform.
             for (UUID in : getParticipants())
                 Bukkit.getPlayer(in).teleport(gen.clone().add(8, 3, 5));
 
@@ -144,7 +149,13 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
         }
 
         /**
-         * Reveals a whole square.
+         * Reveals a hidden square to show its color.
+         * If this is the first move, it leaves it revealed.
+         * If this is the second move, it checks for a match.
+         * If it is a match, the user gets another turn and the tiles stay revealed.
+         * If it isn't a match, the tiles get re-hidden.
+         *
+         * @param block The block selected.
          */
         private void reveal(Block block) {
             if (!clickable.containsKey(block)) return;
@@ -178,17 +189,20 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
                 }
                 points--;
 
-                // They've solved the 10 pairs.
+                // They've solved the 10 data.
                 if (solved.size() == 10)
                     stop();
             }
         }
 
         /**
-         * Reveals a square in-game.
+         * Reveals a tile on the board.
+         *
+         * @param revealed The grid index that got revealed.
+         * @param group    The group this index belongs to.
          */
         private void reveal(Short revealed, Short group) {
-            Location loc = generateGridLocation(revealed, gen);
+            Location loc = generateGridLocation(revealed);
             loc.getBlock().setType(Material.WOOL);
             loc.getBlock().setData(translateDyeColor(group));
             loc.add(0, 0, 1);
@@ -203,11 +217,13 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
         }
 
         /**
-         * Hides a visible square.
+         * Hides a tile on the board.
+         *
+         * @param clicked The grid index of the tile to hide.
          */
         private void hide(Short clicked) {
             if (groups == null) return;
-            Location loc = generateGridLocation(clicked, gen);
+            Location loc = generateGridLocation(clicked);
             loc.getBlock().setType(Material.BEDROCK);
             loc.add(0, 0, 1);
             loc.getBlock().setType(Material.BEDROCK);
@@ -218,7 +234,10 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
         }
 
         /**
-         * Registers clickable squares. (and hides them)
+         * Registers clickable tile blocks (and hides them).
+         *
+         * @param loc        Corner block of the tile to register.
+         * @param allocation The grid index of this tile.
          */
         private void registerClicks(Location loc, Short allocation) {
             clickable.put(loc.getBlock(), allocation);
@@ -235,49 +254,37 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
         }
 
         /**
+         * Takes a grid index allocation and returns a corner
+         * block of the appropriate tile.
          * Each allocation has a unique X,Y spot on the board.
-         * Start at X+3, and then work your way up and right.
-         */
-        private Location generateGridLocation(short allocation, Location original) {
-            Location result = original.clone().add(0, 0, 3);
-            if (allocation >= 17) {
-                result.add(0, 0, 12);
-            } else if (allocation >= 13) {
-                result.add(0, 0, 9);
-            } else if (allocation >= 9) {
-                result.add(0, 0, 6);
-            } else if (allocation >= 5) {
-                result.add(0, 0, 3);
-            }
-            return generateGridLocationPhase2(allocation, result);
-        }
-
-        /**
-         * After finding the Z axis, find the X axis.
          *
-         * @param allocation See above.
-         * @param result     See above.
-         * @return The grid location.
+         * @param allocation The grid index of this tile.
          */
-        private Location generateGridLocationPhase2(short allocation, Location result) {
+        private Location generateGridLocation(short allocation) {
+            Location result = gen.clone().add(0, 0, 3);
+
+            // Find X axis.
+            if (allocation >= 17) result.add(0, 0, 12);
+            else if (allocation >= 13) result.add(0, 0, 9);
+            else if (allocation >= 9) result.add(0, 0, 6);
+            else if (allocation >= 5) result.add(0, 0, 3);
+
+            // Find X axis.
             while (allocation > 4)
                 allocation -= 4;
-            if (allocation == 1)
-                result.add(2, 0, 0);
-            else if (allocation == 2)
-                result.add(5, 0, 0);
-            else if (allocation == 3)
-                result.add(8, 0, 0);
-            else if (allocation == 4)
-                result.add(11, 0, 0);
+            if (allocation == 1) result.add(2, 0, 0);
+            else if (allocation == 2) result.add(5, 0, 0);
+            else if (allocation == 3) result.add(8, 0, 0);
+            else if (allocation == 4) result.add(11, 0, 0);
+
             return result;
         }
 
         /**
-         * Translates a group ID to a dye color.
+         * Translates a group ID to a dye color data value.
          */
-        private byte translateDyeColor(short place) {
-            switch (place) {
+        private byte translateDyeColor(short group) {
+            switch (group) {
                 case 1:
                     return 2;
                 case 2:
@@ -303,12 +310,14 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
             }
         }
 
+        @Override
         public void onFinish() {
             returnParticipants();
             clickable.clear();
             clickable = null;
         }
 
+        @Override
         public void onTick() {
         }
 

@@ -15,7 +15,6 @@ import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.island.chronology.reward.TrailReward;
 import solar.rpg.skyblock.util.ItemUtility;
-import solar.rpg.skyblock.stored.Settings;
 
 public class Legend4 extends Chronicle implements Live {
 
@@ -43,7 +42,7 @@ public class Legend4 extends Chronicle implements Live {
 
     @EventHandler
     public void onClick(PlayerInteractEvent event) {
-        if (!event.getPlayer().getWorld().getName().equals(Settings.ADMIN_WORLD_ID + "_end")) return;
+        if (!isEndWorld(event.getPlayer().getWorld())) return;
         if (event.getClickedBlock() == null) return;
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Location click = event.getClickedBlock().getLocation();
@@ -52,13 +51,13 @@ public class Legend4 extends Chronicle implements Live {
             Island is = main.islands().getIsland(event.getPlayer().getUniqueId());
             if (is == null) return;
             if (!is.chronicles().has("The Detour")) {
-                if (!main.challenges().award(event.getPlayer(), this)) {
+                if (!main.challenges().complete(event.getPlayer(), this)) {
                     event.getPlayer().sendMessage(ChatColor.RED + "Do not return until you are needed.");
                     event.getPlayer().setHealth(1.1);
                     event.getPlayer().damage(0.1);
                     return;
                 }
-                is.actions().messageAll(ChatColor.RED + "A hidden power has been instilled upon you.");
+                main.challenges().complete(event.getPlayer(), this);
                 event.getPlayer().getWorld().strikeLightningEffect(click);
                 event.getPlayer().getWorld().playSound(click, Sound.BLOCK_CHEST_OPEN, 1F, 2F);
                 Inventory open = Bukkit.createInventory(null, 27, "...");

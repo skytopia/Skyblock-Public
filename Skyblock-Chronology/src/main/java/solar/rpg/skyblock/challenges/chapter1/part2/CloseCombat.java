@@ -14,6 +14,7 @@ import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.Live;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
+import solar.rpg.skyblock.island.chronology.reward.AbilityReward;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.util.ItemUtility;
@@ -42,7 +43,8 @@ public class CloseCombat extends Chronicle implements Live {
         return new Reward[]{
                 new ItemReward(ItemUtility.enchant(ItemUtility.changeItem(new ItemStack(Material.STONE_SWORD, 1), ChatColor.GRAY + "Heavy Stone Sword"), Enchantment.KNOCKBACK, 6)),
                 new ItemReward(ItemUtility.changeSize(ItemUtility.createPotion(PotionEffectType.NIGHT_VISION, 960 * 20, 0), 3)),
-                new ItemReward(ItemUtility.changeSize(ItemUtility.createPotion(PotionEffectType.INVISIBILITY, 300 * 20, 0), 2))
+                new ItemReward(ItemUtility.changeSize(ItemUtility.createPotion(PotionEffectType.INVISIBILITY, 300 * 20, 0), 2)),
+                new AbilityReward("Uppercut")
         };
     }
 
@@ -56,7 +58,7 @@ public class CloseCombat extends Chronicle implements Live {
 
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
-        if (check(event.getEntity().getWorld())) return;
+        if (!isAnyIslandWorld(event.getEntity().getWorld())) return;
         if (event.getEntity().getKiller() != null) {
             if (!event.getEntity().getKiller().isOnline()) return;
             if (!streak.containsKey(event.getEntity().getKiller().getUniqueId()))
@@ -67,7 +69,7 @@ public class CloseCombat extends Chronicle implements Live {
             if (current % 5 == 0)
                 event.getEntity().getWorld().spawnParticle(Particle.FLAME, event.getEntity().getLocation(), 5);
             if (current == 25)
-                main().challenges().award(event.getEntity().getKiller(), this);
+                main().challenges().complete(event.getEntity().getKiller(), this);
         }
     }
 

@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.MoneyReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
@@ -20,12 +20,12 @@ public class NightShift extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Multiple(Material.MOSSY_COBBLESTONE, (short) 0, 27),
-                new Multiple(Material.ROTTEN_FLESH, (short) 0, 9),
-                new Multiple(Material.BONE, (short) 0, 9),
-                new Multiple(Material.STRING, (short) 0, 3),
-                new Multiple(Material.SULPHUR, (short) 0, 3),
-                new Multiple(Material.ENDER_PEARL, (short) 0, 3)
+                new Stack(Material.MOSSY_COBBLESTONE, (short) 0, 27),
+                new Stack(Material.ROTTEN_FLESH, (short) 0, 9),
+                new Stack(Material.BONE, (short) 0, 9),
+                new Stack(Material.STRING, (short) 0, 3),
+                new Stack(Material.SULPHUR, (short) 0, 3),
+                new Stack(Material.ENDER_PEARL, (short) 0, 3)
         )};
     }
 

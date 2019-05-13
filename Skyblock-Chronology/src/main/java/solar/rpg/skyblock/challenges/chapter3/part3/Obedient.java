@@ -8,7 +8,7 @@ import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.Live;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
-import solar.rpg.skyblock.island.chronology.reward.DummyReward;
+import solar.rpg.skyblock.island.chronology.reward.AbilityReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 
 public class Obedient extends Chronicle implements Live {
@@ -23,12 +23,7 @@ public class Obedient extends Chronicle implements Live {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new DummyReward() {
-                    @Override
-                    public String getReward() {
-                        return "Right clicking animals will tame them";
-                    }
-                }
+                new AbilityReward("Beastmaster")
         };
     }
 
@@ -44,6 +39,6 @@ public class Obedient extends Chronicle implements Live {
     public void onDamage(PlayerCompleteMinigameEvent event) {
         if (event.isGold())
             if (event.getMinigame().getName().equals("Mr. Cloud Says"))
-                main().challenges().award(event.getPlayer(), this);
+                main().challenges().complete(event.getPlayer(), this);
     }
 }

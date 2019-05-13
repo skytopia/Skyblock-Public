@@ -7,7 +7,7 @@ import org.bukkit.potion.PotionEffectType;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.util.ItemUtility;
@@ -21,8 +21,8 @@ public class TreeFeller extends Chronicle {
     public Criteria[] getCriteria() {
         return new Criteria[]{
                 new ItemCrit(
-                        new Multiple(Material.LOG, 4),
-                        new Multiple(Material.LEAVES, 1)
+                        new Stack(Material.LOG, 4),
+                        new Stack(Material.LEAVES, 1)
                 )
         };
     }

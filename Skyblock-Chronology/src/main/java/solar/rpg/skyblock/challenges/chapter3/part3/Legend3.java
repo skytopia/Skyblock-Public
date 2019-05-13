@@ -6,12 +6,11 @@ import org.bukkit.entity.Wither;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.Live;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
-import solar.rpg.skyblock.island.chronology.reward.DummyReward;
+import solar.rpg.skyblock.island.chronology.reward.AbilityReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 
 public class Legend3 extends Chronicle implements Live {
@@ -21,17 +20,12 @@ public class Legend3 extends Chronicle implements Live {
     }
 
     public Criteria[] getCriteria() {
-        return new Criteria[]{new DummyCrit("Kill the Wither using your fists")};
+        return new Criteria[]{new DummyCrit("Kill the Wither using both your fists")};
     }
 
     public Reward[] getReward() {
         return new Reward[]{
-                new DummyReward() {
-                    @Override
-                    public String getReward() {
-                        return "You are no longer blind in the End";
-                    }
-                }
+                new AbilityReward("Visioned")
         };
     }
 
@@ -50,9 +44,6 @@ public class Legend3 extends Chronicle implements Live {
         if (event.getDamage() < ((Wither) event.getEntity()).getHealth()) return;
         if (((Player) event.getDamager()).getInventory().getItemInMainHand().getType() != Material.AIR) return;
         if (((Player) event.getDamager()).getInventory().getItemInOffHand().getType() != Material.AIR) return;
-        Island found = main().islands().getIslandAt(event.getEntity().getLocation());
-        if (found != null && found.members().isMember(event.getDamager().getUniqueId()))
-            if (!found.chronicles().has(getName()))
-                main().challenges().award((Player) event.getDamager(), this);
+        main().challenges().complete((Player) event.getDamager(), this);
     }
 }

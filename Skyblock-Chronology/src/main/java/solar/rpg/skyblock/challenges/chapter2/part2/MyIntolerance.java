@@ -51,7 +51,7 @@ public class MyIntolerance extends Chronicle implements Live {
         else {
             int strk = streak.get(event.getPlayer().getUniqueId()) + 1;
             if (strk >= 20)
-                main.challenges().award(event.getPlayer(), this);
+                main.challenges().complete(event.getPlayer(), this);
             else
                 streak.put(event.getPlayer().getUniqueId(), strk);
         }

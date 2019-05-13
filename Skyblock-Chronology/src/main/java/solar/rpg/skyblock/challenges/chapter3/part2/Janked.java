@@ -8,7 +8,7 @@ import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.Live;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
-import solar.rpg.skyblock.island.chronology.reward.DummyReward;
+import solar.rpg.skyblock.island.chronology.reward.AbilityReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.util.ItemUtility;
 
@@ -24,12 +24,7 @@ public class Janked extends Chronicle implements Live {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new DummyReward() {
-                    @Override
-                    public String getReward() {
-                        return "Falls under 100 blocks will not be lethal";
-                    }
-                }
+                new AbilityReward("Fall Immunity")
         };
     }
 
@@ -44,6 +39,6 @@ public class Janked extends Chronicle implements Live {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         if (event.getPlayer().getActivePotionEffects().size() >= 12)
-            main.challenges().award(event.getPlayer(), this);
+            main.challenges().complete(event.getPlayer(), this);
     }
 }

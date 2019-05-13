@@ -39,6 +39,6 @@ public class Capitalist extends Chronicle implements Live {
 
     @EventHandler
     public void onBreak(PlayerExperienceOreRainEent event) {
-        main.challenges().award(event.getPlayer(), this);
+        main.challenges().complete(event.getPlayer(), this);
     }
 }

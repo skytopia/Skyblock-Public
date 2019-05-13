@@ -50,9 +50,9 @@ public class StandYourGround extends Chronicle implements Live {
 
     @EventHandler
     public void onDeath(ProjectileHitEvent event) {
-        if (check(event.getEntity().getWorld())) return;
         if (!(event.getEntity() instanceof ShulkerBullet)) return;
         if (!(((ShulkerBullet) event.getEntity()).getTarget() instanceof Player)) return;
+        if (isAnyIslandWorld(event.getEntity().getWorld())) return;
         Player target = (Player) ((ShulkerBullet) event.getEntity()).getTarget();
         if (target == null) return;
         if (!streak.containsKey(target.getUniqueId()))
@@ -60,13 +60,12 @@ public class StandYourGround extends Chronicle implements Live {
         else
             streak.put(target.getUniqueId(), streak.get(target.getUniqueId()) + 1);
         if (streak.get(target.getUniqueId()) == 75)
-            main.challenges().award(target, this);
+            main.challenges().complete(target, this);
     }
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player)
-            if (streak.containsKey(event.getEntity().getUniqueId()))
-                streak.remove(event.getEntity().getUniqueId());
+            streak.remove(event.getEntity().getUniqueId());
     }
 }

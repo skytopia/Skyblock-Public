@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.GadgetReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 
@@ -17,8 +17,8 @@ public class CookieFactory extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Multiple(Material.INK_SACK, (short) 3, 54),
-                new Multiple(Material.WHEAT, (short) 0, 54)
+                new Stack(Material.INK_SACK, (short) 3, 54),
+                new Stack(Material.WHEAT, (short) 0, 54)
         )};
     }
 

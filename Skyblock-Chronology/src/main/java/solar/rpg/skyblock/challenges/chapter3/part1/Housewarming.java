@@ -9,7 +9,7 @@ import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.Live;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
-import solar.rpg.skyblock.island.chronology.reward.DummyReward;
+import solar.rpg.skyblock.island.chronology.reward.AbilityReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 
 import java.util.UUID;
@@ -26,11 +26,7 @@ public class Housewarming extends Chronicle implements Live {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new DummyReward() {
-                    public String getReward() {
-                        return "Permanent +50 Reputation boost";
-                    }
-                }
+                new AbilityReward("Reputation+")
         };
     }
 
@@ -47,6 +43,6 @@ public class Housewarming extends Chronicle implements Live {
         if (event.getIsland().members().getVisitors().size() >= 5)
             for (UUID online : event.getIsland().members().getMembers())
                 if (Bukkit.getOfflinePlayer(online).isOnline())
-                    main.challenges().award(Bukkit.getPlayer(online), this);
+                    main.challenges().complete(Bukkit.getPlayer(online), this);
     }
 }

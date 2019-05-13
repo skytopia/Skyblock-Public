@@ -47,23 +47,23 @@ public class Camouflage extends Chronicle implements Live {
                                 switch (((Player) event.getDamager()).getInventory().getHelmet().getData().getData()) {
                                     case 0:
                                         if (event.getEntity() instanceof Skeleton)
-                                            main.challenges().award((Player) event.getDamager(), this);
+                                            main.challenges().complete((Player) event.getDamager(), this);
                                         break;
                                     case 1:
                                         if (event.getEntity() instanceof WitherSkeleton)
-                                            main.challenges().award((Player) event.getDamager(), this);
+                                            main.challenges().complete((Player) event.getDamager(), this);
                                         break;
                                     case 2:
                                         if (event.getEntity() instanceof Zombie)
-                                            main.challenges().award((Player) event.getDamager(), this);
+                                            main.challenges().complete((Player) event.getDamager(), this);
                                         break;
                                     case 4:
                                         if (event.getEntity() instanceof Creeper)
-                                            main.challenges().award((Player) event.getDamager(), this);
+                                            main.challenges().complete((Player) event.getDamager(), this);
                                         break;
                                     case 5:
                                         if (event.getEntity() instanceof EnderDragon)
-                                            main.challenges().award((Player) event.getDamager(), this);
+                                            main.challenges().complete((Player) event.getDamager(), this);
                                         break;
                                 }
     }

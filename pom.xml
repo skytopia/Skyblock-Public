@@ -17,5 +17,7 @@
         <!-- Public sections of Skyblock -->
         <module>skyblock-minigames</module>
         <module>skyblock-chronology</module>
+        <module>skyblock-gadgets</module>
+        <module>skyblock-abilities</module>
     </modules>
 </project>

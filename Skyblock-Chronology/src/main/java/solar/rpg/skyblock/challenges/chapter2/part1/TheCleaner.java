@@ -46,16 +46,16 @@ public class TheCleaner extends Chronicle implements Live {
     }
 
     @EventHandler
-    public void onDamage(final EntityDamageByEntityEvent event) {
+    public void onDamage(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Monster)) return;
         if (!(event.getDamager() instanceof Player)) return;
-        final Chronicle thiss = this;
+        Chronicle theCleaner = this;
         if (!sweeps.containsKey(event.getDamager().getUniqueId())) {
             Bukkit.getScheduler().runTaskLater(main.plugin(), () -> {
                 int sweep = sweeps.get(event.getDamager().getUniqueId());
                 sweeps.remove(event.getDamager().getUniqueId());
-                if (sweep >= 5)
-                    main.challenges().award((Player) event.getDamager(), thiss);
+                if (sweep >= 8)
+                    main.challenges().complete((Player) event.getDamager(), theCleaner);
             }, 5L);
             sweeps.put(event.getDamager().getUniqueId(), 1);
         } else

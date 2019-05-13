@@ -43,6 +43,6 @@ public class EffectivePower extends Chronicle implements Live {
         Block bl = event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
         if (bl.getType() != Material.BEACON) return;
         if (((Beacon) bl.getState()).getTier() == 4)
-            main.challenges().award(event.getPlayer(), this);
+            main.challenges().complete(event.getPlayer(), this);
     }
 }

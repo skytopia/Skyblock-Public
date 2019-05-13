@@ -15,7 +15,6 @@ import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.util.ItemUtility;
-import solar.rpg.skyblock.stored.Settings;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -55,15 +54,14 @@ public class HotTenacity extends Chronicle implements Live {
 
     @EventHandler
     public void onChange(PlayerChangedWorldEvent event) {
-        if (event.getPlayer().getWorld().getName().equals(Settings.ADMIN_WORLD_ID + "_nether")) {
+        if (isNetherWorld(event.getPlayer().getWorld()))
             streak.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
-        } else {
+        else {
             if (!streak.containsKey(event.getPlayer().getUniqueId())) return;
             long time = streak.get(event.getPlayer().getUniqueId());
             streak.remove(event.getPlayer().getUniqueId());
-            System.out.println("[Anvil] " + event.getPlayer().getName() + " exited the Nether with a " + TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) + " duration");
             if (TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - time) >= 10) {
-                main().challenges().award(event.getPlayer(), this);
+                main().challenges().complete(event.getPlayer(), this);
             }
         }
     }

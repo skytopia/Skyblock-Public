@@ -42,6 +42,6 @@ public class GotInvolved extends Chronicle implements Live {
     @EventHandler
     public void onRegister(PlayerForumCheckStatsEvent event) {
         if (event.getMessageCount() >= 10)
-            main().challenges().award(event.getPlayer(), this);
+            main().challenges().complete(event.getPlayer(), this);
     }
 }

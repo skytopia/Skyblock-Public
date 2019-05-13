@@ -9,7 +9,6 @@ import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.Live;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
-import solar.rpg.skyblock.island.chronology.reward.DummyReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 
 import java.util.UUID;
@@ -34,18 +33,6 @@ public class Heuristic extends Chronicle implements Live {
                     public String getReward() {
                         return "Empowers your Aeon Block with Wool";
                     }
-                },
-                new DummyReward() {
-                    @Override
-                    public String getReward() {
-                        return "Unlocks \"AI-First\" Mode";
-                    }
-                },
-                new DummyReward() {
-                    @Override
-                    public String getReward() {
-                        return "(ask Skyuh about it!)";
-                    }
                 }
         };
     }
@@ -62,6 +49,6 @@ public class Heuristic extends Chronicle implements Live {
     public void onDamage(PlayerCompleteMinigameEvent event) {
         if (event.isGold())
             if (event.getMinigame().getName().equals("Connect Four"))
-                main().challenges().award(event.getPlayer(), this);
+                main().challenges().complete(event.getPlayer(), this);
     }
 }

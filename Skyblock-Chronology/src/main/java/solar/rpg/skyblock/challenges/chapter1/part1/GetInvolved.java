@@ -40,6 +40,6 @@ public class GetInvolved extends Chronicle implements Live {
 
     @EventHandler
     public void onRegister(PlayerForumCheckStatsEvent event) {
-        main().challenges().award(event.getPlayer(), this);
+        main().challenges().complete(event.getPlayer(), this);
     }
 }

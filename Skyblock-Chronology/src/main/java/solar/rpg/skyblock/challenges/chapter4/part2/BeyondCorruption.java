@@ -6,7 +6,7 @@ import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 
 import java.util.UUID;
@@ -19,7 +19,7 @@ public class BeyondCorruption extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Multiple(Material.MYCEL, (short) 0, 64)
+                new Stack(Material.MYCEL, (short) 0, 64)
         )};
     }
 

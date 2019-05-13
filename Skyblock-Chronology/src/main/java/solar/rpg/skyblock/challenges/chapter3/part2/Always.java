@@ -19,7 +19,6 @@ import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.util.ItemUtility;
-import solar.rpg.skyblock.stored.Settings;
 
 import java.util.UUID;
 
@@ -58,16 +57,16 @@ public class Always extends Chronicle implements Live {
 
     @EventHandler
     public void onBreak(PlayerChangedWorldEvent event) {
-        if (event.getPlayer().getWorld().getName().equals(Settings.ADMIN_WORLD_ID + "_end"))
-            main.challenges().award(event.getPlayer(), this);
+        if (isEndWorld(event.getPlayer().getWorld()))
+            main.challenges().complete(event.getPlayer(), this);
     }
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (!event.getEntity().getWorld().getName().contains(Settings.ADMIN_WORLD_ID)) return;
         if (!(event.getDamager() instanceof Player)) return;
         if (!(event.getEntity() instanceof LivingEntity)) return;
         if (event.isCancelled()) return;
+        if (!isAnyIslandWorld(event.getEntity().getWorld())) return;
         Player pl = (Player) event.getDamager();
         if (pl.getInventory().getItemInMainHand() != null) {
             ItemStack main = pl.getInventory().getItemInMainHand();

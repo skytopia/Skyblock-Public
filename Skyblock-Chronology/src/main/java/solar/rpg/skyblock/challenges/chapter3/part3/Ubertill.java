@@ -38,6 +38,6 @@ public class Ubertill extends Chronicle implements Live {
     @EventHandler
     public void onBreak(PlayerItemBreakEvent event) {
         if (event.getBrokenItem().getType().equals(Material.DIAMOND_HOE))
-            main().challenges().award(event.getPlayer(), this);
+            main().challenges().complete(event.getPlayer(), this);
     }
 }

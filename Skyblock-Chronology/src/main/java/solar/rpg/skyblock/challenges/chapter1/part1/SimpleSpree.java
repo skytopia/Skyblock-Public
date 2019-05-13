@@ -40,6 +40,6 @@ public class SimpleSpree extends Chronicle implements Live {
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
         if (event.getMessage().toLowerCase().contains("shop"))
-            main().challenges().award(event.getPlayer(), this);
+            main().challenges().complete(event.getPlayer(), this);
     }
 }

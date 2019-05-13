@@ -12,7 +12,6 @@ import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
 import solar.rpg.skyblock.island.chronology.reward.DummyReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
-import solar.rpg.skyblock.stored.Settings;
 
 public class WoodlandAssassin extends Chronicle implements Live {
 
@@ -48,8 +47,8 @@ public class WoodlandAssassin extends Chronicle implements Live {
         if (event.getEntity() instanceof Vindicator)
             if (event.getDamage() >= ((Vindicator) event.getEntity()).getHealth())
                 if (event.getDamager() instanceof Player)
-                    if (event.getEntity().getWorld().getName().equals(Settings.ADMIN_WORLD_ID))
+                    if (isAnyIslandWorld(event.getEntity().getWorld()))
                         if (main().islands().getIsland(event.getDamager().getUniqueId()) != null)
-                            main().challenges().award((org.bukkit.entity.Player) event.getDamager(), this);
+                            main().challenges().complete((org.bukkit.entity.Player) event.getDamager(), this);
     }
 }

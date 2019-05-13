@@ -43,6 +43,6 @@ public class WhitsEnd extends Chronicle implements Live {
         if (event.getEntity() instanceof EnderDragon)
             for (Entity nearby : event.getEntity().getNearbyEntities(150, 150, 150))
                 if (nearby instanceof Player)
-                    main.challenges().award((Player) nearby, this);
+                    main.challenges().complete((Player) nearby, this);
     }
 }

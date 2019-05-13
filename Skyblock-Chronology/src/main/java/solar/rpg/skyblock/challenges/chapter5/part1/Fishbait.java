@@ -6,7 +6,7 @@ import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 
 import java.util.UUID;
@@ -19,10 +19,10 @@ public class Fishbait extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Multiple(Material.RAW_FISH, 54),
-                new Multiple(Material.RAW_FISH, (short) 1, 12),
-                new Multiple(Material.RAW_FISH, (short) 2, 1),
-                new Multiple(Material.RAW_FISH, (short) 3, 6)
+                new Stack(Material.RAW_FISH, 54),
+                new Stack(Material.RAW_FISH, (short) 1, 12),
+                new Stack(Material.RAW_FISH, (short) 2, 1),
+                new Stack(Material.RAW_FISH, (short) 3, 6)
         )};
     }
 

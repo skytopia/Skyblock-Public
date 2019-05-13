@@ -67,12 +67,9 @@ public class Contact extends Chronicle implements Live {
     @EventHandler
     public void onCrash(EntityDamageEvent event) {
         if (event.getCause() != EntityDamageEvent.DamageCause.FLY_INTO_WALL) return;
-        if (flightDistance.containsKey(event.getEntity().getUniqueId())) {
-            int distance = flightDistance.get(event.getEntity().getUniqueId());
-            System.out.println("[Anvil] " + event.getEntity().getName() + "'s flight distance was " + distance);
-            if (distance >= 750)
-                main.challenges().award((Player) event.getEntity(), this);
-        }
+        if (flightDistance.containsKey(event.getEntity().getUniqueId()))
+            if (flightDistance.get(event.getEntity().getUniqueId()) >= 750)
+                main.challenges().complete((Player) event.getEntity(), this);
     }
 
     @EventHandler

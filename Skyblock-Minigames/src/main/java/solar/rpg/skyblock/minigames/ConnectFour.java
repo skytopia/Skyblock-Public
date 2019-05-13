@@ -9,15 +9,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.BoardGame;
-import solar.rpg.skyblock.island.minigames.MinigameMain;
+import solar.rpg.skyblock.island.minigames.Difficulty;
+import solar.rpg.skyblock.island.minigames.Minigame;
 import solar.rpg.skyblock.island.minigames.NewbieFriendly;
-import solar.rpg.skyblock.island.minigames.task.AttemptsMinigameTask;
-import solar.rpg.skyblock.island.minigames.task.Difficulty;
-import solar.rpg.skyblock.island.minigames.task.Minigame;
 import solar.rpg.skyblock.minigames.extra.connectfour.ConnectFourAI;
 import solar.rpg.skyblock.minigames.extra.connectfour.ConnectFourBoard;
+import solar.rpg.skyblock.minigames.tasks.AttemptsMinigameTask;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,19 +25,23 @@ import java.util.UUID;
 
 public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
 
+    @Override
     public void start(Island island, List<UUID> participants, Difficulty difficulty) {
-        main.getActiveTasks().add(new ConnectRun(this, island, participants, main, difficulty).start());
+        main.getActiveTasks().add(new ConnectFourTask(this, island, participants, main, difficulty).start());
         getRunning().add(island);
     }
 
+    @Override
     public String getName() {
         return "Connect Four";
     }
 
+    @Override
     public ItemStack getIcon() {
         return new ItemStack(Material.BIRCH_DOOR_ITEM);
     }
 
+    @Override
     public String[] getDescription() {
         return new String[]{"For those with a big heart and a good hustle!",
                 ChatColor.ITALIC + "Beat an AI in a match of Connect Four!",
@@ -45,66 +49,73 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
                 ChatColor.ITALIC + "Difficulty of AI varies each turn."};
     }
 
+    @Override
     public Difficulty[] getDifficulties() {
-        return new Difficulty[]{Difficulty.NORMAL};
+        return new Difficulty[]{Difficulty.NORMAL, Difficulty.HARDER};
     }
 
+    @Override
     public String getSummary() {
         return "Outsmart the Connect Four AI!";
     }
 
+    @Override
     public String getObjectiveWord() {
         return "points awarded";
     }
 
+    @Override
     public int getDuration() {
         return 600;
     }
 
+    @Override
     public int getGold() {
         return 3;
     }
 
+    @Override
     public boolean isScoreDivisible() {
         return false;
     }
 
+    @Override
     public int getMaxReward() {
         return 5000;
     }
 
-    private class ConnectRun extends AttemptsMinigameTask implements Listener {
+    /**
+     * @see ConnectFourBoard
+     * @see ConnectFourAI
+     */
+    private class ConnectFourTask extends AttemptsMinigameTask implements Listener {
 
-        ConnectFourBoard board;
-        ConnectFourAI comp;
+        /* Connect Four implementation classes. */
+        private ConnectFourBoard board;
+        private ConnectFourAI comp;
+
+        /* Holds all blocks where moves can be made. */
         private HashMap<Block, Integer> clickable;
-        private Location gen;
 
-        ConnectRun(Minigame owner, Island island, List<UUID> participants, MinigameMain main, Difficulty difficulty) {
+        ConnectFourTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty, 1);
         }
 
+        @Override
         public void onStart() {
             clickable = new HashMap<>();
             board = new ConnectFourBoard();
 
+            /* The generated location where the minigame will play. */
             gen = generateLocation(100, 20, 140, true, false);
-            for (int x = 0; x <= 10; x++)
-                for (int y = 0; y <= 9; y++)
-                    for (int z = 0; z <= 11; z++)
-                        if (gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY() + y, gen.getBlockZ() + z).getType() != Material.AIR) {
-                            stop();
-                            main.messageAll(getParticipants(), ChatColor.RED + "There was an error loading this minigame. Please consult Sky.");
-                            return;
-                        }
 
-            //Generate floor.
-            for (int x = 0; x <= 10; x++)
-                for (int z = 0; z <= 11; z++) {
-                    Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY(), gen.getBlockZ() + z);
-                    bl.setType(Material.SMOOTH_BRICK);
-                    placed.add(bl);
-                }
+            if (!isEmpty(gen, 10, 9, 11)) {
+                error();
+                return;
+            }
+
+            //Generate platform.
+            makePlatform(gen, 10, 11, Material.SMOOTH_BRICK);
 
             // Generate iron fence backdrop.
             for (int x = 0; x <= 10; x++)
@@ -143,20 +154,29 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
                 }
 
             for (int i = 1; i <= 7; i++)
-                registerClicks(generateGridLocation(i, gen), i - 1);
+                registerClicks(generateGridLocation(i), i - 1);
 
+            // Teleports players on to the platform.
             for (UUID in : getParticipants())
                 Bukkit.getPlayer(in).teleport(gen.clone().add(5, 2, 5));
-            selectPlayer();
+
+            // Whoever moves first on connect four is mathematically guaranteed to win if
+            // they play absolutely perfectly. The AI is not perfect, however.
+            // Normal difficulty: Player moves first.
+            // Harder difficulty: Computer moves first.
+            if (difficulty.equals(Difficulty.HARDER)) computerMove();
+            else selectPlayer();
         }
 
         /**
-         * Player wins: 3 points
-         * Player tied: 2 points
-         * Player lost: 1 point
-         * Player lost in less than 10 turns: 0 points
+         * Adds points after the winner has been decided.
+         * <p>
+         * Player wins: 3 points (gold)
+         * Player tied: 2 points (silver)
+         * Player lost: 1 point (bronze)
+         * Player lost in less than 10 turns: 0 points (none)
          */
-        void addPoints() {
+        private void addPoints() {
             if (board.full()) {
                 points += 2;
                 main.messageAll(getParticipants(), ChatColor.GRAY + "The match ended in a draw.");
@@ -168,58 +188,73 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
                     points += 3;
                     main.messageAll(getParticipants(), ChatColor.GRAY + "Congratulations! You won!");
                 }
-
             }
         }
 
         /**
-         * Called after a player clicks a square.
+         * Makes a move on the board.
          *
-         * @param block       What block was clicked.
-         * @param responsible Who clicked it.
+         * @param block  What block was clicked.
+         * @param player Who clicked it.
          */
-        void reveal(Block block, Player responsible) {
+        private void move(Block block, Player player) {
             if (!clickable.containsKey(block)) return;
 
             int col = clickable.get(block);
             int row = board.drop(col);
 
+            // Check that the column isn't full.
             if (row == -1) {
-                responsible.sendMessage(ChatColor.RED + "You can't move here! Try again.");
+                player.sendMessage(ChatColor.RED + "You can't move here! Try again.");
                 return;
             }
 
-            Block toChange = generateGameLocation(row, col, gen).getBlock();
+            // Places the player's move.
+            Block toChange = generateGameLocation(row, col).getBlock();
             toChange.setType(Material.WOOL);
             toChange.setData((byte) 11);
 
+            // If the player won or the board is full, the game is over.
             if (board.win() || board.full())
                 addPoints();
 
-            canMove = false;
             main.soundAll(getParticipants(), Sound.ENTITY_CREEPER_DEATH, 2F);
 
-            // Run the computer's move async to not lag the server.
+            computerMove();
+        }
+
+        /**
+         * The computer makes a move.
+         */
+        private void computerMove() {
+            // No additional moves can be made while the computer is thinking.
+            canMove = false;
+
             Bukkit.getScheduler().runTaskLaterAsynchronously(main.main().plugin(), () -> {
-                if (points > 0) {
+                if (points > 0)
                     Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::stop, 39L);
-                } else {
+                else {
+                    // Create a new computer with latest board information.
                     comp = new ConnectFourAI(board.getGrid(), 5 + main.main().rng().nextInt(2));
 
-                    final int col1 = comp.calcValue();
-                    final int row1 = board.drop(col1);
+                    // Let computer make move, then grab the row that was selected.
+                    int compCol = comp.calcValue();
+                    int compRow = board.drop(compCol);
 
-                    // After we do the calculation, run the rest of the shit sync to not crash.
+                    // After we do the calculation, run the rest of the shit on the main thread to avoid concurrency issues.
                     Bukkit.getScheduler().runTask(main.main().plugin(), () -> {
-                        Block toChange1 = generateGameLocation(row1, col1, gen).getBlock();
+                        // Place the computer's move.
+                        Block toChange1 = generateGameLocation(compRow, compCol).getBlock();
                         toChange1.setType(Material.WOOL);
                         toChange1.setData((byte) 14);
                         main.soundAll(getParticipants(), Sound.ENTITY_CREEPER_PRIMED, 2F);
 
+                        // If the player won or the board is full, the game is over.
                         if (board.win() || board.full()) {
                             addPoints();
                             Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::stop, 39L);
                         } else {
+                            // Otherwise, move again!
                             canMove = true;
                             selectPlayer();
                         }
@@ -229,39 +264,40 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
         }
 
         /**
-         * Registers clickable squares.
+         * Registers locations for move selection so clicks can be listened for.
          *
-         * @param loc        The bottom left origination location.
-         * @param allocation The allocation from 1-9 given.
+         * @param loc        Location of a clickable block.
+         * @param allocation The board column index that this location corresponds to.
          */
-        void registerClicks(Location loc, int allocation) {
+        private void registerClicks(Location loc, int allocation) {
             clickable.put(loc.getBlock(), allocation);
             loc.getBlock().setType(Material.BEDROCK);
         }
 
         /**
-         * Translates an integer from 1 to 9 to a space on the board.
+         * Takes a board column index number and returns the appropriate
+         * spot to place the clickable block so the player can make moves.
          *
-         * @param allocation The integer allocation from 1-9.
-         * @param original   The bottom left of the board.
-         * @return The grid location.
+         * @param allocation The index allocation from 1-9.
+         * @return The location of the clickable block.
          */
-        Location generateGridLocation(int allocation, Location original) {
-            return original.clone().add(allocation - 1 + 2, 0, 9);
+        private Location generateGridLocation(int allocation) {
+            return gen.clone().add(allocation - 1 + 2, 0, 9);
         }
 
         /**
-         * Translates an x,y coordinate to a board space.
+         * Takes a row and column from the board model and
+         * returns the appropriate block on the board.
          *
-         * @param row      Row. (y)
-         * @param col      Column. (x)
-         * @param original Bottom left of the minigame board.
+         * @param row Row. (y)
+         * @param col Column. (x)
          * @return TicTacToeBoard location.
          */
-        Location generateGameLocation(int row, int col, Location original) {
-            return original.clone().add(2 + col, 8 - row, 11);
+        private Location generateGameLocation(int row, int col) {
+            return gen.clone().add(2 + col, 8 - row, 11);
         }
 
+        @Override
         public void onFinish() {
             returnParticipants();
             board = null;
@@ -270,6 +306,7 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
             clickable = null;
         }
 
+        @Override
         public void onTick() {
         }
 
@@ -279,7 +316,7 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
             if (event.getClickedBlock() == null) return;
             if (event.getClickedBlock().getType() != Material.BEDROCK) return;
             if (canMove(event.getPlayer()))
-                reveal(event.getClickedBlock(), event.getPlayer());
+                move(event.getClickedBlock(), event.getPlayer());
         }
     }
 }

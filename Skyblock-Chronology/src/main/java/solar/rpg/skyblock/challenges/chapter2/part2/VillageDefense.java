@@ -61,7 +61,7 @@ public class VillageDefense extends Chronicle implements Live {
             Island found = main().islands().getIsland(nearby.getUniqueId());
             if (found != null)
                 if (!found.chronicles().has(getName()))
-                    main().challenges().award((Player) nearby, this);
+                    main().challenges().complete((Player) nearby, this);
         }
     }
 }

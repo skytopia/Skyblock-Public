@@ -69,12 +69,11 @@ public class Rampage extends Chronicle implements Live {
             Bukkit.getScheduler().runTaskLater(main.plugin(), () -> {
                 if (!streak.containsKey(event.getEntity().getKiller().getUniqueId())) return;
                 int amt = streak.get(event.getEntity().getKiller().getUniqueId());
-                if (event.getEntity().getKiller().getName().equals("ILavaYou"))
+                if (event.getEntity().getKiller().getName().equals("ILavaYou")) // Rampage debug
                     Main.log("Your rampage ended with " + amt);
                 if (amt >= 80)
-                    main.challenges().award(event.getEntity().getKiller(), this);
-                if (streak.containsKey(event.getEntity().getKiller().getUniqueId()))
-                    streak.remove(event.getEntity().getKiller().getUniqueId());
+                    main.challenges().complete(event.getEntity().getKiller(), this);
+                streak.remove(event.getEntity().getKiller().getUniqueId());
             }, 30 * 20L);
         }
     }

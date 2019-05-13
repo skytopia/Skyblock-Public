@@ -39,6 +39,6 @@ public class CarbonWarrior extends Chronicle implements Live {
     public void onDamage(PlayerCompleteMinigameEvent event) {
         if (event.isGold())
             if (event.getMinigame().getName().equals("Charcoal Moon"))
-                main().challenges().award(event.getPlayer(), this);
+                main().challenges().complete(event.getPlayer(), this);
     }
 }

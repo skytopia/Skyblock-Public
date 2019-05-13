@@ -24,11 +24,11 @@ public class MazeGenerator {
     }
 
     private void init() {
-        // create cells
+        // world cells
         cells = new Cell[dimensionX][dimensionY];
         for (int x = 0; x < dimensionX; x++) {
             for (int y = 0; y < dimensionY; y++) {
-                cells[x][y] = new Cell(x, y, false); // create cell (see Cell constructor)
+                cells[x][y] = new Cell(x, y, false); // world cell (see Cell constructor)
             }
         }
     }

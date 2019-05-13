@@ -6,8 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
 import solar.rpg.skyblock.island.chronology.criteria.item.Single;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.GadgetReward;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
@@ -24,7 +24,7 @@ public class Dessication extends Chronicle {
                 new ItemCrit(
                         new Single(Material.SKULL_ITEM, 1, (short) 1),
                         new Single(Material.MAGMA_CREAM, 8),
-                        new Multiple(Material.NETHERRACK, 4),
+                        new Stack(Material.NETHERRACK, 4),
                         new Single(Material.GLOWSTONE, 8)
                 )
         };

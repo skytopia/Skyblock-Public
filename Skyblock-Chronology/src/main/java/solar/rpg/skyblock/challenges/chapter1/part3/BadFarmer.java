@@ -13,12 +13,11 @@ import org.bukkit.potion.PotionEffectType;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.MoneyReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.util.ItemUtility;
-import solar.rpg.skyblock.stored.Settings;
 
 public class BadFarmer extends Chronicle {
 
@@ -28,10 +27,10 @@ public class BadFarmer extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Multiple(Material.CACTUS, 3),
-                new Multiple(Material.NETHER_STALK, 3),
-                new Multiple(Material.MYCEL, 2),
-                new Multiple(Material.BEETROOT, 2)
+                new Stack(Material.CACTUS, 3),
+                new Stack(Material.NETHER_STALK, 3),
+                new Stack(Material.MYCEL, 2),
+                new Stack(Material.BEETROOT, 2)
         )
         };
     }
@@ -62,10 +61,10 @@ public class BadFarmer extends Chronicle {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (!event.getEntity().getWorld().getName().contains(Settings.ADMIN_WORLD_ID)) return;
         if (!(event.getDamager() instanceof Player)) return;
         if (!(event.getEntity() instanceof LivingEntity)) return;
         if (event.isCancelled()) return;
+        if (!isAnyIslandWorld(event.getEntity().getWorld())) return;
         Player pl = (Player) event.getDamager();
         if (pl.getInventory().getItemInMainHand() != null) {
             ItemStack main = pl.getInventory().getItemInMainHand();

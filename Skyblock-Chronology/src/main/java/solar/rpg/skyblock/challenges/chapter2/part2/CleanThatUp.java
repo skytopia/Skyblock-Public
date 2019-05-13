@@ -56,7 +56,7 @@ public class CleanThatUp extends Chronicle implements Live {
             else {
                 int str = streak.get(event.getPlayer().getUniqueId());
                 if (str >= 191)
-                    main.challenges().award(event.getPlayer(), this);
+                    main.challenges().complete(event.getPlayer(), this);
                 else
                     streak.put(event.getPlayer().getUniqueId(), str + 1);
             }

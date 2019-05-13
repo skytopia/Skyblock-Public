@@ -6,8 +6,8 @@ import org.bukkit.potion.PotionEffectType;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
 import solar.rpg.skyblock.island.chronology.criteria.item.Single;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.GadgetReward;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
@@ -22,8 +22,8 @@ public class Chlorophyll extends Chronicle {
     public Criteria[] getCriteria() {
         return new Criteria[]{
                 new ItemCrit(
-                        new Multiple(Material.CARROT_ITEM, 5),
-                        new Multiple(Material.BAKED_POTATO, 5),
+                        new Stack(Material.CARROT_ITEM, 5),
+                        new Stack(Material.BAKED_POTATO, 5),
                         new Single(Material.RED_MUSHROOM, 48),
                         new Single(Material.BROWN_MUSHROOM, 48),
                         new Single(Material.BREAD, 48),

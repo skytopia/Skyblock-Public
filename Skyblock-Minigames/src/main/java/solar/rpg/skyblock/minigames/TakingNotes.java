@@ -7,38 +7,38 @@ import org.bukkit.block.NoteBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
-import solar.rpg.skyblock.island.minigames.BoardGame;
-import solar.rpg.skyblock.island.minigames.FlawlessEnabled;
-import solar.rpg.skyblock.island.minigames.MinigameMain;
-import solar.rpg.skyblock.island.minigames.NewbieFriendly;
-import solar.rpg.skyblock.island.minigames.task.AttemptsMinigameTask;
-import solar.rpg.skyblock.island.minigames.task.Difficulty;
-import solar.rpg.skyblock.island.minigames.task.Minigame;
+import solar.rpg.skyblock.island.minigames.Difficulty;
+import solar.rpg.skyblock.island.minigames.*;
+import solar.rpg.skyblock.minigames.tasks.AttemptsMinigameTask;
 
 import java.util.*;
 
 public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame, NewbieFriendly {
 
+    @Override
     public void start(Island island, List<UUID> participants, Difficulty difficulty) {
-        main.getActiveTasks().add(new MemoryRun(this, island, participants, main, difficulty).start());
+        main.getActiveTasks().add(new TakingNotesTask(this, island, participants, main, difficulty).start());
         getRunning().add(island);
     }
 
+    @Override
     public String getName() {
         return "Taking Notes";
     }
 
+    @Override
     public ItemStack getIcon() {
         return new ItemStack(Material.NOTE_BLOCK);
     }
 
+    @Override
     public String[] getDescription() {
         return new String[]{"Hitting those high notes in order! Nice.",
                 ChatColor.ITALIC + "Note blocks are playing! Remember the order!",
@@ -46,107 +46,122 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
                 ChatColor.ITALIC + "♪♪♪ A longer order means a better score! ♪♪♪"};
     }
 
+    @Override
     public Difficulty[] getDifficulties() {
         return new Difficulty[]{Difficulty.NORMAL, Difficulty.HARDER};
     }
 
+    @Override
     public String getSummary() {
         return "Play notes in the correct order!";
     }
 
+    @Override
     public String getObjectiveWord() {
         return "notes in a row";
     }
 
+    @Override
     public int getDuration() {
         return 0;
     }
 
+    @Override
     public int getGold() {
         return 25;
     }
 
+    @Override
     public boolean isScoreDivisible() {
         return false;
     }
 
+    @Override
     public int getFlawless() {
         return 50;
     }
 
+    @Override
     public int getMaxReward() {
         return 10000;
     }
 
-    private class MemoryRun extends AttemptsMinigameTask implements Listener {
+    private class TakingNotesTask extends AttemptsMinigameTask {
 
-        // Blocks and what notes they belong to.
+        /* Holds all four note blocks and their corresponding indexes. */
         private HashMap<Block, Short> clickable;
-        private Location gen;
-        private ArrayList<Short> attempt;
-        private ArrayList<Short> order;
-        MemoryRun(Minigame owner, Island island, List<UUID> participants, MinigameMain main, Difficulty difficulty) {
+
+        /* The correct order for the note blocks to be played in. */
+        private LinkedList<Short> order;
+
+        /* The current combination the note blocks have been played in. */
+        private LinkedList<Short> attempt;
+
+        TakingNotesTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty, 1);
         }
-        // [0] is the first note, order increases.
 
+        /* The only thing that should end the game is pressing a wrong note. */
         @Override
         public boolean ascendingTimer() {
             return true;
         }
 
+        @Override
         public void onStart() {
             clickable = new HashMap<>();
-            order = new ArrayList<>();
-            attempt = new ArrayList<>();
+            order = new LinkedList<>();
+            attempt = new LinkedList<>();
             canMove = false;
 
-            gen = generateLocation(100, 20, 140, true, false);
+            /* The generated location where the minigame will play. */
+            Location gen = generateLocation(100, 20, 140, true, false);
 
-            for (int x = 0; x <= 10; x++)
-                for (int z = 0; z <= 9; z++)
-                    if (gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY(), gen.getBlockZ() + z).getType() != Material.AIR) {
-                        error();
-                        return;
-                    }
+            if (!isEmpty(gen, 10, 6, 9)) {
+                error();
+                return;
+            }
 
-            for (int x = 0; x <= 10; x++)
-                for (int z = 0; z <= 9; z++) {
-                    Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY(), gen.getBlockZ() + z);
-                    bl.setType(Material.SMOOTH_BRICK);
-                    placed.add(bl);
-                }
+            makePlatform(gen, 10, 9, Material.SMOOTH_BRICK);
 
             for (int x = 1; x <= 4; x++)
                 registerClicks(new Location(gen.getWorld(), gen.getBlockX() + (x * 2), gen.getBlockY() + 1, gen.getBlockZ() + 7), x);
 
+            // Teleports players on to the platform.
             for (UUID in : getParticipants())
                 Bukkit.getPlayer(in).teleport(gen.clone().add(5, 2, 3));
 
             playNextTone();
         }
 
+        /**
+         * If the tone was successfully repeated, play it again.
+         * Adds an extra random note to the end, increasing complexity over time.
+         */
         private void playNextTone() {
             order.add((short) (main.main().rng().nextInt(4) + 1));
 
+            // No moves can be made while the tone is being played back.
             canMove = false;
             titleParticipants("", ChatColor.GOLD + "Get ready!");
 
+            // Play each note block at a delay.
+            // Normal mode: every 3/4 of a second.
+            // Harder mode: every 1/4 of a second.
             new BukkitRunnable() {
                 int currentlyAt = -1;
 
                 public void run() {
                     currentlyAt++;
 
-                    for (Map.Entry<Block, Short> entry : clickable.entrySet())
-                        if (Objects.equals(entry.getValue(), order.get(currentlyAt))) {
-                            ((NoteBlock) entry.getKey().getState()).play();
-                            break;
-                        }
+                    clickable.entrySet().stream().filter(entry ->
+                            Objects.equals(entry.getValue(), order.get(currentlyAt))).findFirst().ifPresent(entry ->
+                            ((NoteBlock) entry.getKey().getState()).play());
 
                     if (currentlyAt + 1 == order.size()) {
                         this.cancel();
                         Bukkit.getScheduler().runTaskLater(main.main().plugin(), () -> {
+                            // After the sequence has been played, the next player can make their move.
                             selectPlayer();
                             canMove = true;
                         }, 35L);
@@ -155,6 +170,13 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
             }.runTaskTimer(main.main().plugin(), 80L, difficulty == Difficulty.HARDER ? 5L : 15L);
         }
 
+        /**
+         * When the selected player plays a note block.
+         * Checks if it is the right order, game over otherwise.
+         *
+         * @param block  The block that was clicked.
+         * @param player The player that clicked the block.
+         */
         private void play(Block block, Player player) {
             if (!clickable.containsKey(block)) return;
 
@@ -170,14 +192,17 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
             } else if (attempt.size() == order.size()) {
                 canMove = false;
                 attempt.clear();
-                scorePoint(player, true, 1);
+                scorePoints(player, true, 1);
                 titleParticipants("", ChatColor.GREEN + "Nice work! Keep going!");
                 Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::playNextTone, 30L);
             }
         }
 
         /**
-         * Registers clickable noteblocks. (and hides them)
+         * Registers locations with note blocks so clicks can be listened for.
+         *
+         * @param loc        Location of a clickable note block.
+         * @param allocation Index allocation for the note block.
          */
         private void registerClicks(Location loc, int allocation) {
             clickable.put(loc.getBlock(), (short) allocation);
@@ -190,6 +215,7 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
             nbl.update(true);
         }
 
+        @Override
         public void onFinish() {
             returnParticipants();
             clickable.clear();
@@ -200,6 +226,7 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
             order = null;
         }
 
+        @Override
         public void onTick() {
         }
 

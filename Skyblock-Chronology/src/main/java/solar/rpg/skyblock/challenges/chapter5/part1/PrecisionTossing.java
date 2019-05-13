@@ -8,7 +8,7 @@ import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.Live;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.DummyCrit;
-import solar.rpg.skyblock.island.chronology.reward.DummyReward;
+import solar.rpg.skyblock.island.chronology.reward.AbilityReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 
 public class PrecisionTossing extends Chronicle implements Live {
@@ -23,12 +23,7 @@ public class PrecisionTossing extends Chronicle implements Live {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new DummyReward() {
-                    @Override
-                    public String getReward() {
-                        return "Minigame cooldowns decreased by 30 seconds";
-                    }
-                }
+                new AbilityReward("Cooldown++")
         };
     }
 
@@ -44,6 +39,6 @@ public class PrecisionTossing extends Chronicle implements Live {
     public void onDamage(PlayerCompleteMinigameEvent event) {
         if (event.isFlawless() && event.getParticipants() >= 2)
             if (event.getMinigame().getName().equals("Minigolf"))
-                main().challenges().award(event.getPlayer(), this);
+                main().challenges().complete(event.getPlayer(), this);
     }
 }

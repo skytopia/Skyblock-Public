@@ -63,9 +63,11 @@ public class LostAtSea extends Chronicle implements Live {
             if (!streak.containsKey(event.getExited().getUniqueId())) return;
             double distance = streak.get(event.getExited().getUniqueId());
             streak.remove(event.getExited().getUniqueId());
+
+            //TODO: Test and remove debug
             System.out.println("[Anvil] " + event.getExited().getName() + " travelled the sea for " + distance + " blocks");
             if (distance >= 1000)
-                main().challenges().award((Player) event.getExited(), this);
+                main().challenges().complete((Player) event.getExited(), this);
         } else
             streak.remove(event.getExited().getUniqueId());
 

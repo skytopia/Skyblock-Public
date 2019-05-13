@@ -8,8 +8,8 @@ import org.bukkit.potion.PotionEffectType;
 import solar.rpg.skyblock.island.chronology.Chronicle;
 import solar.rpg.skyblock.island.chronology.criteria.Criteria;
 import solar.rpg.skyblock.island.chronology.criteria.item.ItemCrit;
-import solar.rpg.skyblock.island.chronology.criteria.item.Multiple;
 import solar.rpg.skyblock.island.chronology.criteria.item.Single;
+import solar.rpg.skyblock.island.chronology.criteria.item.Stack;
 import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.util.ItemUtility;
@@ -22,10 +22,10 @@ public class DangerZone extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Multiple(Material.MAGMA, 4),
-                new Multiple(Material.TNT, 2),
-                new Multiple(Material.FIREWORK_CHARGE, 1),
-                new Multiple(Material.FIREBALL, 1),
+                new Stack(Material.MAGMA, 4),
+                new Stack(Material.TNT, 2),
+                new Stack(Material.FIREWORK_CHARGE, 1),
+                new Stack(Material.FIREBALL, 1),
                 new Single(Material.ANVIL, 16),
                 new Single(Material.END_CRYSTAL, 3))
         };
