@@ -119,7 +119,6 @@ public class CaptureTheWool extends Minigame implements FlawlessEnabled {
 
             crystal = (EnderCrystal) random.getWorld().spawnEntity(main.main().islands().getHomeOrSpawnpoint(owner), EntityType.ENDER_CRYSTAL);
             crystal.setShowingBottom(true);
-            crystal.setInvulnerable(true);
             flags = new Location[noOfFlags];
 
             // Randomly generated defined flag locations.

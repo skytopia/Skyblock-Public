@@ -181,7 +181,8 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
                 points += 2;
                 main.messageAll(getParticipants(), ChatColor.GRAY + "The match ended in a draw.");
             } else {
-                if (board.getPlayer() == 1) {
+                if (difficulty.equals(Difficulty.NORMAL) && board.getPlayer() == 1
+                        || difficulty.equals(Difficulty.HARDER) && board.getPlayer() != 1) {
                     points += board.totalMoves < 10 ? 0 : 1;
                     main.messageAll(getParticipants(), ChatColor.GRAY + "The computer won this match.");
                 } else {

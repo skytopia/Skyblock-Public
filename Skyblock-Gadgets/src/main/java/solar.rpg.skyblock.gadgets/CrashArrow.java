@@ -48,7 +48,7 @@ public class CrashArrow extends ArrowGadget {
 
     @EventHandler
     public void onClick(ProjectileLaunchEvent event) {
-        arrowCheck(event.getEntity(), () -> event.getEntity().setMetadata("diverge", new FixedMetadataValue(main().plugin(), "")));
+        arrowCheck(event.getEntity(), () -> event.getEntity().setMetadata("crash", new FixedMetadataValue(main().plugin(), "")));
     }
 
     @EventHandler

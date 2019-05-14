@@ -244,7 +244,7 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
                     retryAndSelect();
                 else
                     selectPlayer();
-            }, retry ? 100L : 19L);
+            }, retry ? 50L : 19L);
         }
 
         /**

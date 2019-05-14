@@ -60,7 +60,7 @@ public class DivergentArrow extends ArrowGadget {
         arrowMetaCheck(event.getEntity(), "diverge", () ->
                 Bukkit.getScheduler().runTaskLater(main().plugin(), () -> {
                     Projectile proj = event.getEntity();
-                    if (proj.hasMetadata("diverge")) {
+                    if (!proj.hasMetadata("diverge")) {
                         proj.removeMetadata("diverge", main().plugin());
                         proj.remove();
                     }

@@ -67,7 +67,7 @@ public class ThorArrow extends ArrowGadget {
             Player shooter = (Player) event.getEntity().getShooter();
             Location loc = proj.getLocation();
             Bukkit.getScheduler().runTaskLater(main().plugin(), () -> {
-                if (proj.hasMetadata("thor")) {
+                if (!proj.hasMetadata("thor")) {
                     proj.removeMetadata("thor", main().plugin());
                     proj.remove();
                     Title.showTitle(shooter, "", ChatColor.DARK_RED + "** MISS **", 5, 20, 5);
