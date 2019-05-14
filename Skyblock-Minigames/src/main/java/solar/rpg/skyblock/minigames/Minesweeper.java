@@ -17,6 +17,7 @@ import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.FlawlessEnabled;
 import solar.rpg.skyblock.island.minigames.Minigame;
 import solar.rpg.skyblock.minigames.tasks.AttemptsMinigameTask;
+import solar.rpg.skyblock.util.StringUtility;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -49,7 +50,7 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
 
     @Override
     public Difficulty[] getDifficulties() {
-        return new Difficulty[]{Difficulty.NORMAL, Difficulty.HARDER};
+        return new Difficulty[]{Difficulty.SIMPLE, Difficulty.NORMAL, Difficulty.HARDER};
     }
 
     @Override
@@ -92,7 +93,7 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
         /*
          * Game constants.
          *
-         * TODO: Easy: Board is the regular 8x8 with 14 mines. Mines do not cause a game over.
+         * Simple: Board is the regular 8x8 with 14 mines. Mines do not cause a game over.
          * Normal: Board is the regular 8x8 size with 14 mines.
          * Harder: Board size is increased to 16x16 with 56 mines.
          */
@@ -117,6 +118,9 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
 
         /* Grid indexes that have been solved. */
         private ArrayList<Short> solved;
+
+        /* Keep track of mistakes in simple mode. */
+        private int mistakes;
 
         MinesweeperTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty, 1);
@@ -203,24 +207,30 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
 
             boolean retry = false;
             if (lost) {
-                if (isBomb) {
-                    // The user right clicked on a mine. Game over!
-                    Location loc = generateGridLocation(ID);
-                    loc.getBlock().setType(Material.REDSTONE_BLOCK);
-                    main.messageAll(getParticipants(), ChatColor.RED + "You've revealed a mine. Game over!");
-                } else
-                    // The user left clicked on a safe square. Game over!
-                    main.messageAll(getParticipants(), ChatColor.RED + "You've flagged a safe square. Game over!");
-                for (Map.Entry<Block, Short> entry : clickable.entrySet()) {
-                    if (bombs.contains(entry.getValue()))
-                        entry.getKey().setType(Material.REDSTONE_BLOCK);
-                }
-                // Are they eligible for grace period?
-                if (getTurns() <= 3) {
-                    retry = true;
-                    main.messageAll(getParticipants(), ChatColor.RED + "Retrying as minigame did not go long enough.");
-                    canMove = false;
-                    main.soundAll(getParticipants(), Sound.ENTITY_IRONGOLEM_DEATH, 3F);
+                mistakes++;
+                if (!difficulty.equals(Difficulty.SIMPLE)) {
+                    if (isBomb)
+                        // The user right clicked on a mine. Game over!
+                        main.messageAll(getParticipants(), ChatColor.RED + "You've revealed a mine. Game over!");
+                    else
+                        // The user left clicked on a safe square. Game over!
+                        main.messageAll(getParticipants(), ChatColor.RED + "You've flagged a safe square. Game over!");
+                    for (Map.Entry<Block, Short> entry : clickable.entrySet()) {
+                        if (bombs.contains(entry.getValue()))
+                            entry.getKey().setType(Material.REDSTONE_BLOCK);
+                    }
+                    // Are they eligible for grace period?
+                    if (getTurns() <= 3) {
+                        retry = true;
+                        main.messageAll(getParticipants(), ChatColor.RED + "Retrying as minigame did not go long enough.");
+                        canMove = false;
+                        main.soundAll(getParticipants(), Sound.ENTITY_IRONGOLEM_DEATH, 3F);
+                    }
+                } else {
+                    if (isBomb) main.messageAll(getParticipants(), ChatColor.RED + "You've revealed a mine!");
+                    else main.messageAll(getParticipants(), ChatColor.RED + "You've flagged a safe square!");
+                    main.messageAll(getParticipants(), String.format(ChatColor.RED + "This is your %s mistake!", StringUtility.ordinal(mistakes)));
+                    lost = false;
                 }
             } else {
                 // Reveal all nearby safe squares where applicable.
@@ -237,8 +247,9 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
 
             cooldown = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(1);
             boolean finalRetry = retry;
+            boolean finalLost = lost;
             Bukkit.getScheduler().runTaskLater(main.main().plugin(), () -> {
-                if (lost && !finalRetry || solved.size() >= getFlawless() * (difficulty == Difficulty.HARDER ? 4 : 1))
+                if (finalLost && !finalRetry || solved.size() >= getFlawless() * (difficulty == Difficulty.HARDER ? 4 : 1))
                     stop();
                 else if (finalRetry)
                     retryAndSelect();
@@ -305,6 +316,8 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
                 loc.getBlock().setData(translateDyeColor(nearby));
             }
             solved.add(index);
+            // Don't award points on simple difficulty.
+            if (difficulty.equals(Difficulty.SIMPLE)) return;
             delay--;
             if (delay == 0) {
                 scorePoints(responsible, true, 1);
@@ -386,12 +399,13 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
             }
 
             // Find Z axis.
-            if (difficulty == Difficulty.NORMAL)
+            if (difficulty != Difficulty.HARDER)
                 while (allocation > 8)
                     allocation -= 8;
             else
                 while (allocation > 16)
                     allocation -= 16;
+
             result.add(allocation - 1, 0, 0);
             return result;
         }
