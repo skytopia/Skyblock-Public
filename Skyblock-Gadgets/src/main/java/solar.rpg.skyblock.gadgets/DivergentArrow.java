@@ -70,7 +70,7 @@ public class DivergentArrow extends ArrowGadget {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onProjDamage(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) return;
-        arrowMetaCheck(event.getEntity(), "diverge", () -> {
+        arrowMetaCheck(event.getDamager(), "diverge", () -> {
             Projectile proj = (Projectile) event.getDamager();
             Player shooter = (Player) ((Projectile) event.getDamager()).getShooter();
             if (proj.hasMetadata("diverge")) {

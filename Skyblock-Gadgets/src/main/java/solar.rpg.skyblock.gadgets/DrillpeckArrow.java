@@ -66,7 +66,7 @@ public class DrillpeckArrow extends ArrowGadget {
             Player shooter = (Player) event.getEntity().getShooter();
             Location loc = proj.getLocation();
             Bukkit.getScheduler().runTaskLater(main().plugin(), () -> {
-                if (!proj.hasMetadata("drill")) {
+                if (proj.hasMetadata("drill")) {
                     proj.removeMetadata("drill", main().plugin());
                     proj.remove();
                     Title.showTitle(shooter, "", ChatColor.DARK_RED + "** MISS **", 5, 20, 5);

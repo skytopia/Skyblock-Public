@@ -16,6 +16,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import solar.rpg.skyblock.Main;
 import solar.rpg.skyblock.util.ItemUtility;
 import solar.rpg.skyblock.util.Title;
 
@@ -67,7 +68,7 @@ public class ThorArrow extends ArrowGadget {
             Player shooter = (Player) event.getEntity().getShooter();
             Location loc = proj.getLocation();
             Bukkit.getScheduler().runTaskLater(main().plugin(), () -> {
-                if (!proj.hasMetadata("thor")) {
+                if (proj.hasMetadata("thor")) {
                     proj.removeMetadata("thor", main().plugin());
                     proj.remove();
                     Title.showTitle(shooter, "", ChatColor.DARK_RED + "** MISS **", 5, 20, 5);
@@ -79,13 +80,13 @@ public class ThorArrow extends ArrowGadget {
         });
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onProjHit(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) return;
         if (!(event.getEntity() instanceof LivingEntity)) return;
         if (event.getEntity() instanceof Player) return;
 
-        arrowMetaCheck(event.getEntity(), "thor", () -> {
+        arrowMetaCheck(event.getDamager(), "thor", () -> {
             Projectile proj = (Projectile) event.getDamager();
             Player shooter = (Player) ((Projectile) event.getDamager()).getShooter();
             proj.removeMetadata("thor", main().plugin());
