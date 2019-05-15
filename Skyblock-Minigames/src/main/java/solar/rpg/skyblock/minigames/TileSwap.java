@@ -44,10 +44,11 @@ public class TileSwap extends Minigame implements FlawlessEnabled, BoardGame {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Smooth moves, blocky tiles.",
-                ChatColor.ITALIC + "Slide blocks around to world a picture!",
-                ChatColor.ITALIC + "Fewer moves gives a higher score!",
-                ChatColor.ITALIC + "Difficult PICTURES have more moves!"};
+        return new String[]{
+                ChatColor.ITALIC + "Slide blocks around to match the picture.",
+                ChatColor.ITALIC + "Do it as quickly as possible!",
+                ChatColor.UNDERLINE + "((the bedrock block is the slider))"
+        };
     }
 
     @Override

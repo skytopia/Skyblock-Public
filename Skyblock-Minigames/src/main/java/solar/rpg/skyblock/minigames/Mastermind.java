@@ -39,10 +39,11 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Guessing right is the best feeling IN THE WORLD!",
+        return new String[]{
                 ChatColor.ITALIC + "Break the random 4-digit generated code!",
                 ChatColor.ITALIC + "There's 6 colors to choose from, choose wisely!",
-                ChatColor.ITALIC + "You only get 12 turns, so cross your fingers."};
+                ChatColor.ITALIC + "You only get 12 turns, so cross your fingers."
+        };
     }
 
     @Override

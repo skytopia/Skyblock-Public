@@ -42,7 +42,11 @@ public class DrillpeckArrow extends ArrowGadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"\"I didn't know there was ore inside monsters?!\"", "(just don't miss)"};
+        return new String[]{
+                "Violently drills into monsters",
+                "Extracts ores from your victim",
+                ChatColor.RED + "Halves your health if you miss"
+        };
     }
 
     @Override

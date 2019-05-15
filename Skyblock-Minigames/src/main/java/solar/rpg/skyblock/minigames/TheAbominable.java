@@ -46,11 +46,11 @@ public class TheAbominable extends Minigame implements NewbieFriendly {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Yeah, we're serious right now.",
-                "He'll always come back to say hi!",
+        return new String[]{
                 ChatColor.ITALIC + "Track down and kill as many",
                 ChatColor.ITALIC + "snowmen on your island as",
-                ChatColor.ITALIC + "you can within 3 minutes!"};
+                ChatColor.ITALIC + "you can within 3 minutes!"
+        };
     }
 
     @Override

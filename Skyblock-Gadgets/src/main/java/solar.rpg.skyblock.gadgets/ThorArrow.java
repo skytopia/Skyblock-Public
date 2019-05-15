@@ -16,7 +16,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import solar.rpg.skyblock.Main;
 import solar.rpg.skyblock.util.ItemUtility;
 import solar.rpg.skyblock.util.Title;
 
@@ -44,7 +43,11 @@ public class ThorArrow extends ArrowGadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Point and shoot at whatever you want gone", "Has huge miss recoil"};
+        return new String[]{
+                "Kills its victim in one hit",
+                "Leaves behind a gold block",
+                ChatColor.RED + "Tip: Do not miss!"
+        };
     }
 
     @Override
@@ -72,6 +75,7 @@ public class ThorArrow extends ArrowGadget {
                     proj.removeMetadata("thor", main().plugin());
                     proj.remove();
                     Title.showTitle(shooter, "", ChatColor.DARK_RED + "** MISS **", 5, 20, 5);
+                    shooter.damage(shooter.getHealth() - 0.5);
                     shooter.getWorld().strikeLightningEffect(shooter.getLocation());
                     shooter.setFireTicks(100);
                     loc.getWorld().spawnParticle(Particle.CRIT, loc, 30);

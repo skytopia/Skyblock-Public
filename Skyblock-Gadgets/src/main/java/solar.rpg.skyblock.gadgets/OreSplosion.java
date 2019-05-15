@@ -30,7 +30,10 @@ public class OreSplosion extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Consumable that boosts ore generation",};
+        return new String[]{
+                "Boosts ore generation chance to 100%",
+                "The effect can be stacked"
+        };
     }
 
     @Override
@@ -46,7 +49,7 @@ public class OreSplosion extends Gadget {
             Island found = main().islands().getIsland(event.getPlayer().getUniqueId());
             removeOne(event.getPlayer(), event.getHand());
             found.addSplosions(15 + main().rng().nextInt(10));
-            found.actions().messageAll(ChatColor.GOLD + "Your next " + found.getSplosions() + " generations will be boosted!");
+            found.actions().messageAll(ChatColor.GRAY + "" + ChatColor.ITALIC + "Your next " + found.getSplosions() + " generations will be boosted!");
         }
     }
 }

@@ -38,7 +38,11 @@ public class CrashArrow extends ArrowGadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Splits apart on impact and deals huge", "fall damage to adjacent monsters"};
+        return new String[]{
+                "Splits apart on impact",
+                "Launches nearby monsters up into",
+                "the air, then slams them down"
+        };
     }
 
     @Override
@@ -80,7 +84,7 @@ public class CrashArrow extends ArrowGadget {
             proj.remove();
             loc.getWorld().createExplosion(loc, 0F);
             loc.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 20);
-            for (Entity nearby : proj.getNearbyEntities(2.25, 2.25, 2.25))
+            for (Entity nearby : proj.getNearbyEntities(2.5, 2.5, 2.5))
                 if (nearby instanceof Monster && nearby.getVelocity().getY() < 0.15) {
                     nearby.setVelocity(new Vector(Math.random(), 2, Math.random()));
                     nearby.getWorld().spawnParticle(Particle.PORTAL, nearby.getLocation(), 8);

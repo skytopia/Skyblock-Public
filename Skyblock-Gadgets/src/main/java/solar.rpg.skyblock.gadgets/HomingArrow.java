@@ -33,7 +33,10 @@ public class HomingArrow extends ArrowGadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"This arrow will home in on monsters", "at high velocity after being fired"};
+        return new String[]{
+                "Targets the heads of nearby monsters",
+                "Becomes high velocity after targeting"
+        };
     }
 
     @Override

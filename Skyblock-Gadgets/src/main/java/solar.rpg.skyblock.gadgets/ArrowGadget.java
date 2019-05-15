@@ -13,7 +13,7 @@ import solar.rpg.skyblock.island.Gadget;
  * @version 1.0
  * @since 1.0
  */
-public abstract class ArrowGadget extends Gadget {
+abstract class ArrowGadget extends Gadget {
 
     /**
      * Checks that an entity (projectile) is this specific gadget.
@@ -25,7 +25,7 @@ public abstract class ArrowGadget extends Gadget {
         if (!isCorrectArrow(en)) return;
         if (!(((Projectile) en).getShooter() instanceof Player)) return;
         Player shooter = (Player) ((Projectile) en).getShooter();
-        ItemStack arrow = shooter.getInventory().getItem(shooter.getInventory().first(Material.TIPPED_ARROW));
+        ItemStack arrow = shooter.getInventory().getItem(shooter.getInventory().first(getIcon().getType()));
         if (usable(shooter, arrow)) after.run();
     }
 

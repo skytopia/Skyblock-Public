@@ -37,10 +37,12 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Become a mastermind.. OF LUCK!",
-                ChatColor.ITALIC + "10 data of colors are hidden! Click to move them!",
-                ChatColor.ITALIC + "Get a match to move the pair until it's over!",
-                ChatColor.ITALIC + "Reveal all 10 data as efficiently as possible!"};
+        return new String[]{
+                ChatColor.ITALIC + "10 pairs of tiles are hidden!",
+                ChatColor.ITALIC + "Reveal and match tiles to win.",
+                ChatColor.ITALIC + "Do this in as little turns as possible!",
+                "\"The O.G. brain trainer\""
+        };
     }
 
     @Override

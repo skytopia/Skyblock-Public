@@ -30,7 +30,10 @@ public class AeonMilkBucket extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Drink milk infinitely", "\"Take that, potion effects!\""};
+        return new String[]{
+                "Can be consumed infinitely",
+                "\"Take that, potion effects!\""
+        };
     }
 
     @Override

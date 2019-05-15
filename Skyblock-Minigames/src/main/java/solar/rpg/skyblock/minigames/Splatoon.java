@@ -45,10 +45,11 @@ public class Splatoon extends Minigame {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Paintball fight! Color me in!",
+        return new String[]{
                 ChatColor.ITALIC + "Left click to haul paint-filled balls!",
                 ChatColor.ITALIC + "Color in your island! COLOR!!!",
-                ChatColor.ITALIC + "More color = more points!"};
+                ChatColor.ITALIC + "More color = more points!"
+        };
     }
 
     @Override

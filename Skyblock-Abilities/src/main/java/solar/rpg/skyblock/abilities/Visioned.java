@@ -37,7 +37,7 @@ public class Visioned extends Ability {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.END_GATEWAY, 1);
+        return new ItemStack(Material.ENDER_PORTAL_FRAME, 1);
     }
 
     @EventHandler

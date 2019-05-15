@@ -46,7 +46,10 @@ public class AeonPotion extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"The bottomless popcorn bucket's", "long lost and distant friend"};
+        return new String[]{
+                "Can be consumed infinitely",
+                "Left click to change potion"
+        };
     }
 
     @Override

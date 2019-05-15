@@ -30,7 +30,10 @@ public class TerraRose extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Turns dirt into grass", "Not suitable for vegetarians"};
+        return new String[]{
+                "Plant it on dirt",
+                "Creates grass instantly"
+        };
     }
 
     @Override

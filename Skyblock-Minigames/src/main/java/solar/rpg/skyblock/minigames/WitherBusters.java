@@ -43,11 +43,10 @@ public class WitherBusters extends Minigame {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Time attack, TIME ATTACK!!",
-                "Become an impromptu Wither Buster!",
+        return new String[]{
                 ChatColor.ITALIC + "Kill the wither quickly!",
                 ChatColor.ITALIC + "(fly mode is disabled)",
-                ChatColor.ITALIC + ""};
+        };
     }
 
     @Override

@@ -16,6 +16,8 @@ Features
 - `Parent/Public Module`: Packaged up upon compilation, combined with private source code to produce a runnable plugin.
 - `Chronology Module`: Contains all current Skyblock chronology tasks. 
 - `Minigames Module`: Contains all current Skyblock minigames.
+- `Gadgets Module`: Contains all implemented Skyblock gadgets.
+- `Abilities Module`: Contains all implemented Skyblock abilities.
 
 Compiling
 ---------

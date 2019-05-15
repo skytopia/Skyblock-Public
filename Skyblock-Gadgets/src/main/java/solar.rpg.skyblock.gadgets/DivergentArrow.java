@@ -38,7 +38,11 @@ public class DivergentArrow extends ArrowGadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Affects monsters only, splits apart on contact kills"};
+        return new String[]{
+                "When killing a monster, this",
+                "arrow splits apart and targets",
+                "other nearby monsters"
+        };
     }
 
     @Override

@@ -31,7 +31,10 @@ public class BloodCookie extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Consuming this item will instill", "a random potion effect on you"};
+        return new String[]{
+                "Consumption results in a random",
+                "potion effect being applied to you"
+        };
     }
 
     @Override

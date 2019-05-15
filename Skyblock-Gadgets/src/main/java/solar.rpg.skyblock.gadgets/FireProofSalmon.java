@@ -30,7 +30,10 @@ public class FireProofSalmon extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Consuming this fish grants a large period", "of fire-proofing in the Nether"};
+        return new String[]{
+                "Consumption negates effects of the Nether",
+                "The effect lasts for 10 minutes"
+        };
     }
 
     @Override
@@ -40,8 +43,9 @@ public class FireProofSalmon extends Gadget {
 
     @EventHandler
     public void onConsume(PlayerItemConsumeEvent event) {
-        if (usable(event.getPlayer(), event.getItem()))
+        if (usable(event.getPlayer(), event.getItem())) {
             main().nether().increaseFireproofing(event.getPlayer().getUniqueId(), 120);
-        event.getPlayer().getWorld().spawnParticle(Particle.SMOKE_LARGE, event.getPlayer().getLocation(), 20);
+            event.getPlayer().getWorld().spawnParticle(Particle.SMOKE_LARGE, event.getPlayer().getLocation(), 20);
+        }
     }
 }

@@ -42,10 +42,12 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"First they take our noughts.. and then our crosses!",
-                ChatColor.ITALIC + "Beat an AI in a two-round match of Tic Tac Toe!",
+        return new String[]{
+                ChatColor.ITALIC + "Beat an AI in of Tic Tac Toe!",
                 ChatColor.ITALIC + "Round 1: Players move first",
-                ChatColor.ITALIC + "Round 2: AI moves first"};
+                ChatColor.ITALIC + "Round 2: AI moves first",
+                "\"First they take our noughts..",
+                "and then our crosses!\"",};
     }
 
     @Override

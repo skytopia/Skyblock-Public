@@ -38,10 +38,12 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"The higher they rise, the harder they fall!",
+        return new String[]{
                 ChatColor.ITALIC + "You're at the bottom of a stairwell!",
                 ChatColor.ITALIC + "Parkour your way back up, don't fall!",
-                ChatColor.ITALIC + "The higher you get, the more points."};
+                ChatColor.ITALIC + "The higher you get, the more points.",
+                "\"Higher they get, harder they fall.\""
+        };
     }
 
     @Override

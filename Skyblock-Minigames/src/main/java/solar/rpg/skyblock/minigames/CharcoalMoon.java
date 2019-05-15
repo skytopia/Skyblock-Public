@@ -46,9 +46,11 @@ public class CharcoalMoon extends Minigame {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"You're not gonna have a good time..",
+        return new String[]{
                 ChatColor.ITALIC + "Wither Skeletons are invading!",
-                ChatColor.ITALIC + "Kill 50 within the time limit to win!"};
+                ChatColor.ITALIC + "Kill 50 within the time limit to win!",
+                "\"This is gonna be a terrible night...\""
+        };
     }
 
     @Override

@@ -29,7 +29,11 @@ public class AnySaddle extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Giddy-up, bitch!"};
+        return new String[]{
+                "You are able to mount any entity",
+                "by right clicking with this saddle",
+                "\"Giddy-up, bitch!\""
+        };
     }
 
     @Override

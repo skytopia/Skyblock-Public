@@ -51,7 +51,10 @@ public class AeonBlock extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Why won't this block disappear?", "Left click to change block type"};
+        return new String[]{
+                "Can be placed infinitely",
+                "Left click to change block"
+        };
     }
 
     @Override

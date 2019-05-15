@@ -35,7 +35,10 @@ public class GrappleHook extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Hook the bobber, then pull yourself!", "(more distance = more velocity)"};
+        return new String[]{
+                "Pulls you towards your hook if",
+                "it is firmly planted in a block"
+        };
     }
 
     @Override

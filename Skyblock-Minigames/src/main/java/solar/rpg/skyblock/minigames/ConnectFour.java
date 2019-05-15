@@ -43,10 +43,11 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"For those with a big heart and a good hustle!",
+        return new String[]{
                 ChatColor.ITALIC + "Beat an AI in a match of Connect Four!",
                 ChatColor.ITALIC + "Try to get a four-in-a-row on the board!",
-                ChatColor.ITALIC + "Difficulty of AI varies each turn."};
+                ChatColor.ITALIC + "Intelligence of AI varies each turn."
+        };
     }
 
     @Override

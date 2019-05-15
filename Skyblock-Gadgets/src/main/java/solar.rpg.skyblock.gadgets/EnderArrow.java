@@ -35,7 +35,10 @@ public class EnderArrow extends ArrowGadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"High velocity arrow imbued with End aura"};
+        return new String[]{
+                "High velocity arrow",
+                "Teleports you on impact"
+        };
     }
 
     @Override

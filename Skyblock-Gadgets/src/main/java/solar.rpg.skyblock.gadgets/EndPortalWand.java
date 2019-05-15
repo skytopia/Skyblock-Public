@@ -3,6 +3,7 @@ package solar.rpg.skyblock.gadgets;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +32,11 @@ public class EndPortalWand extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Opens up End Portals through Carpet"};
+        return new String[]{
+                "Allows access to the End",
+                "Right click carpet to convert it",
+                "Left click portals to delete them"
+        };
     }
 
     @Override
@@ -39,8 +44,9 @@ public class EndPortalWand extends Gadget {
         return new ItemStack(Material.END_ROD, 1);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onClick(PlayerInteractEvent event) {
+        if (event.isCancelled()) return;
         if (usable(event.getPlayer(), event.getHand())) {
             event.setCancelled(true);
             event.getPlayer().updateInventory();

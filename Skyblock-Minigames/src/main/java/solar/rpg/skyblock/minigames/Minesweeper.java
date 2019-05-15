@@ -42,10 +42,13 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Wow! Wow! These punk mines are back again!",
-                ChatColor.ITALIC + "Solve an 8x8 minesweeper grid! Don't blow up!",
+        return new String[]{
+                ChatColor.ITALIC + "Solve a classic minesweeper grid!",
                 ChatColor.ITALIC + "Wool indicates the level of danger!",
-                ChatColor.ITALIC + "Revealing a bomb results in an instant game over!"};
+                ChatColor.UNDERLINE + "((right click to reveal safe tiles))",
+                ChatColor.UNDERLINE + "((left click to reveal bomb tiles))",
+                "\"（╯°□°）╯ ︵(\\ .o.)\\\""
+        };
     }
 
     @Override

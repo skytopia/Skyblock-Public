@@ -38,12 +38,14 @@ public class Airshow extends Minigame {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Is it a bird? Is it a plane?",
-                "No, it's a pair of Super Elytra!",
+        return new String[]{
                 ChatColor.ITALIC + "Soar through rings in the sky!",
-                ChatColor.ITALIC + "(press sneak to gain height!)",
+                ChatColor.ITALIC + "(tap sneak to glide high!)",
                 ChatColor.ITALIC + "(smaller rings = more points)",
-                ChatColor.UNDERLINE + "(make sure you have elytra!!))"};
+                ChatColor.UNDERLINE + "((elytra are required))",
+                "\"Is it a bird? Is it a plane?\"",
+                "\"No, it's the super glider squad!\"",
+        };
     }
 
     @Override

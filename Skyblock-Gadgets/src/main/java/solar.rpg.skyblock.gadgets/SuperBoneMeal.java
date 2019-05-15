@@ -31,7 +31,10 @@ public class SuperBoneMeal extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"A farmer's un-consumable wet dream", "No added hormones"};
+        return new String[]{
+                "Can be used infinitely",
+                "Not suitable for vegans"
+        };
     }
 
     @Override

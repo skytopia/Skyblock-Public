@@ -43,11 +43,11 @@ public class CaptureTheWool extends Minigame implements FlawlessEnabled {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"It's a race for the wool!",
-                "feat. One Wise Ender Crystal",
+        return new String[]{
                 ChatColor.ITALIC + "Flags are scattered around your island!",
                 ChatColor.ITALIC + "Collect them in the correct order to win!",
-                ChatColor.ITALIC + "All blocks you place turn to glass."};
+                ChatColor.ITALIC + "All blocks you place turn to glass."
+        };
     }
 
     @Override

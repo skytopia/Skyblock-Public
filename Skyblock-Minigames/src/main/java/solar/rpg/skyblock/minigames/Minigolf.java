@@ -43,10 +43,12 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Fun with friends- now that's a hole in one!",
-                ChatColor.ITALIC + "Stand on the GREEN. Throw your balls! ;)",
-                ChatColor.ITALIC + "Aim for the hole in the ice. Don't miss!",
-                ChatColor.ITALIC + "A lower score awards more points after!"};
+        return new String[]{
+                ChatColor.ITALIC + "Classic minecraft 9-hole minigolf!",
+                ChatColor.ITALIC + "Use any item as your ball.",
+                ChatColor.ITALIC + "Make your first throw on the green.",
+                "\"You know how golf works, right?\""
+        };
     }
 
     @Override

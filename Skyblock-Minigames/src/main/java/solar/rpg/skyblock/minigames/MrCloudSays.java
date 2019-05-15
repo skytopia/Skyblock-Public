@@ -42,10 +42,11 @@ public class MrCloudSays extends Minigame implements NewbieFriendly {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Do you like being bossed around?",
-                "You don't? How unfortunate..",
+        return new String[]{
                 ChatColor.ITALIC + "Follow Mr. Cloud's commands!",
-                ChatColor.ITALIC + "(hint: stand in an open area!)"};
+                ChatColor.ITALIC + "(hint: stand in an open area!)",
+                "\"My god, all these kids have A.D.D.!\""
+        };
     }
 
     @Override

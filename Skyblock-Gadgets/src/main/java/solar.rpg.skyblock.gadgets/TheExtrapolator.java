@@ -31,7 +31,9 @@ public class TheExtrapolator extends Gadget {
 
     @Override
     public String[] getPurpose() {
-        return new String[]{"Performs the vile busywork of", "decapitating your victim(s) of choice"};
+        return new String[]{
+                "Right click a player to steal their head"
+        };
     }
 
     @Override

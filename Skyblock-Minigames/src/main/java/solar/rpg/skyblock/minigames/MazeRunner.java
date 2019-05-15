@@ -39,10 +39,11 @@ public class MazeRunner extends Minigame implements NewbieFriendly {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Nothing better than getting lost!",
+        return new String[]{
                 ChatColor.ITALIC + "You've been put in a glass maze!",
                 ChatColor.ITALIC + "Solve it as quickly as possible!",
-                ChatColor.ITALIC + "You're being timed, be quick!"};
+                "\"Glass only makes it worse!\""
+        };
     }
 
     @Override

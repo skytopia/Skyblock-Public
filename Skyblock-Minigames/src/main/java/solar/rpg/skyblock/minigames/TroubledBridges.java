@@ -42,10 +42,13 @@ public class TroubledBridges extends Minigame {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Where the hell are we..?",
+        return new String[]{
                 ChatColor.ITALIC + "Make it back to the center of your island!",
                 ChatColor.ITALIC + "Follow the crystal's beam to get home!",
-                ChatColor.ITALIC + "Stone bricks are safe spots to stand."};
+                ChatColor.ITALIC + "All blocks turn to glass or stone brick.",
+                ChatColor.ITALIC + "Placed blocks will fall every 30 seconds!",
+                ChatColor.UNDERLINE + "Stone bricks are safe spots to stand."
+        };
     }
 
     @Override

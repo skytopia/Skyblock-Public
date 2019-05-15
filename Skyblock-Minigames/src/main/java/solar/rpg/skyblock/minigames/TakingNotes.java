@@ -40,10 +40,13 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Hitting those high notes in order! Nice.",
+        return new String[]{
                 ChatColor.ITALIC + "Note blocks are playing! Remember the order!",
                 ChatColor.ITALIC + "The order gets longer with every correct attempt!",
-                ChatColor.ITALIC + "♪♪♪ A longer order means a better score! ♪♪♪"};
+                ChatColor.ITALIC + "♪♪♪ A longer order means a better score! ♪♪♪",
+                "\"Make sure you.. take note of the order\"",
+                "\"*ba dum tss* (⌐■_■)\""
+        };
     }
 
     @Override

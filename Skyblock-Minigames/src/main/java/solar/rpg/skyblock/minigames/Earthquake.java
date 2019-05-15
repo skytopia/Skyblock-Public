@@ -40,10 +40,11 @@ public class Earthquake extends Minigame {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"The ground is shaking!",
-                "Be sure to watch your step.",
+        return new String[]{
                 ChatColor.ITALIC + "How long can you survive without",
-                ChatColor.ITALIC + "being thrown off of your island?"};
+                ChatColor.ITALIC + "being thrown off of your island?",
+                "\"A minigame of a whole different magnitude!\""
+        };
     }
 
     @Override
