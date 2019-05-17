@@ -45,11 +45,9 @@ public class Volleyball extends Minigame implements NewbieFriendly {
     @Override
     public String[] getDescription() {
         return new String[]{
-                ChatColor.ITALIC + "Note blocks are playing! Remember the order!",
-                ChatColor.ITALIC + "The order gets longer with every correct attempt!",
-                ChatColor.ITALIC + "♪♪♪ A longer order means a better score! ♪♪♪",
-                "\"Make sure you.. take note of the order\"",
-                "\"*ba dum tss* (⌐■_■)\""
+                ChatColor.ITALIC + "Jump up and hit the volleyball to return it!",
+                ChatColor.ITALIC + "Look out for spikes, though!",
+                "\"A classic beach game!\""
         };
     }
 

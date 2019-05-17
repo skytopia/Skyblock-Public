@@ -1,4 +1,4 @@
-package solar.rpg.skyblock.challenges.chapter4.part1;
+package solar.rpg.skyblock.challenges.chapter5.part1;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
