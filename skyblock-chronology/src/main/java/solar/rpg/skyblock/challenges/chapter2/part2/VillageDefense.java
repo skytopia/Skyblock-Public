@@ -46,7 +46,7 @@ public class VillageDefense extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.RED_ROSE);
+        return new ItemStack(Material.POPPY);
     }
 
     public boolean isRepeatable() {

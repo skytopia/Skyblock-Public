@@ -82,7 +82,7 @@ public class DivergentArrow extends ArrowGadget {
                 proj.remove();
                 if (event.getFinalDamage() >= ((LivingEntity) event.getEntity()).getHealth()) {
                     Title.showTitle(shooter, "", ChatColor.GOLD + "** SPLIT **", 5, 20, 5);
-                    proj.getWorld().playSound(proj.getLocation(), Sound.ENTITY_ENDERMEN_SCREAM, 2F, 2F);
+                    proj.getWorld().playSound(proj.getLocation(), Sound.ENTITY_ENDERMAN_SCREAM, 2F, 2F);
                     launchAdditional(proj);
                 }
             }

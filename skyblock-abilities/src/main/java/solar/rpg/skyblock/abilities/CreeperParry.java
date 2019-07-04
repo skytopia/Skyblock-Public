@@ -52,7 +52,7 @@ public class CreeperParry extends Ability {
             if (is != null)  // If they have an island...
                 if (eligible(is)) { // And it is eligible..
                     Title.showTitle((Player) event.getEntity(), "", ChatColor.GREEN + "** DEFLECT **", 12, 0, 12);
-                    event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.ENTITY_ENDERDRAGON_HURT, 1F, 1.175F);
+                    event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 1F, 1.175F);
                     Bukkit.getScheduler().runTaskLater(main().plugin(), () -> {
                         for (Entity nearby : event.getEntity().getNearbyEntities(10, 5, 10))
                             if (nearby instanceof Monster) {

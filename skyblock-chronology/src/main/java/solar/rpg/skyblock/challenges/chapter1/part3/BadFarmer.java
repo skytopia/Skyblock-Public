@@ -28,8 +28,8 @@ public class BadFarmer extends Chronicle {
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
                 new Stack(Material.CACTUS, 3),
-                new Stack(Material.NETHER_STALK, 3),
-                new Stack(Material.MYCEL, 2),
+                new Stack(Material.NETHER_WART, 3),
+                new Stack(Material.MYCELIUM, 2),
                 new Stack(Material.BEETROOT, 2)
         )
         };
@@ -37,7 +37,7 @@ public class BadFarmer extends Chronicle {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new ItemReward(ItemUtility.enchant(ItemUtility.changeItem(new ItemStack(Material.WOOD_SWORD, 1), ChatColor.DARK_RED + "Corrupted Sword", ChatColor.GRAY + "Corruption I", "Don't strike the Undead!"), Enchantment.THORNS, 2)),
+                new ItemReward(ItemUtility.enchant(ItemUtility.changeItem(new ItemStack(Material.WOODEN_SHOVEL, 1), ChatColor.DARK_RED + "Corrupted Sword", ChatColor.GRAY + "Corruption I", "Don't strike the Undead!"), Enchantment.THORNS, 2)),
                 new ItemReward(ItemUtility.changeItem(ItemUtility.createPotion(PotionEffectType.HEAL, 6000, 0), ChatColor.LIGHT_PURPLE + "Invulnerability Potion")),
                 new MoneyReward(main().getEconomy(), 30000)
         };

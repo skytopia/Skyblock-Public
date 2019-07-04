@@ -31,13 +31,13 @@ import java.util.ArrayList;
 public class AeonBlock extends Gadget {
 
     /* Gray background tile. */
-    private final ItemStack GRAY = ItemUtility.changeItem(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7), "", "");
+    private final ItemStack GRAY = ItemUtility.changeItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), "", "");
 
     /* Locked Aeon block type. */
-    private final ItemStack LOCKED = ItemUtility.changeItem(new ItemStack(Material.IRON_FENCE, 1, (short) 7), ChatColor.RED + "Not Unlocked", "");
+    private final ItemStack LOCKED = ItemUtility.changeItem(new ItemStack(Material.IRON_BARS), ChatColor.RED + "Not Unlocked", "");
 
     /* Available Aeon block types. */
-    private final ItemStack[] AEON = {new ItemStack(Material.DIRT, 1, (short) 1), new ItemStack(Material.SAND, 1, (short) 0), new ItemStack(Material.STONE, 1, (short) 0), new ItemStack(Material.PRISMARINE, 1, (short) 0), new ItemStack(Material.ENDER_STONE, 1, (short) 0), new ItemStack(Material.MYCEL, 1, (short) 0), new ItemStack(Material.PACKED_ICE, 1, (short) 0), new ItemStack(Material.WOOL, 1, (short) 0), new ItemStack(Material.MAGENTA_GLAZED_TERRACOTTA, 1, (short) 0), new ItemStack(Material.NETHERRACK, 1), new ItemStack(Material.RED_MUSHROOM, 1), new ItemStack(Material.BROWN_MUSHROOM, 1), new ItemStack(Material.MAGMA, 1), new ItemStack(Material.PURPUR_SLAB, 1),};
+    private final ItemStack[] AEON = {new ItemStack(Material.COARSE_DIRT), new ItemStack(Material.SAND), new ItemStack(Material.STONE), new ItemStack(Material.PRISMARINE), new ItemStack(Material.END_STONE, 1), new ItemStack(Material.MYCELIUM), new ItemStack(Material.PACKED_ICE), new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.MAGENTA_GLAZED_TERRACOTTA), new ItemStack(Material.NETHERRACK, 1), new ItemStack(Material.RED_MUSHROOM, 1), new ItemStack(Material.BROWN_MUSHROOM, 1), new ItemStack(Material.MAGMA_BLOCK, 1), new ItemStack(Material.PURPUR_SLAB, 1),};
 
     @Override
     public String getName() {
@@ -81,10 +81,8 @@ public class AeonBlock extends Gadget {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (event.getInventory() == null) return;
         if (event.getClickedInventory() == null) return;
-        if (event.getClickedInventory().getName() == null) return;
-        if (event.getInventory().getName().equals("Choose your Aeon Block")) {
+        if (event.getView().getTitle().equals("Choose your Aeon Block")) {
             event.setCancelled(true);
             if (event.getCurrentItem() == null) return;
             int slot = event.getSlot();
@@ -95,10 +93,10 @@ public class AeonBlock extends Gadget {
             // Re-create gadget item meta based on original item.
             ItemStack aeonT = AEON[slot];
             ArrayList<String> lore = new ArrayList<>();
-            lore.add("");
             lore.add(ChatColor.GOLD + "" + ChatColor.DARK_PURPLE + ChatColor.BOLD + "GADGET");
             for (String purpose : getPurpose())
                 lore.add(ChatColor.GOLD + purpose);
+            lore.add("");
             lore.add("");
             lore.add(ChatColor.RED + "" + ChatColor.BOLD + "UNLOCKED" + ChatColor.RED + " (" + getPrice() + "ƒ)");
             event.getWhoClicked().getInventory().setItemInMainHand(ItemUtility.enchant(ItemUtility.changeItem(new ItemStack(aeonT.getType(), aeonT.getAmount(), aeonT.getData().getData()), getName(), lore), Enchantment.ARROW_INFINITE, 1, Enchantment.VANISHING_CURSE, 1));

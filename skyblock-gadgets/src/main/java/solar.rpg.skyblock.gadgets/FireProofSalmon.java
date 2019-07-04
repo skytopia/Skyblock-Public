@@ -38,7 +38,7 @@ public class FireProofSalmon extends Gadget {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.RAW_FISH, 2, (short) 1);
+        return new ItemStack(Material.COOKED_SALMON, 2);
     }
 
     @EventHandler

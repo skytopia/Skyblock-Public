@@ -1,6 +1,7 @@
 package solar.rpg.skyblock.minigames.extra.tictactoe;
 
 import org.bukkit.DyeColor;
+import org.bukkit.Material;
 
 public class TicTacToeBoard {
     public static final int ROWS = 3;
@@ -74,15 +75,15 @@ public class TicTacToeBoard {
      */
     public enum Seed {
 
-        EMPTY(DyeColor.WHITE, "No One"),
-        CROSS(DyeColor.RED, "Crosses"),
-        NOUGHT(DyeColor.BLUE, "Noughts");
+        EMPTY(Material.WHITE_WOOL, "No One"),
+        CROSS(Material.RED_WOOL, "Crosses"),
+        NOUGHT(Material.BLUE_WOOL, "Noughts");
 
-        public final DyeColor color;
+        public final Material wool;
         public final String name;
 
-        Seed(DyeColor color, String name) {
-            this.color = color;
+        Seed(Material wool, String name) {
+            this.wool = wool;
             this.name = name;
         }
     }

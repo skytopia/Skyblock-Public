@@ -21,8 +21,8 @@ public class TreeFeller extends Chronicle {
     public Criteria[] getCriteria() {
         return new Criteria[]{
                 new ItemCrit(
-                        new Stack(Material.LOG, 4),
-                        new Stack(Material.LEAVES, 1)
+                        new Stack(Material.OAK_LOG, 4),
+                        new Stack(Material.OAK_LEAVES, 1)
                 )
         };
     }

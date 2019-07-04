@@ -31,7 +31,7 @@ public class NeverEver extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.NETHER_FENCE);
+        return new ItemStack(Material.NETHER_BRICK_FENCE);
     }
 
     public boolean isRepeatable() {

@@ -125,7 +125,7 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
                 return;
             }
 
-            makePlatform(gen, 10, 9, Material.SMOOTH_BRICK);
+            makePlatform(gen, 10, 9, Material.STONE_BRICKS);
 
             for (int x = 1; x <= 4; x++)
                 registerClicks(new Location(gen.getWorld(), gen.getBlockX() + (x * 2), gen.getBlockY() + 1, gen.getBlockZ() + 7), x);

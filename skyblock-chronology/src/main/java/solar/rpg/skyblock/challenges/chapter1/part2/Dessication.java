@@ -22,7 +22,7 @@ public class Dessication extends Chronicle {
     public Criteria[] getCriteria() {
         return new Criteria[]{
                 new ItemCrit(
-                        new Single(Material.SKULL_ITEM, 1, (short) 1),
+                        new Single(Material.WITHER_SKELETON_SKULL, 1),
                         new Single(Material.MAGMA_CREAM, 8),
                         new Stack(Material.NETHERRACK, 4),
                         new Single(Material.GLOWSTONE, 8)
@@ -32,7 +32,7 @@ public class Dessication extends Chronicle {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new ItemReward(ItemUtility.enchant(ItemUtility.changeItem(new ItemStack(Material.GOLD_SWORD, 1), "Ghost Buster"), Enchantment.DAMAGE_UNDEAD, 8, Enchantment.KNOCKBACK, 4)),
+                new ItemReward(ItemUtility.enchant(ItemUtility.changeItem(new ItemStack(Material.GOLDEN_SWORD, 1), "Ghost Buster"), Enchantment.DAMAGE_UNDEAD, 8, Enchantment.KNOCKBACK, 4)),
                 new GadgetReward("Aeon Milk Bucket")
         };
     }
@@ -40,7 +40,7 @@ public class Dessication extends Chronicle {
     @Override
     public Reward[] getRepeatReward() {
         return new Reward[]{
-                new ItemReward(ItemUtility.enchant(ItemUtility.changeItem(new ItemStack(Material.GOLD_SWORD, 1), "Ghost Buster II"), Enchantment.DAMAGE_UNDEAD, 10, Enchantment.KNOCKBACK, 6, Enchantment.FIRE_ASPECT, 2)),
+                new ItemReward(ItemUtility.enchant(ItemUtility.changeItem(new ItemStack(Material.GOLDEN_SWORD, 1), "Ghost Buster II"), Enchantment.DAMAGE_UNDEAD, 10, Enchantment.KNOCKBACK, 6, Enchantment.FIRE_ASPECT, 2)),
         };
     }
 

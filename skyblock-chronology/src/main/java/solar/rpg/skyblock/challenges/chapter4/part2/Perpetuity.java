@@ -36,7 +36,7 @@ public class Perpetuity extends Chronicle {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.LEASH);
+        return new ItemStack(Material.LEAD);
     }
 
     public boolean isRepeatable() {

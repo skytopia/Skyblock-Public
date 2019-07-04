@@ -73,7 +73,7 @@ public class ConcussionArrow extends ArrowGadget {
             loc.getWorld().createExplosion(loc, 0F);
             loc.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 20);
             loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 1);
-            loc.getWorld().playSound(loc, Sound.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, 2.5F, 3F);
+            loc.getWorld().playSound(loc, Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 2.5F, 3F);
             for (Entity nearby : proj.getNearbyEntities(5, 5, 5))
                 if (nearby instanceof LivingEntity)
                     if (!(nearby instanceof Player))

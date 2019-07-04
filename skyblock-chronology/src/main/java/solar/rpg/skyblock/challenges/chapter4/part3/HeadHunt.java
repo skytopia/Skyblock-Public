@@ -19,7 +19,7 @@ public class HeadHunt extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Single(Material.SKULL_ITEM, 3, (short) 5)
+                new Single(Material.DRAGON_HEAD, 5)
         )};
     }
 

@@ -37,7 +37,7 @@ public class MrCloudSays extends Minigame implements NewbieFriendly {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.RECORD_9);
+        return new ItemStack(Material.MUSIC_DISC_STRAD);
     }
 
     @Override

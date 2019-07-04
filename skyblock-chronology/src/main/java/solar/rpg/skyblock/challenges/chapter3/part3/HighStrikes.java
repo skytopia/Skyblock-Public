@@ -30,7 +30,7 @@ public class HighStrikes extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.SPECKLED_MELON);
+        return new ItemStack(Material.GLISTERING_MELON_SLICE);
     }
 
     public boolean isRepeatable() {

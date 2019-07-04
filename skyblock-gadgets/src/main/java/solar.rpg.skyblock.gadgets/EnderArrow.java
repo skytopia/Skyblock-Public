@@ -66,7 +66,7 @@ public class EnderArrow extends ArrowGadget {
             loc.setYaw(((Player) event.getEntity().getShooter()).getLocation().getYaw());
             loc.setPitch(((Player) event.getEntity().getShooter()).getLocation().getPitch());
             ((Player) event.getEntity().getShooter()).teleport(loc);
-            loc.getWorld().playSound(loc, Sound.ENTITY_ENDERMEN_TELEPORT, 1.5F, 1.5F);
+            loc.getWorld().playSound(loc, Sound.ENTITY_ENDERMAN_TELEPORT, 1.5F, 1.5F);
             loc.getWorld().spawnParticle(Particle.END_ROD, loc, 30);
         });
     }

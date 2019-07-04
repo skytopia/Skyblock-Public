@@ -31,7 +31,7 @@ public class Sunglasses extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.IRON_BARDING);
+        return new ItemStack(Material.IRON_HORSE_ARMOR);
     }
 
     public boolean isRepeatable() {

@@ -38,7 +38,7 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.BIRCH_DOOR_ITEM);
+        return new ItemStack(Material.BIRCH_DOOR);
     }
 
     @Override
@@ -116,14 +116,14 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
             }
 
             //Generate platform.
-            makePlatform(gen, 10, 11, Material.SMOOTH_BRICK);
+            makePlatform(gen, 10, 11, Material.STONE_BRICKS);
 
             // Generate iron fence backdrop.
             for (int x = 0; x <= 10; x++)
                 for (int y = 0; y <= 5; y++) {
                     if (x != 0 && x != 10) continue;
                     Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY() + y + 3, gen.getBlockZ() + 11);
-                    bl.setType(Material.IRON_FENCE);
+                    bl.setType(Material.IRON_BARS);
                     placed.add(bl);
                 }
 
@@ -132,7 +132,7 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
                 for (int y = 0; y <= 7; y++) {
                     Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + x + 1, gen.getBlockY() + y + 2, gen.getBlockZ() + 11);
                     if (y == 7)
-                        bl.setType(Material.STEP);
+                        bl.setType(Material.SMOOTH_STONE_SLAB);
                     else
                         bl.setType(Material.STONE);
                     placed.add(bl);
@@ -142,7 +142,7 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
             for (int x = 0; x <= 6; x++)
                 for (int y = 0; y <= 5; y++) {
                     Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + x + 2, gen.getBlockY() + y + 3, gen.getBlockZ() + 11);
-                    bl.setType(Material.WOOL);
+                    bl.setType(Material.WHITE_WOOL);
                     placed.add(bl);
                 }
 
@@ -213,8 +213,7 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
 
             // Places the player's move.
             Block toChange = generateGameLocation(row, col).getBlock();
-            toChange.setType(Material.WOOL);
-            toChange.setData((byte) 11);
+            toChange.setType(Material.BLUE_WOOL);
 
             // If the player won or the board is full, the game is over.
             if (board.win() || board.full())
@@ -247,8 +246,7 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
                     Bukkit.getScheduler().runTask(main.main().plugin(), () -> {
                         // Place the computer's move.
                         Block toChange1 = generateGameLocation(compRow, compCol).getBlock();
-                        toChange1.setType(Material.WOOL);
-                        toChange1.setData((byte) 14);
+                        toChange1.setType(Material.RED_WOOL);
                         main.soundAll(getParticipants(), Sound.ENTITY_CREEPER_PRIMED, 2F);
 
                         // If the player won or the board is full, the game is over.

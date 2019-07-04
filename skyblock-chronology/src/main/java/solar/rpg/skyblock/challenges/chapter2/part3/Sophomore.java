@@ -48,7 +48,7 @@ public class Sophomore extends Chronicle {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.SAPLING, 1, (short) 1);
+        return new ItemStack(Material.SPRUCE_SAPLING);
     }
 
     public boolean isRepeatable() {

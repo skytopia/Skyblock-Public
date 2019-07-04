@@ -45,7 +45,7 @@ public class ToThePoint extends Chronicle {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.DOUBLE_PLANT, 1, (short) 3);
+        return new ItemStack(Material.LARGE_FERN);
     }
 
     public boolean isRepeatable() {

@@ -24,17 +24,17 @@ public class ForTheRecord extends Chronicle {
             @Override
             public boolean has(Island island, Player toCheck) {
                 Inventory inv = toCheck.getInventory();
-                return inv.contains(Material.GREEN_RECORD)
-                        && inv.contains(Material.GOLD_RECORD)
-                        && inv.contains(Material.RECORD_3)
-                        && inv.contains(Material.RECORD_4)
-                        && inv.contains(Material.RECORD_5)
-                        && inv.contains(Material.RECORD_6)
-                        && inv.contains(Material.RECORD_7)
-                        && inv.contains(Material.RECORD_8)
-                        && inv.contains(Material.RECORD_9)
-                        && inv.contains(Material.RECORD_10)
-                        && inv.contains(Material.RECORD_12);
+                return inv.contains(Material.MUSIC_DISC_CAT)
+                        && inv.contains(Material.MUSIC_DISC_13)
+                        && inv.contains(Material.MUSIC_DISC_BLOCKS)
+                        && inv.contains(Material.MUSIC_DISC_CHIRP)
+                        && inv.contains(Material.MUSIC_DISC_FAR)
+                        && inv.contains(Material.MUSIC_DISC_MALL)
+                        && inv.contains(Material.MUSIC_DISC_MELLOHI)
+                        && inv.contains(Material.MUSIC_DISC_STAL)
+                        && inv.contains(Material.MUSIC_DISC_STRAD)
+                        && inv.contains(Material.MUSIC_DISC_WARD)
+                        && inv.contains(Material.MUSIC_DISC_WAIT);
             }
 
             @Override
@@ -45,17 +45,17 @@ public class ForTheRecord extends Chronicle {
             @Override
             public void success(Island island, Player toCheck) {
                 Inventory inv = toCheck.getInventory();
-                inv.remove(Material.GREEN_RECORD);
-                inv.remove(Material.GOLD_RECORD);
-                inv.remove(Material.RECORD_3);
-                inv.remove(Material.RECORD_4);
-                inv.remove(Material.RECORD_5);
-                inv.remove(Material.RECORD_6);
-                inv.remove(Material.RECORD_7);
-                inv.remove(Material.RECORD_8);
-                inv.remove(Material.RECORD_9);
-                inv.remove(Material.RECORD_10);
-                inv.remove(Material.RECORD_12);
+                inv.remove(Material.MUSIC_DISC_CAT);
+                inv.remove(Material.MUSIC_DISC_13);
+                inv.remove(Material.MUSIC_DISC_BLOCKS);
+                inv.remove(Material.MUSIC_DISC_CHIRP);
+                inv.remove(Material.MUSIC_DISC_FAR);
+                inv.remove(Material.MUSIC_DISC_MALL);
+                inv.remove(Material.MUSIC_DISC_MELLOHI);
+                inv.remove(Material.MUSIC_DISC_STAL);
+                inv.remove(Material.MUSIC_DISC_STRAD);
+                inv.remove(Material.MUSIC_DISC_WARD);
+                inv.remove(Material.MUSIC_DISC_WAIT);
             }
         }};
     }
@@ -74,7 +74,7 @@ public class ForTheRecord extends Chronicle {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.RECORD_11, 1);
+        return new ItemStack(Material.MUSIC_DISC_CAT);
     }
 
     public boolean isRepeatable() {

@@ -49,7 +49,7 @@ public class ToHellAndBack extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.NETHER_BRICK_ITEM, 1);
+        return new ItemStack(Material.NETHER_BRICK, 1);
     }
 
     public boolean isRepeatable() {

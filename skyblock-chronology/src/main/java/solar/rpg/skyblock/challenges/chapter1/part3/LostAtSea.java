@@ -50,7 +50,7 @@ public class LostAtSea extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.BOAT_SPRUCE, 1);
+        return new ItemStack(Material.SPRUCE_BOAT, 1);
     }
 
     public boolean isRepeatable() {

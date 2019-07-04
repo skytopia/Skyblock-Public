@@ -118,7 +118,7 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
                 return;
             }
 
-            makePlatform(gen, 11, 13, Material.SMOOTH_BRICK);
+            makePlatform(gen, 11, 13, Material.STONE_BRICKS);
 
             for (short i = 1; i <= 9; i++)
                 registerClicks(generateGridLocation(i), i);
@@ -313,23 +313,19 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
         private void colorSquare(short allocation, TicTacToeBoard.Seed seed) {
             Location loc = generateGridLocation(allocation);
 
-            loc.getBlock().setType(Material.WOOL);
-            loc.getBlock().setData(seed.color.getWoolData());
+            loc.getBlock().setType(seed.wool);
             loc.getBlock().getState().update(true);
 
             loc.add(1, 0, 0);
-            loc.getBlock().setType(Material.WOOL);
-            loc.getBlock().setData(seed.color.getWoolData());
+            loc.getBlock().setType(seed.wool);
             loc.getBlock().getState().update(true);
 
             loc.add(0, 0, 1);
-            loc.getBlock().setType(Material.WOOL);
-            loc.getBlock().setData(seed.color.getWoolData());
+            loc.getBlock().setType(seed.wool);
             loc.getBlock().getState().update(true);
 
             loc.subtract(1, 0, 0);
-            loc.getBlock().setType(Material.WOOL);
-            loc.getBlock().setData(seed.color.getWoolData());
+            loc.getBlock().setType(seed.wool);
             loc.getBlock().getState().update(true);
         }
 

@@ -23,9 +23,9 @@ public class ShinyFarming extends Chronicle {
         return new Criteria[]{new ItemCrit(
                 new Stack(Material.EMERALD, 3),
                 new Stack(Material.GOLDEN_CARROT, 2),
-                new Stack(Material.SPECKLED_MELON, 2),
+                new Stack(Material.GLISTERING_MELON_SLICE, 2),
                 new Stack(Material.BLAZE_POWDER, 2),
-                new Single(Material.EYE_OF_ENDER, 48),
+                new Single(Material.ENDER_EYE, 48),
                 new Single(Material.GHAST_TEAR, 12))
         };
     }

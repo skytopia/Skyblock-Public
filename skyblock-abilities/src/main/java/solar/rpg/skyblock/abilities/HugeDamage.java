@@ -85,7 +85,7 @@ public class HugeDamage extends Ability {
                         Location eye = ((LivingEntity) event.getEntity()).getEyeLocation();
                         // Check combo.
                         int combos = combo.getOrDefault(event.getDamager().getUniqueId(), 0);
-                        eye.getWorld().playSound(eye, Sound.BLOCK_NOTE_BASS, 2F, 1F + (0.25F * (combos - 1)));
+                        eye.getWorld().playSound(eye, Sound.BLOCK_NOTE_BLOCK_BASS, 2F, 1F + (0.25F * (combos - 1)));
                         combo.put(event.getDamager().getUniqueId(), combos + 1); // Increment combo.
                         if (combos >= 3) { // If combo amount is more than 4 hits..
                             // DO WOMBO COMBO DAMAGE.

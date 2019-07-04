@@ -42,26 +42,25 @@ public class Camouflage extends Chronicle implements Live {
             if (event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth())
                 if (event.getDamager() instanceof Player)
                     if (((Player) event.getDamager()).getInventory().getHelmet() != null)
-                        if (((Player) event.getDamager()).getInventory().getHelmet().getType() == Material.SKULL_ITEM)
                             if (main().islands().getIsland(event.getDamager().getUniqueId()) != null)
-                                switch (((Player) event.getDamager()).getInventory().getHelmet().getData().getData()) {
-                                    case 0:
+                                switch (((Player) event.getDamager()).getInventory().getHelmet().getType()) {
+                                    case SKELETON_SKULL:
                                         if (event.getEntity() instanceof Skeleton)
                                             main.challenges().complete((Player) event.getDamager(), this);
                                         break;
-                                    case 1:
+                                    case WITHER_SKELETON_SKULL:
                                         if (event.getEntity() instanceof WitherSkeleton)
                                             main.challenges().complete((Player) event.getDamager(), this);
                                         break;
-                                    case 2:
+                                    case ZOMBIE_HEAD:
                                         if (event.getEntity() instanceof Zombie)
                                             main.challenges().complete((Player) event.getDamager(), this);
                                         break;
-                                    case 4:
+                                    case CREEPER_HEAD:
                                         if (event.getEntity() instanceof Creeper)
                                             main.challenges().complete((Player) event.getDamager(), this);
                                         break;
-                                    case 5:
+                                    case DRAGON_HEAD:
                                         if (event.getEntity() instanceof EnderDragon)
                                             main.challenges().complete((Player) event.getDamager(), this);
                                         break;

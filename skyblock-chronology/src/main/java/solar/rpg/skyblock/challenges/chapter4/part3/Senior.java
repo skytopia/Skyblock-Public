@@ -53,7 +53,7 @@ public class Senior extends Chronicle {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.SAPLING, 1, (short) 2);
+        return new ItemStack(Material.BIRCH_SAPLING);
     }
 
     public boolean isRepeatable() {

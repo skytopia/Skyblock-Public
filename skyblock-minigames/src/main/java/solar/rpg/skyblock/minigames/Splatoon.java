@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
@@ -40,7 +41,7 @@ public class Splatoon extends Minigame {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.EXP_BOTTLE);
+        return new ItemStack(Material.EXPERIENCE_BOTTLE);
     }
 
     @Override
@@ -89,9 +90,27 @@ public class Splatoon extends Minigame {
 
     private class SplatoonTask extends DefaultMinigameTask {
 
+        private final Material[] splatTypes = {
+                Material.WHITE_TERRACOTTA,
+                Material.ORANGE_TERRACOTTA,
+                Material.MAGENTA_TERRACOTTA,
+                Material.LIGHT_BLUE_TERRACOTTA,
+                Material.YELLOW_TERRACOTTA,
+                Material.LIME_TERRACOTTA,
+                Material.PINK_TERRACOTTA,
+                Material.GRAY_TERRACOTTA,
+                Material.LIGHT_GRAY_TERRACOTTA,
+                Material.CYAN_TERRACOTTA,
+                Material.PURPLE_TERRACOTTA,
+                Material.BLUE_TERRACOTTA,
+                Material.BROWN_TERRACOTTA,
+                Material.GREEN_TERRACOTTA,
+                Material.RED_TERRACOTTA
+        };
+
         /* Keep a record of what blocks were painted over, and their data. */
         private HashMap<Location, Material> placed;
-        private HashMap<Location, Byte> placed2;
+        private HashMap<Location, BlockData> placed2;
 
         /* Tracks throwing cooldowns. */
         private HashMap<UUID, Long> lastThrown;
@@ -112,7 +131,7 @@ public class Splatoon extends Minigame {
             // Restore blocks.
             placed.forEach((key, value) -> {
                 key.getBlock().setType(value);
-                key.getBlock().setData(placed2.get(key));
+                key.getBlock().setBlockData(placed2.get(key));
             });
             placed.clear();
             placed2.clear();
@@ -146,20 +165,18 @@ public class Splatoon extends Minigame {
             if (disqualified.contains(((Player) event.getEntity().getShooter()).getUniqueId())) return;
             Location bottomLeft = event.getEntity().getLocation().clone().subtract(1, 1, 1);
             Location topRight = event.getEntity().getLocation().clone().add(1, 1, 1);
-            byte bit = (byte) main.main().rng().nextInt(15);
             // Search nearby blocks.
             for (int x = bottomLeft.getBlockX(); x <= topRight.getBlockX(); x++)
                 for (int y = bottomLeft.getBlockY(); y <= topRight.getBlockY(); y++)
                     for (int z = bottomLeft.getBlockZ(); z <= topRight.getBlockZ(); z++) {
                         Block found = event.getEntity().getWorld().getBlockAt(x, y, z);
-                        if (found.getType().isBlock() && !found.isLiquid() && found.getType() != Material.AIR && found.getType() != Material.STAINED_CLAY && !found.isBlockPowered() && !(found.getState() instanceof InventoryHolder)
-                                && found.getRelative(BlockFace.DOWN).getType() != Material.SOIL && found.getType() != Material.BANNER && found.getType() != Material.SKULL && !found.getType().toString().contains("REDSTONE") &&
-                                !found.getType().toString().contains("SIGN") && found.getType() != Material.MOB_SPAWNER) {
+                        if (found.getType().isBlock() && !found.isLiquid() && found.getType() != Material.AIR && !found.getType().toString().endsWith("_TERRACOTTA") && !found.isBlockPowered() && !(found.getState() instanceof InventoryHolder)
+                                && found.getRelative(BlockFace.DOWN).getType() != Material.FARMLAND && !found.getType().toString().endsWith("_BANNER") && !found.getType().toString().endsWith("_HEAD") && !found.getType().toString().contains("REDSTONE") &&
+                                !found.getType().toString().contains("SIGN") && found.getType() != Material.SPAWNER) {
                             scorePoints((Player) event.getEntity().getShooter(), false, 1);
                             placed.put(found.getLocation(), found.getType());
-                            placed2.put(found.getLocation(), found.getData());
-                            found.setType(Material.STAINED_CLAY);
-                            found.setData(bit);
+                            placed2.put(found.getLocation(), found.getBlockData());
+                            found.setType(splatTypes[main.main().rng().nextInt(splatTypes.length)]);
                         }
                     }
         }

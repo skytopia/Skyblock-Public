@@ -38,7 +38,7 @@ public class Heuristic extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.BIRCH_DOOR_ITEM);
+        return new ItemStack(Material.BIRCH_DOOR);
     }
 
     public boolean isRepeatable() {

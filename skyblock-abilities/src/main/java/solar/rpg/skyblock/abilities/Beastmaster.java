@@ -36,7 +36,7 @@ public class Beastmaster extends Ability {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.CARROT_STICK, 1);
+        return new ItemStack(Material.CARROT_ON_A_STICK, 1);
     }
 
     @EventHandler

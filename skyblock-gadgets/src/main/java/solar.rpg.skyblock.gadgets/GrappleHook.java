@@ -58,7 +58,7 @@ public class GrappleHook extends Gadget {
             if (event.getState() == PlayerFishEvent.State.IN_GROUND || isLocationNearBlock(bobber))
                 if (inHand.getType() == Material.FISHING_ROD) {
                     player.setFallDistance(0);
-                    player.playSound(location, Sound.ENTITY_FIREWORK_SHOOT, 4, 4);
+                    player.playSound(location, Sound.ENTITY_FIREWORK_ROCKET_SHOOT, 4, 4);
                     player.setVelocity(bobber.toVector().subtract(player.getLocation().toVector()).multiply(0.225));
                     inHand.setDurability((short) (inHand.getDurability() + 5));
                 }
@@ -70,6 +70,6 @@ public class GrappleHook extends Gadget {
      * @return True if it is sitting on a non-hollow block.
      */
     private boolean isLocationNearBlock(Location loc) {
-        return !LocationUtil.HOLLOW_MATERIALS.contains(loc.getBlock().getTypeId()) || !LocationUtil.HOLLOW_MATERIALS.contains(loc.getBlock().getRelative(BlockFace.DOWN).getTypeId());
+        return !LocationUtil.HOLLOW_MATERIALS.contains(loc.getBlock().getType()) || !LocationUtil.HOLLOW_MATERIALS.contains(loc.getBlock().getRelative(BlockFace.DOWN).getType());
     }
 }

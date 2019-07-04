@@ -39,7 +39,7 @@ public class SuperBoneMeal extends Gadget {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.INK_SACK, 1, (short) 15);
+        return new ItemStack(Material.BONE_MEAL);
     }
 
     @EventHandler

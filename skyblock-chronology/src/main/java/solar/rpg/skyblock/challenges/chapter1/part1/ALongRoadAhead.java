@@ -33,7 +33,7 @@ public class ALongRoadAhead extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.BOOK_AND_QUILL, 1);
+        return new ItemStack(Material.WRITABLE_BOOK, 1);
     }
 
     public boolean isRepeatable() {
@@ -42,7 +42,7 @@ public class ALongRoadAhead extends Chronicle implements Live {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (event.getInventory().getName().equals("Chronology " + ChatColor.UNDERLINE + "(Chapter IX)"))
+        if (event.getView().getTitle().equals("Chronology " + ChatColor.UNDERLINE + "(Chapter IX)"))
             if (event.getCurrentItem() != null)
                 if (event.getCurrentItem().getType().equals(Material.EMERALD_BLOCK))
                     main.challenges().complete((Player) event.getWhoClicked(), this);

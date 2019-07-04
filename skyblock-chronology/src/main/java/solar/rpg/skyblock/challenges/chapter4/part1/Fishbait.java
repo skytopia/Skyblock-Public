@@ -19,10 +19,10 @@ public class Fishbait extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Stack(Material.RAW_FISH, 54),
-                new Stack(Material.RAW_FISH, (short) 1, 12),
-                new Stack(Material.RAW_FISH, (short) 2, 1),
-                new Stack(Material.RAW_FISH, (short) 3, 6)
+                new Stack(Material.COD, 54),
+                new Stack(Material.SALMON, 12),
+                new Stack(Material.TROPICAL_FISH, 1),
+                new Stack(Material.PUFFERFISH, 6)
         )};
     }
 

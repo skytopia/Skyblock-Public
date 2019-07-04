@@ -43,7 +43,7 @@ public class Always extends Chronicle implements Live {
                         return "Empowers your Aeon Block Block with End Stone";
                     }
                 },
-                new ItemReward(ItemUtility.enchant(ItemUtility.changeItem(new ItemStack(Material.GOLD_SWORD, 1), ChatColor.LIGHT_PURPLE + "Pure Sword", ChatColor.GRAY + "Purity I", "Don't strike the Living!"), Enchantment.VANISHING_CURSE, 1, Enchantment.MENDING, 1)),
+                new ItemReward(ItemUtility.enchant(ItemUtility.changeItem(new ItemStack(Material.GOLDEN_SWORD, 1), ChatColor.LIGHT_PURPLE + "Pure Sword", ChatColor.GRAY + "Purity I", "Don't strike the Living!"), Enchantment.VANISHING_CURSE, 1, Enchantment.MENDING, 1)),
         };
     }
 
@@ -68,11 +68,9 @@ public class Always extends Chronicle implements Live {
         if (event.isCancelled()) return;
         if (!isAnyIslandWorld(event.getEntity().getWorld())) return;
         Player pl = (Player) event.getDamager();
-        if (pl.getInventory().getItemInMainHand() != null) {
-            ItemStack main = pl.getInventory().getItemInMainHand();
-            if (main.hasItemMeta() && main.getItemMeta().hasDisplayName())
-                if (main.getItemMeta().getDisplayName().contains(ChatColor.LIGHT_PURPLE + "Pure Sword"))
-                    ((LivingEntity) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 100, 1));
-        }
+        ItemStack main = pl.getInventory().getItemInMainHand();
+        if (main.hasItemMeta() && main.getItemMeta().hasDisplayName())
+            if (main.getItemMeta().getDisplayName().contains(ChatColor.LIGHT_PURPLE + "Pure Sword"))
+                ((LivingEntity) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 100, 1));
     }
 }

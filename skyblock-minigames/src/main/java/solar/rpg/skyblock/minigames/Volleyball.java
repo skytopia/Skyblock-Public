@@ -136,11 +136,9 @@ public class Volleyball extends Minigame implements NewbieFriendly {
                     if (z == 0 || x == 0 || z == 13 || x == 14)
                         bl.setType(Material.BEDROCK);
                     else if (x == 7) {
-                        bl.setType(Material.SMOOTH_BRICK);
-                        bl.setData((byte) 3);
+                        bl.setType(Material.CHISELED_STONE_BRICKS);
                     } else {
-                        bl.setType(Material.SANDSTONE);
-                        bl.setData((byte) 2);
+                        bl.setType(Material.SMOOTH_SANDSTONE);
                     }
 
                     if (z != 0 && z != 13)
@@ -153,16 +151,16 @@ public class Volleyball extends Minigame implements NewbieFriendly {
 
                     if (x == 7) {
                         Block net = bl.getRelative(BlockFace.UP, 3);
-                        net.setType(Material.STAINED_GLASS_PANE);
+                        net.setType(Material.WHITE_STAINED_GLASS_PANE);
                         placed.add(net);
 
                         // Net pillars
                         if (z == 0 || z == 13) {
                             Block pillar = bl.getRelative(BlockFace.UP);
-                            pillar.setType(Material.COBBLE_WALL);
+                            pillar.setType(Material.COBBLESTONE_WALL);
                             placed.add(pillar);
                             pillar = pillar.getRelative(BlockFace.UP);
-                            pillar.setType(Material.COBBLE_WALL);
+                            pillar.setType(Material.COBBLESTONE_WALL);
                             placed.add(pillar);
                         }
                     }
@@ -220,7 +218,7 @@ public class Volleyball extends Minigame implements NewbieFriendly {
                                     if (pl.getEyeLocation().distance(ball.getLocation()) <= 2.25) {
                                         gen.getWorld().spawnParticle(Particle.SLIME, ball.getLocation(), 3);
                                         gen.getWorld().playSound(ball.getLocation(), Sound.ENTITY_SLIME_SQUISH, 1F, 1.5F);
-                                        gen.getWorld().playSound(ball.getLocation(), Sound.BLOCK_NOTE_BASS, 1F, combo);
+                                        gen.getWorld().playSound(ball.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, combo);
                                         Location landLoc = pl.getLocation().clone().add(7, 0, 0);
                                         Vector vel = landLoc.toVector().subtract(ball.getLocation().toVector()).multiply(0.0285).setY(1.255);
                                         scorePoints(pl, true, 1);
@@ -246,7 +244,7 @@ public class Volleyball extends Minigame implements NewbieFriendly {
          */
         private void miss() {
             chances--;
-            main.soundAll(getParticipants(), Sound.ENTITY_ILLUSION_ILLAGER_DEATH, 1.5F);
+            main.soundAll(getParticipants(), Sound.ENTITY_ILLUSIONER_DEATH, 1.5F);
             state = BallState.LOST;
             combo = 0.5F;
             if (chances == 0) {
@@ -256,9 +254,7 @@ public class Volleyball extends Minigame implements NewbieFriendly {
                 Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::stop, 60L);
             } else {
                 main.messageAll(getParticipants(), String.format(ChatColor.RED + "You failed to return the ball! You have %s chance%s remaining.", chances, chances == 1 ? "" : "s"));
-                Bukkit.getScheduler().runTaskLater(main.main().plugin(), () -> {
-                    state = BallState.WAITING_TO_THROW;
-                }, 60L);
+                Bukkit.getScheduler().runTaskLater(main.main().plugin(), () -> state = BallState.WAITING_TO_THROW, 60L);
             }
         }
 

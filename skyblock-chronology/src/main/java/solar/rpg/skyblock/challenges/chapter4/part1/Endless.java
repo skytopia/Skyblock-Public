@@ -44,7 +44,7 @@ public class Endless extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.ENDER_STONE, 1);
+        return new ItemStack(Material.END_STONE);
     }
 
     public boolean isRepeatable() {

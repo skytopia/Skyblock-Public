@@ -34,7 +34,7 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.CAULDRON_ITEM);
+        return new ItemStack(Material.CAULDRON);
     }
 
     @Override
@@ -122,13 +122,13 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
                 return;
             }
 
-            makePlatform(gen, 16, 6, Material.SMOOTH_BRICK);
+            makePlatform(gen, 16, 6, Material.STONE_BRICKS);
 
             //Generate step thingy
             for (int x = 0; x <= 12; x++)
                 for (int z = 0; z <= 4; z++) {
                     Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + 2 + x, gen.getBlockY(), gen.getBlockZ() + 1 + z);
-                    bl.setType(Material.STEP);
+                    bl.setType(Material.SMOOTH_STONE_SLAB);
                     placed.add(bl);
                 }
 
@@ -144,7 +144,7 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
             for (int z = 0; z <= 3; z++) {
                 Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + 15, gen.getBlockY() + 1, gen.getBlockZ() + 1 + z);
                 bl.setType(Material.BEDROCK);
-                bl.getRelative(BlockFace.UP).setType(Material.STEP);
+                bl.getRelative(BlockFace.UP).setType(Material.SMOOTH_STONE_SLAB);
                 placed.add(bl);
                 placed.add(bl.getRelative(BlockFace.UP));
             }
@@ -153,22 +153,21 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
             for (int x = 0; x <= 7; x++)
                 for (int z = 0; z <= 3; z++) {
                     Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY(), gen.getBlockZ() + z + 7);
-                    bl.setType(Material.SMOOTH_BRICK);
+                    bl.setType(Material.STONE_BRICKS);
                     placed.add(bl);
                 }
 
             // Generate useless slabs lol
             for (int z = 1; z <= 2; z++) {
                 Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + 5, gen.getBlockY() + 1, gen.getBlockZ() + z + 7);
-                bl.setType(Material.STEP);
+                bl.setType(Material.SMOOTH_STONE_SLAB);
                 placed.add(bl);
             }
 
             // Generate clickable colour selection squares.
             for (int i = 1; i <= 6; i++) {
                 Location color = genColorLoc(i);
-                color.getBlock().setType(Material.CONCRETE);
-                color.getBlock().setData(translateColor(i));
+                color.getBlock().setType(translateColor(i));
                 clickable.put(color.getBlock(), i);
             }
 
@@ -198,8 +197,7 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
 
             // Place guess on the board.
             Location loc = genColumnLoc(turn, points);
-            loc.getBlock().setType(Material.CONCRETE);
-            loc.getBlock().setData(translateColor(ID));
+            loc.getBlock().setType(translateColor(ID));
             main.soundAll(getParticipants(), Sound.ENTITY_CREEPER_DEATH, 2F);
             cooldown = System.currentTimeMillis() + 250;
 
@@ -244,8 +242,7 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
                         }
 
                         Block ind = genColumnLoc(i + 1, 13).getBlock();
-                        ind.setType(Material.CONCRETE);
-                        ind.setData((byte) 13);
+                        ind.setType(Material.GREEN_CONCRETE);
                     } else
                         genColumnLoc(i + 1, 13).getBlock().setType(Material.NETHER_BRICK);
             }
@@ -310,27 +307,27 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
         }
 
         /**
-         * Translates color code index into a color.
+         * Translates color code index into a concrete color.
          *
          * @param code The color code index.
          * @return Corresponding data color.
          */
-        private byte translateColor(Integer code) {
+        private Material translateColor(Integer code) {
             switch (code) {
                 case 1:
-                    return 14;
+                    return Material.RED_CONCRETE;
                 case 2:
-                    return 5;
+                    return Material.LIME_CONCRETE;
                 case 3:
-                    return 11;
+                    return Material.BLUE_CONCRETE;
                 case 4:
-                    return 4;
+                    return Material.YELLOW_CONCRETE;
                 case 5:
-                    return 2;
+                    return Material.MAGENTA_CONCRETE;
                 case 6:
-                    return 1;
+                    return Material.ORANGE_CONCRETE;
                 default:
-                    return 0;
+                    return Material.WHITE_CONCRETE;
             }
         }
 
@@ -351,7 +348,7 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
         public void onInteract(PlayerInteractEvent event) {
             if (event.getHand() == EquipmentSlot.OFF_HAND) return;
             if (event.getClickedBlock() == null) return;
-            if (event.getClickedBlock().getType() != Material.CONCRETE) return;
+            if (!event.getClickedBlock().getType().toString().endsWith("_CONCRETE")) return;
             if (canMove(event.getPlayer()))
                 move(event.getClickedBlock());
         }

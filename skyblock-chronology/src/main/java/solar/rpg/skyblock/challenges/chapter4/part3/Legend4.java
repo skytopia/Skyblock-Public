@@ -33,7 +33,7 @@ public class Legend4 extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.EYE_OF_ENDER);
+        return new ItemStack(Material.ENDER_EYE);
     }
 
     public boolean isRepeatable() {

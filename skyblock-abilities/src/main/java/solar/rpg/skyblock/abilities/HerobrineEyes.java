@@ -36,7 +36,7 @@ public class HerobrineEyes extends Ability {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.EYE_OF_ENDER, 1);
+        return new ItemStack(Material.ENDER_EYE, 1);
     }
 
     @EventHandler

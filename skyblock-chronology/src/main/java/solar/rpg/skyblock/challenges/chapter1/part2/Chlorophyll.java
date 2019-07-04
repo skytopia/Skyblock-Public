@@ -22,7 +22,7 @@ public class Chlorophyll extends Chronicle {
     public Criteria[] getCriteria() {
         return new Criteria[]{
                 new ItemCrit(
-                        new Stack(Material.CARROT_ITEM, 5),
+                        new Stack(Material.CARROT, 5),
                         new Stack(Material.BAKED_POTATO, 5),
                         new Single(Material.RED_MUSHROOM, 48),
                         new Single(Material.BROWN_MUSHROOM, 48),
@@ -35,7 +35,7 @@ public class Chlorophyll extends Chronicle {
     public Reward[] getReward() {
         return new Reward[]{
                 new ItemReward(ItemUtility.createPotion(PotionEffectType.HEALTH_BOOST, 600 * 20, 4)),
-                new ItemReward(new ItemStack(Material.MYCEL, 2)),
+                new ItemReward(new ItemStack(Material.MYCELIUM, 2)),
                 new GadgetReward("Terra Rose")
         };
     }
@@ -48,7 +48,7 @@ public class Chlorophyll extends Chronicle {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.SPECKLED_MELON, 1);
+        return new ItemStack(Material.GLISTERING_MELON_SLICE, 1);
     }
 
     public boolean isRepeatable() {

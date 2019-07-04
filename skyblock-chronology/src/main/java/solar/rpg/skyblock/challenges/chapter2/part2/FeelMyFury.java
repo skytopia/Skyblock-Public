@@ -34,7 +34,7 @@ public class FeelMyFury extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.MAGMA);
+        return new ItemStack(Material.MAGMA_BLOCK);
     }
 
     public boolean isRepeatable() {

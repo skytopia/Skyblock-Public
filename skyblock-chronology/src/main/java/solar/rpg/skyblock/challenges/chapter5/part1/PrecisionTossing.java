@@ -28,7 +28,7 @@ public class PrecisionTossing extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.EYE_OF_ENDER, 1, (short) 0);
+        return new ItemStack(Material.ENDER_EYE);
     }
 
     public boolean isRepeatable() {

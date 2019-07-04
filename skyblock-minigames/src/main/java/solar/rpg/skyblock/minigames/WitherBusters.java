@@ -38,7 +38,7 @@ public class WitherBusters extends Minigame {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.SKULL_ITEM, 1, (short) 1);
+        return new ItemStack(Material.WITHER_SKELETON_SKULL);
     }
 
     @Override

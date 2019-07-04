@@ -18,19 +18,19 @@ public class Skittles extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Stack(Material.INK_SACK, (short) 0, 5),
-                new Stack(Material.INK_SACK, (short) 1, 5),
-                new Stack(Material.INK_SACK, (short) 2, 5),
-                new Stack(Material.INK_SACK, (short) 5, 5),
-                new Stack(Material.INK_SACK, (short) 6, 5),
-                new Stack(Material.INK_SACK, (short) 7, 5),
-                new Stack(Material.INK_SACK, (short) 8, 5),
-                new Stack(Material.INK_SACK, (short) 9, 5),
-                new Stack(Material.INK_SACK, (short) 10, 5),
-                new Stack(Material.INK_SACK, (short) 11, 5),
-                new Stack(Material.INK_SACK, (short) 12, 5),
-                new Stack(Material.INK_SACK, (short) 13, 5),
-                new Stack(Material.INK_SACK, (short) 14, 5)
+                new Stack(Material.INK_SAC, 5),
+                new Stack(Material.RED_DYE, 5),
+                new Stack(Material.GREEN_DYE, 5),
+                new Stack(Material.PURPLE_DYE, 5),
+                new Stack(Material.CYAN_DYE, 5),
+                new Stack(Material.LIGHT_GRAY_DYE, 5),
+                new Stack(Material.GRAY_DYE, 5),
+                new Stack(Material.PINK_DYE, 5),
+                new Stack(Material.LIME_DYE, 5),
+                new Stack(Material.YELLOW_DYE, 5),
+                new Stack(Material.LIGHT_BLUE_DYE, 5),
+                new Stack(Material.MAGENTA_DYE, 5),
+                new Stack(Material.ORANGE_DYE, 5)
         )};
     }
 
@@ -42,7 +42,7 @@ public class Skittles extends Chronicle {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.INK_SACK, 1, (short) 7);
+        return new ItemStack(Material.LIGHT_GRAY_DYE);
     }
 
     public boolean isRepeatable() {

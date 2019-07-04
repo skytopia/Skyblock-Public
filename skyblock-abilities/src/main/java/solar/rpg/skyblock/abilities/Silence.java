@@ -34,7 +34,7 @@ public class Silence extends Ability {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.BED, 1);
+        return new ItemStack(Material.RED_BED, 1);
     }
 
 

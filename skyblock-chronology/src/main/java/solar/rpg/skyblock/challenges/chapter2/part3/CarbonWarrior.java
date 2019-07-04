@@ -23,7 +23,7 @@ public class CarbonWarrior extends Chronicle implements Live {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new ItemReward(new ItemStack(Material.MOB_SPAWNER))
+                new ItemReward(new ItemStack(Material.SPAWNER))
         };
     }
 

@@ -40,7 +40,7 @@ public class Uppercut extends Ability {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.LEASH, 1);
+        return new ItemStack(Material.LEAD, 1);
     }
 
     @EventHandler

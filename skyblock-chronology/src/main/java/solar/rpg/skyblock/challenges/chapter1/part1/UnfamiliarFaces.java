@@ -23,14 +23,14 @@ public class UnfamiliarFaces extends Chronicle implements Live {
 
     public Reward[] getReward() {
         return new Reward[]{
-                new ItemReward(new ItemStack(Material.LEASH, 2)),
+                new ItemReward(new ItemStack(Material.LEAD, 2)),
                 new ItemReward(new ItemStack(Material.NAME_TAG, 1)),
                 new ItemReward(new ItemStack(Material.CAKE, 1))
         };
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.RED_ROSE, 1, (short) 8);
+        return new ItemStack(Material.OXEYE_DAISY, 1, (short) 8);
     }
 
     public boolean isRepeatable() {

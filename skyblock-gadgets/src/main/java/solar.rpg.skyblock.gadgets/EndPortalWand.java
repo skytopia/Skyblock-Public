@@ -34,8 +34,8 @@ public class EndPortalWand extends Gadget {
     public String[] getPurpose() {
         return new String[]{
                 "Allows access to the End",
-                "Right click carpet to convert it",
-                "Left click portals to delete them"
+                "Right click white carpet to convert it",
+                "Left click end portals to delete them"
         };
     }
 
@@ -52,13 +52,13 @@ public class EndPortalWand extends Gadget {
             event.getPlayer().updateInventory();
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 // Convert carpet into end portal.
-                if (event.getClickedBlock().getType() == Material.CARPET) {
-                    event.getClickedBlock().setType(Material.ENDER_PORTAL);
+                if (event.getClickedBlock().getType() == Material.WHITE_CARPET) {
+                    event.getClickedBlock().setType(Material.END_PORTAL);
                     event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_CREEPER_PRIMED, 2F, 2F);
                 }
             } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 // Convert end portal into carpet.
-                if (event.getClickedBlock().getType() == Material.ENDER_PORTAL) {
+                if (event.getClickedBlock().getType() == Material.END_PORTAL) {
                     event.getClickedBlock().getWorld().playSound(event.getClickedBlock().getLocation(), Sound.ENTITY_ENDERMITE_DEATH, 2F, 2F);
                     event.getClickedBlock().breakNaturally();
                 }

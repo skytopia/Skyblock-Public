@@ -24,7 +24,7 @@ public class NightShift extends Chronicle {
                 new Stack(Material.ROTTEN_FLESH, (short) 0, 9),
                 new Stack(Material.BONE, (short) 0, 9),
                 new Stack(Material.STRING, (short) 0, 3),
-                new Stack(Material.SULPHUR, (short) 0, 3),
+                new Stack(Material.GUNPOWDER, (short) 0, 3),
                 new Stack(Material.ENDER_PEARL, (short) 0, 3)
         )};
     }
@@ -33,7 +33,7 @@ public class NightShift extends Chronicle {
         return new Reward[]{
                 new MoneyReward(main.getEconomy(), 50000),
                 new ItemReward(ItemUtility.changeSize(ItemUtility.createSpawnEgg(EntityType.VILLAGER), 2)),
-                new ItemReward(new ItemStack(Material.MOB_SPAWNER, 1))
+                new ItemReward(new ItemStack(Material.SPAWNER, 1))
         };
     }
 

@@ -28,7 +28,7 @@ public class Obedient extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.RECORD_9);
+        return new ItemStack(Material.MUSIC_DISC_STRAD);
     }
 
     public boolean isRepeatable() {

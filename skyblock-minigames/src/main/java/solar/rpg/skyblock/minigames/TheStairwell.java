@@ -132,8 +132,8 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
                             Block at = gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY() + y, gen.getBlockZ() + z);
                             if (y == 0) at.setType(Material.BEDROCK);
                             else if (x == 0 && z == 0 || x == 0 && z == 15 || x == 15 && z == 0 || x == 15 && z == 15) {
-                                at.setType(Material.STAINED_GLASS);
-                                at.setData((byte) main.main().rng().nextInt(16));
+                                at.setType(Material.WHITE_STAINED_GLASS);
+                                //TODO: Add random color
                             }
                             placed.add(at);
                         }

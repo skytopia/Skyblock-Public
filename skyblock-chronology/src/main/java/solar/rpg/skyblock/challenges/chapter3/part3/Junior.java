@@ -48,7 +48,7 @@ public class Junior extends Chronicle {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.SAPLING, 1, (short) 3);
+        return new ItemStack(Material.JUNGLE_SAPLING);
     }
 
     public boolean isRepeatable() {

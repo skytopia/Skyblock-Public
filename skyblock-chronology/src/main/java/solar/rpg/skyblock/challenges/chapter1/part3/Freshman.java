@@ -48,7 +48,7 @@ public class Freshman extends Chronicle {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.SAPLING);
+        return new ItemStack(Material.OAK_SAPLING);
     }
 
     public boolean isRepeatable() {

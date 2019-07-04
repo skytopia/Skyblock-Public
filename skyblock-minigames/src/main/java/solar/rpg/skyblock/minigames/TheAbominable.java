@@ -41,7 +41,7 @@ public class TheAbominable extends Minigame implements NewbieFriendly {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.SNOW_BALL, 1);
+        return new ItemStack(Material.SNOWBALL, 1);
     }
 
     @Override

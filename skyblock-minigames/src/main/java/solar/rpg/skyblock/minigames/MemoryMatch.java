@@ -32,7 +32,7 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.TOTEM);
+        return new ItemStack(Material.TOTEM_OF_UNDYING);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
                 return;
             }
 
-            makePlatform(gen, 15, 19, Material.SMOOTH_BRICK);
+            makePlatform(gen, 15, 19, Material.STONE_BRICKS);
 
             // Adds all possible indexes to an array.
             ArrayList<Short> possiblePairs = new ArrayList<>();
@@ -205,17 +205,13 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
          */
         private void reveal(Short revealed, Short group) {
             Location loc = generateGridLocation(revealed);
-            loc.getBlock().setType(Material.WOOL);
-            loc.getBlock().setData(translateDyeColor(group));
+            loc.getBlock().setType(translateDyeColor(group));
             loc.add(0, 0, 1);
-            loc.getBlock().setType(Material.WOOL);
-            loc.getBlock().setData(translateDyeColor(group));
+            loc.getBlock().setType(translateDyeColor(group));
             loc.add(1, 0, 0);
-            loc.getBlock().setType(Material.WOOL);
-            loc.getBlock().setData(translateDyeColor(group));
+            loc.getBlock().setType(translateDyeColor(group));
             loc.subtract(0, 0, 1);
-            loc.getBlock().setType(Material.WOOL);
-            loc.getBlock().setData(translateDyeColor(group));
+            loc.getBlock().setType(translateDyeColor(group));
         }
 
         /**
@@ -283,32 +279,32 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
         }
 
         /**
-         * Translates a group ID to a dye color data value.
+         * Translates a group ID to a wool color.
          */
-        private byte translateDyeColor(short group) {
+        private Material translateDyeColor(short group) {
             switch (group) {
                 case 1:
-                    return 2;
+                    return Material.MAGENTA_WOOL;
                 case 2:
-                    return 6;
+                    return Material.PINK_WOOL;
                 case 3:
-                    return 14;
+                    return Material.RED_WOOL;
                 case 4:
-                    return 1;
+                    return Material.ORANGE_WOOL;
                 case 5:
-                    return 4;
+                    return Material.YELLOW_WOOL;
                 case 6:
-                    return 5;
+                    return Material.LIME_WOOL;
                 case 7:
-                    return 3;
+                    return Material.LIGHT_BLUE_WOOL;
                 case 8:
-                    return 11;
+                    return Material.BLUE_WOOL;
                 case 9:
-                    return 9;
+                    return Material.CYAN_WOOL;
                 case 10:
-                    return 10;
+                    return Material.PURPLE_WOOL;
                 default:
-                    return 0;
+                    return Material.WHITE_WOOL;
             }
         }
 

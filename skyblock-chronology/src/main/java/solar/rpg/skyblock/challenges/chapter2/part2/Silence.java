@@ -40,7 +40,7 @@ public class Silence extends Chronicle implements Live {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent event) {
-        if (event.getBlock().getType() == Material.MOB_SPAWNER)
+        if (event.getBlock().getType() == Material.SPAWNER)
             if (isAnyIslandWorld(event.getBlock().getWorld()))
                 if (((CreatureSpawner) event.getBlock().getState()).getSpawnedType() != EntityType.PIG)
                     if (main().islands().getIsland(event.getPlayer().getUniqueId()) != null)

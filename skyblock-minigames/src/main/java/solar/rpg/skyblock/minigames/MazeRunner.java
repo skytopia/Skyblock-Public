@@ -119,7 +119,7 @@ public class MazeRunner extends Minigame implements NewbieFriendly {
                     for (int z = 0; z <= mazeGen.gridDimensionY + 1; z++) {
                         Block bl = gen.getWorld().getBlockAt(gen.getBlockX() + x, gen.getBlockY() + y, gen.getBlockZ() + z);
                         if ((y == 0 || y == 5) || (x == 0 || x == mazeGen.gridDimensionX + 8 || z == 0 || z == mazeGen.gridDimensionY + 1)) {
-                            bl.setType(Material.STAINED_GLASS);
+                            bl.setType(Material.WHITE_STAINED_GLASS);
                             placed.add(bl);
                         }
                     }

@@ -1,5 +1,6 @@
 package solar.rpg.skyblock.gadgets;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -50,9 +51,9 @@ public class TheExtrapolator extends Gadget {
             inHand.setAmount(1);
             event.getPlayer().getInventory().removeItem(inHand);
             event.getRightClicked().getWorld().playEffect(((Player) event.getRightClicked()).getEyeLocation(), Effect.STEP_SOUND, 20);
-            ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+            ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta meta = (SkullMeta) skull.getItemMeta();
-            meta.setOwner(event.getRightClicked().getName());
+            meta.setOwningPlayer(Bukkit.getOfflinePlayer(event.getRightClicked().getName()));
             skull.setItemMeta(meta);
             event.getPlayer().getWorld().dropItemNaturally(event.getPlayer().getLocation(), skull).setPickupDelay(1);
         }

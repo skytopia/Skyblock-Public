@@ -23,11 +23,11 @@ public class Deforestation extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Single(Material.SAPLING, 48, (short) 0),
-                new Single(Material.SAPLING, 48, (short) 1),
-                new Single(Material.SAPLING, 48, (short) 2),
-                new Single(Material.SAPLING, 48, (short) 3),
-                new Single(Material.SAPLING, 48, (short) 4)
+                new Single(Material.OAK_SAPLING, 48),
+                new Single(Material.SPRUCE_SAPLING, 48),
+                new Single(Material.BIRCH_SAPLING, 48),
+                new Single(Material.JUNGLE_SAPLING, 48),
+                new Single(Material.DARK_OAK_SAPLING, 48)
         )};
     }
 
@@ -48,7 +48,7 @@ public class Deforestation extends Chronicle {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.DOUBLE_PLANT, 1, (short) 4);
+        return new ItemStack(Material.ROSE_BUSH);
     }
 
     public boolean isRepeatable() {

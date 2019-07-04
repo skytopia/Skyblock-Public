@@ -121,12 +121,12 @@ public class TroubledBridges extends Minigame {
 
             // Make placed glass fall every 30 seconds.
             fall = Bukkit.getScheduler().runTaskTimer(main.main().plugin(), () -> {
-                ((ArrayList<Block>) placed.clone()).stream().filter(next -> next.getType() != Material.SMOOTH_BRICK).forEachOrdered(next -> {
+                ((ArrayList<Block>) placed.clone()).stream().filter(next -> next.getType() != Material.STONE_BRICKS).forEachOrdered(next -> {
                     placed.remove(next);
                     next.setType(Material.AIR);
                     next.getWorld().spawnFallingBlock(next.getLocation().add(0.5, 0.5, 0.5), Material.GLASS, (byte) 0);
                 });
-                main.soundAll(getParticipants(), Sound.ENTITY_ENDERDRAGON_GROWL, 2F);
+                main.soundAll(getParticipants(), Sound.ENTITY_ENDER_DRAGON_GROWL, 2F);
                 main.soundAll(getParticipants(), Sound.ENTITY_VEX_DEATH, 2F);
             }, 600L, 600L);
         }
@@ -175,7 +175,7 @@ public class TroubledBridges extends Minigame {
                 if (difficulty == Difficulty.HARDER && main.main().rng().nextBoolean())
                     event.getBlockPlaced().getLocation().getBlock().setType(Material.GLASS);
                 else
-                    event.getBlockPlaced().getLocation().getBlock().setType(Material.SMOOTH_BRICK);
+                    event.getBlockPlaced().getLocation().getBlock().setType(Material.STONE_BRICKS);
             } else
                 event.getBlockPlaced().getLocation().getBlock().setType(Material.GLASS);
             placed.add(event.getBlock());

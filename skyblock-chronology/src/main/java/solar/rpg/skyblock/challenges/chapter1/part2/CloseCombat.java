@@ -76,7 +76,6 @@ public class CloseCombat extends Chronicle implements Live {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player)
-            if (streak.containsKey(event.getEntity().getUniqueId()))
-                streak.remove(event.getEntity().getUniqueId());
+            streak.remove(event.getEntity().getUniqueId());
     }
 }

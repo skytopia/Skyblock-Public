@@ -18,13 +18,13 @@ public class WholesaleMeats extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Stack(Material.PORK, (short) 0, 9),
-                new Stack(Material.RAW_FISH, (short) 0, 9),
-                new Stack(Material.RAW_BEEF, (short) 0, 9),
-                new Stack(Material.RAW_CHICKEN, (short) 0, 9),
-                new Stack(Material.MUTTON, (short) 0, 9),
-                new Stack(Material.RABBIT, (short) 0, 2),
-                new Stack(Material.RAW_FISH, (short) 1, 1)
+                new Stack(Material.PORKCHOP, 9),
+                new Stack(Material.COD, 9),
+                new Stack(Material.BEEF, 9),
+                new Stack(Material.CHICKEN, 9),
+                new Stack(Material.MUTTON, 9),
+                new Stack(Material.RABBIT, 2),
+                new Stack(Material.SALMON, 1)
         )};
     }
 

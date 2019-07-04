@@ -31,7 +31,7 @@ public class WhitsEnd extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.RED_ROSE, 1, (short) 2);
+        return new ItemStack(Material.ALLIUM);
     }
 
     public boolean isRepeatable() {

@@ -137,7 +137,7 @@ public class Airshow extends Minigame {
                 for (int z = data[2] - 5; z < data[2] + 5; z++)
                     for (int y = data[1] - 5; y < data[1] + 5; y++) {
                         Block found = world.getBlockAt(data[0], y, z);
-                        if (found.getType() == Material.WOOL)
+                        if (found.getType().toString().endsWith("_WOOL"))
                             found.setType(Material.AIR);
                     }
             } else {
@@ -145,7 +145,7 @@ public class Airshow extends Minigame {
                 for (int x = data[0] - 5; x < data[0] + 5; x++)
                     for (int y = data[1] - 5; y < data[1] + 5; y++) {
                         Block found = world.getBlockAt(x, y, data[2]);
-                        if (found.getType() == Material.WOOL)
+                        if (found.getType().toString().endsWith("_WOOL"))
                             found.setType(Material.AIR);
                     }
             }
@@ -158,11 +158,10 @@ public class Airshow extends Minigame {
             Location random = generateLocation(70, 20, 128, true, false);
             int xz = main.main().rng().nextInt(2);
             int size = main.main().rng().nextInt(3);
-            byte color = getColor(size);
+            Material wool = getWool(size);
             for (Location loc : ringBlocks(random, size, xz)) {
                 if (loc.getBlock().getType() == Material.AIR) {
-                    loc.getBlock().setType(Material.WOOL);
-                    loc.getBlock().setData(color);
+                    loc.getBlock().setType(wool);
 
                     // Add this block to the 'placed' array so it gets removed automatically.
                     placed.add(loc.getBlock());
@@ -174,16 +173,16 @@ public class Airshow extends Minigame {
         /**
          * Converts size into a dye color for the ring.
          */
-        private byte getColor(int size) {
+        private Material getWool(int size) {
             switch (size) {
                 case 2:
-                    return 13;
+                    return Material.GREEN_WOOL;
                 case 1:
-                    return 4;
+                    return Material.YELLOW_WOOL;
                 case 0:
-                    return 14;
+                    return Material.RED_WOOL;
                 default:
-                    return 15;
+                    return Material.BLACK_WOOL;
             }
         }
 

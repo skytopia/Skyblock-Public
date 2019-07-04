@@ -38,7 +38,7 @@ public class DMs extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.STEP);
+        return new ItemStack(Material.SMOOTH_STONE_SLAB);
     }
 
     public boolean isRepeatable() {

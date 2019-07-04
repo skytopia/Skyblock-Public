@@ -38,7 +38,7 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.EYE_OF_ENDER);
+        return new ItemStack(Material.ENDER_EYE);
     }
 
     @Override
@@ -309,8 +309,8 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
 
                     // First throw must be on the green stained clay.
                     if (firstThrow) {
-                        if (feet != Material.STAINED_CLAY) {
-                            event.getPlayer().sendMessage(ChatColor.RED + "Stand on the stained clay and throw!");
+                        if (feet != Material.GREEN_TERRACOTTA) {
+                            event.getPlayer().sendMessage(ChatColor.RED + "Stand on the green and throw!");
                             return;
                         }
                         firstThrow = false;
@@ -321,7 +321,7 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
 
                     tries++;
                     Player thrower = event.getPlayer();
-                    ball = event.getItemDrop().getWorld().dropItem(event.getItemDrop().getLocation(), new ItemStack(Material.SNOW_BALL));
+                    ball = event.getItemDrop().getWorld().dropItem(event.getItemDrop().getLocation(), new ItemStack(Material.SNOWBALL));
                     ball.setVelocity(event.getItemDrop().getVelocity());
                     ball.setPickupDelay(999999999);
                     canMove = false;

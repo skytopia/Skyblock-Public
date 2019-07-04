@@ -21,7 +21,7 @@ public class GentleGiant extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(new Stack(Material.ICE, 8),
-                new Stack(Material.QUARTZ_ORE, 4),
+                new Stack(Material.NETHER_QUARTZ_ORE, 4),
                 new Stack(Material.COAL_ORE, 2),
                 new Stack(Material.LAPIS_ORE, 2),
                 new Stack(Material.REDSTONE_ORE, 2),

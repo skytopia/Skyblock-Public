@@ -41,7 +41,7 @@ public class BlackHole extends Gadget {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.POWERED_MINECART, 3);
+        return new ItemStack(Material.FURNACE_MINECART, 3);
     }
 
     @EventHandler

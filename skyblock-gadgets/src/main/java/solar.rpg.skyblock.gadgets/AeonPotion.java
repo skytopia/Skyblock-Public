@@ -26,13 +26,13 @@ import solar.rpg.skyblock.util.ItemUtility;
 public class AeonPotion extends Gadget {
 
     /* Gray background tile. */
-    private final ItemStack GRAY = ItemUtility.changeItem(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7), "", "");
+    private final ItemStack GRAY = ItemUtility.changeItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), "", "");
 
     /* Locked Aeon potion type. */
-    private final ItemStack LOCKED = ItemUtility.changeItem(new ItemStack(Material.IRON_FENCE, 1, (short) 7), ChatColor.RED + "Not Unlocked", "");
+    private final ItemStack LOCKED = ItemUtility.changeItem(new ItemStack(Material.IRON_BARS), ChatColor.RED + "Not Unlocked", "");
 
     /* Available Aeon potion types. */
-    private final PotionEffect[] AEON = {new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 * 180, 0, true, true, Color.WHITE), new PotionEffect(PotionEffectType.LUCK, 20 * 180, 0, true, true, Color.WHITE)};
+    private final PotionEffect[] AEON = {new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 * 180, 0, true, true, false), new PotionEffect(PotionEffectType.LUCK, 20 * 180, 0, true, true, false)};
 
     @Override
     public String getName() {
@@ -77,10 +77,8 @@ public class AeonPotion extends Gadget {
 
     @EventHandler
     public void onClick(final InventoryClickEvent event) {
-        if (event.getInventory() == null) return;
         if (event.getClickedInventory() == null) return;
-        if (event.getClickedInventory().getName() == null) return;
-        if (event.getInventory().getName().equals("Choose your Aeon Potion")) {
+        if (event.getView().getTitle().equals("Choose your Aeon Potion")) {
             event.setCancelled(true);
             if (event.getCurrentItem() == null) return;
             int slot = event.getSlot();

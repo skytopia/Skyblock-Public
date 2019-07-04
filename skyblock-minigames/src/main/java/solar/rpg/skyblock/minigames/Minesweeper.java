@@ -37,7 +37,7 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.FIREWORK_CHARGE);
+        return new ItemStack(Material.FIREWORK_STAR);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
                 return;
             }
 
-            makePlatform(gen, boardX, boardZ, Material.SMOOTH_BRICK);
+            makePlatform(gen, boardX, boardZ, Material.STONE_BRICKS);
 
             // Register clickable blocks.
             for (short i = 1; i <= squares; i++)
@@ -227,7 +227,7 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
                         retry = true;
                         main.messageAll(getParticipants(), ChatColor.RED + "Retrying as minigame did not go long enough.");
                         canMove = false;
-                        main.soundAll(getParticipants(), Sound.ENTITY_IRONGOLEM_DEATH, 3F);
+                        main.soundAll(getParticipants(), Sound.ENTITY_IRON_GOLEM_DEATH, 3F);
                     }
                 } else {
                     if (isBomb) main.messageAll(getParticipants(), ChatColor.RED + "You've revealed a mine!");
@@ -315,8 +315,7 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
             if (bombs.contains(index))
                 loc.getBlock().setType(Material.REDSTONE_BLOCK);
             else {
-                loc.getBlock().setType(Material.WOOL);
-                loc.getBlock().setData(translateDyeColor(nearby));
+                loc.getBlock().setType(translateDyeColor(nearby));
             }
             solved.add(index);
             // Don't award points on simple difficulty.
@@ -414,26 +413,26 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
         }
 
         /**
-         * Translates number of bombs nearby to a dye color.
+         * Translates number of bombs nearby to a concrete color.
          */
-        private byte translateDyeColor(short neighbors) {
+        private Material translateDyeColor(short neighbors) {
             switch (neighbors) {
                 case 1:
-                    return 5;
+                    return Material.LIME_CONCRETE;
                 case 2:
-                    return 4;
+                    return Material.YELLOW_CONCRETE;
                 case 3:
-                    return 1;
+                    return Material.ORANGE_CONCRETE;
                 case 4:
-                    return 14;
+                    return Material.RED_CONCRETE;
                 case 5:
-                    return 10;
+                    return Material.PURPLE_CONCRETE;
                 case 6:
                 case 7:
                 case 8:
-                    return 15;
+                    return Material.BLACK_CONCRETE;
                 default:
-                    return 0;
+                    return Material.WHITE_CONCRETE;
             }
         }
 

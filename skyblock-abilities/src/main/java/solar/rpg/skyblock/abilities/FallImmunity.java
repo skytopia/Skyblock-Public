@@ -36,7 +36,7 @@ public class FallImmunity extends Ability {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.GOLD_BOOTS, 1);
+        return new ItemStack(Material.GOLDEN_BOOTS, 1);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

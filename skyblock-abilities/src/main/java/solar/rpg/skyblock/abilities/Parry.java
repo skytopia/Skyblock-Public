@@ -54,7 +54,7 @@ public class Parry extends Ability {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.TOTEM, 1);
+        return new ItemStack(Material.TOTEM_OF_UNDYING, 1);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

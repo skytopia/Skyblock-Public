@@ -31,7 +31,7 @@ public class Housewarming extends Chronicle implements Live {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(Material.FIREWORK);
+        return new ItemStack(Material.FIREWORK_ROCKET);
     }
 
     public boolean isRepeatable() {

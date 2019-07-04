@@ -38,7 +38,7 @@ public class TerraRose extends Gadget {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.RED_ROSE);
+        return new ItemStack(Material.POPPY);
     }
 
     @EventHandler

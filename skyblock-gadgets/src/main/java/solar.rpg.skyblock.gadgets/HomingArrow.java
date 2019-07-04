@@ -49,7 +49,7 @@ public class HomingArrow extends ArrowGadget {
         arrowCheck(event.getEntity(), () -> Bukkit.getScheduler().runTaskLater(main().plugin(), () -> {
             for (Entity targetable : event.getEntity().getNearbyEntities(20, 20, 20))
                 if (targetable instanceof Monster) {
-                    event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.ENTITY_ENDERMEN_SCREAM, 1.5F, 1.5F);
+                    event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.ENTITY_ENDERMAN_SCREAM, 1.5F, 1.5F);
                     event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.ENTITY_GHAST_SCREAM, 1.5F, 0.65F);
                     event.getEntity().setVelocity(((Monster) targetable).getEyeLocation().toVector().subtract(event.getEntity().getLocation().toVector()).multiply(0.3));
                     return;

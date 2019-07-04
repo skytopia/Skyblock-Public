@@ -38,7 +38,7 @@ public class CaptureTheWool extends Minigame implements FlawlessEnabled {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.BANNER, 1, (short) 15);
+        return new ItemStack(Material.WHITE_BANNER);
     }
 
     @Override
@@ -127,25 +127,24 @@ public class CaptureTheWool extends Minigame implements FlawlessEnabled {
             for (int i = 0; i < noOfFlags; i++) {
                 Location gen = generateLocation(70, 20, crystal.getLocation().getBlockY(), true, false);
                 gen.getBlock().getRelative(BlockFace.DOWN).setType(Material.BEDROCK);
-                gen.getBlock().setType(Material.WOOL);
                 switch (i) {
                     case 0:
-                        gen.getBlock().setData((byte) 14);
+                        gen.getBlock().setType(Material.RED_WOOL);
                         break;
                     case 1:
-                        gen.getBlock().setData((byte) 5);
+                        gen.getBlock().setType(Material.LIME_WOOL);
                         break;
                     case 2:
-                        gen.getBlock().setData((byte) 11);
+                        gen.getBlock().setType(Material.BLUE_WOOL);
                         break;
                     case 3:
-                        gen.getBlock().setData((byte) 4);
+                        gen.getBlock().setType(Material.YELLOW_WOOL);
                         break;
                     case 4:
-                        gen.getBlock().setData((byte) 1);
+                        gen.getBlock().setType(Material.ORANGE_WOOL);
                         break;
                     default:
-                        gen.getBlock().setData((byte) 7);
+                        gen.getBlock().setType(Material.BLACK_WOOL);
                         break;
                 }
                 flags[i] = gen;
@@ -181,7 +180,7 @@ public class CaptureTheWool extends Minigame implements FlawlessEnabled {
             if (flagHolder != null)
                 if (flagHolder.equals(pl.getUniqueId())) {
                     main.messageAll(getParticipants(), pl.getDisplayName() + ChatColor.GOLD + " lost the flag!");
-                    main.soundAll(getParticipants(), Sound.ENTITY_IRONGOLEM_DEATH, 1F);
+                    main.soundAll(getParticipants(), Sound.ENTITY_IRON_GOLEM_DEATH, 1F);
                     flagHolder = null;
                 }
             super.disqualify(pl);
@@ -213,7 +212,7 @@ public class CaptureTheWool extends Minigame implements FlawlessEnabled {
                     event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Punch the ender crystal to capture!!");
                     main.soundAll(getParticipants(), Sound.ENTITY_BLAZE_SHOOT, 2F);
                 }
-            } else if (event.getBlock().getType() == Material.WOOL) {
+            } else if (event.getBlock().getType().toString().endsWith("_WOOL")) {
                 // Only the current flag can be taken.
                 event.getPlayer().sendMessage(ChatColor.RED + "This is not the correct flag!");
                 event.setCancelled(true);

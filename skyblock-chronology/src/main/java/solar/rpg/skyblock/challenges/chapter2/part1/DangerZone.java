@@ -22,10 +22,10 @@ public class DangerZone extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Stack(Material.MAGMA, 4),
+                new Stack(Material.MAGMA_BLOCK, 4),
                 new Stack(Material.TNT, 2),
-                new Stack(Material.FIREWORK_CHARGE, 1),
-                new Stack(Material.FIREBALL, 1),
+                new Stack(Material.FIREWORK_STAR, 1),
+                new Stack(Material.FIRE_CHARGE, 1),
                 new Single(Material.ANVIL, 16),
                 new Single(Material.END_CRYSTAL, 3))
         };
@@ -34,7 +34,7 @@ public class DangerZone extends Chronicle {
     public Reward[] getReward() {
         return new Reward[]{
                 new ItemReward(new ItemStack(Material.WHITE_SHULKER_BOX, 1)),
-                new ItemReward(new ItemStack(Material.TOTEM, 1)),
+                new ItemReward(new ItemStack(Material.TOTEM_OF_UNDYING, 1)),
                 new ItemReward(ItemUtility.createPotion(PotionEffectType.ABSORPTION, 900 * 20, 5)),
                 new ItemReward(ItemUtility.changeSize(ItemUtility.createEnchantBook(Enchantment.PROTECTION_EXPLOSIONS, 5, Enchantment.LOOT_BONUS_MOBS, 4), 2))
         };
