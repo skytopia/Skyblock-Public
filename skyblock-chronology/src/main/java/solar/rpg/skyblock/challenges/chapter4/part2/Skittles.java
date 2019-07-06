@@ -18,7 +18,9 @@ public class Skittles extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Stack(Material.INK_SAC, 5),
+                new Stack(Material.BLACK_DYE, 5),
+                new Stack(Material.BLUE_DYE, 5),
+                new Stack(Material.BROWN_DYE, 5),
                 new Stack(Material.RED_DYE, 5),
                 new Stack(Material.GREEN_DYE, 5),
                 new Stack(Material.PURPLE_DYE, 5),

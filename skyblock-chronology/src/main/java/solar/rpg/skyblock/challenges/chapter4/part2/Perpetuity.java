@@ -18,13 +18,13 @@ public class Perpetuity extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Stack(Material.LAPIS_BLOCK, (short) 0, 27),
-                new Stack(Material.REDSTONE_BLOCK, (short) 0, 27),
-                new Stack(Material.COAL_BLOCK, (short) 0, 27),
-                new Stack(Material.IRON_BLOCK, (short) 0, 9),
-                new Stack(Material.GOLD_BLOCK, (short) 0, 9),
-                new Stack(Material.DIAMOND_BLOCK, (short) 0, 7),
-                new Stack(Material.EMERALD_BLOCK, (short) 0, 2)
+                new Stack(Material.LAPIS_BLOCK, 27),
+                new Stack(Material.REDSTONE_BLOCK, 27),
+                new Stack(Material.COAL_BLOCK, 27),
+                new Stack(Material.IRON_BLOCK, 9),
+                new Stack(Material.GOLD_BLOCK, 9),
+                new Stack(Material.DIAMOND_BLOCK, 7),
+                new Stack(Material.EMERALD_BLOCK, 2)
         )};
     }
 

@@ -18,7 +18,7 @@ public class CookieFactory extends Chronicle {
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
                 new Stack(Material.COCOA, 54),
-                new Stack(Material.WHEAT, (short) 0, 54)
+                new Stack(Material.WHEAT, 54)
         )};
     }
 

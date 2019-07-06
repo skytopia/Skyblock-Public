@@ -19,7 +19,7 @@ public class BeyondCorruption extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Stack(Material.MYCELIUM, (short) 0, 64)
+                new Stack(Material.MYCELIUM, 64)
         )};
     }
 

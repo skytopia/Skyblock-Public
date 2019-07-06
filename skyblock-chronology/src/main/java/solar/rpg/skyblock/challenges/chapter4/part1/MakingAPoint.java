@@ -18,7 +18,7 @@ public class MakingAPoint extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Stack(Material.CACTUS, (short) 0, 54)
+                new Stack(Material.CACTUS, 54)
         )};
     }
 

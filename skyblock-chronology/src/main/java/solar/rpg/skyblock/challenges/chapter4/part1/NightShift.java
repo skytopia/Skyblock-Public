@@ -20,12 +20,12 @@ public class NightShift extends Chronicle {
 
     public Criteria[] getCriteria() {
         return new Criteria[]{new ItemCrit(
-                new Stack(Material.MOSSY_COBBLESTONE, (short) 0, 27),
-                new Stack(Material.ROTTEN_FLESH, (short) 0, 9),
-                new Stack(Material.BONE, (short) 0, 9),
-                new Stack(Material.STRING, (short) 0, 3),
-                new Stack(Material.GUNPOWDER, (short) 0, 3),
-                new Stack(Material.ENDER_PEARL, (short) 0, 3)
+                new Stack(Material.MOSSY_COBBLESTONE, 27),
+                new Stack(Material.ROTTEN_FLESH, 9),
+                new Stack(Material.BONE, 9),
+                new Stack(Material.STRING, 3),
+                new Stack(Material.GUNPOWDER, 3),
+                new Stack(Material.ENDER_PEARL, 3)
         )};
     }
 
