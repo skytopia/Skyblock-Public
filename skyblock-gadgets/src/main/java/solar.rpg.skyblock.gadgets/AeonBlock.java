@@ -67,7 +67,10 @@ public class AeonBlock extends Gadget {
         ItemStack placed = getItemInHand(event.getPlayer(), event.getHand());
         if (usable(event.getPlayer(), placed)) {
             placed.setAmount(2);
-            Bukkit.getScheduler().runTaskLater(main().plugin(), () -> placed.setAmount(1), 1L);
+            Bukkit.getScheduler().runTaskLater(main().plugin(), () -> {
+                placed.setAmount(1);
+                event.getPlayer().updateInventory();
+            }, 1L);
             event.getPlayer().getWorld().spawnParticle(Particle.FLAME, event.getBlock().getLocation().clone().add(0.5, 1.5, 0.5), 1);
         }
     }

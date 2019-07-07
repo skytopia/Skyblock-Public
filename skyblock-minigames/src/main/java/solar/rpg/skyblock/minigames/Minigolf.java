@@ -232,7 +232,7 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
                     placed.setType(Material.AIR);
 
             // Past next hole's schematic.
-            Utility.pasteSchematic(main.main(), data.schem, gen, false, false);
+            Utility.pasteSchematic(main.main(), data.schem, gen, false);
 
             // Teleport all players to the spawn location of the next hole.
             for (UUID in : getParticipants())

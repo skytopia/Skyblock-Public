@@ -149,8 +149,8 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
                 else schematic += "hard";
                 schematic += (main.main().rng().nextInt(6) + 1) + ".schematic";
                 if (f % 2 == 0)
-                    Utility.pasteSchematic(main.main(), schematic, gen.clone().add(1, 0, 1), true, false);
-                else Utility.pasteSchematic(main.main(), schematic, gen.clone().add(14, 0, 14), true, true);
+                    Utility.pasteSchematic(main.main(), schematic, gen.clone().add(1, 0, 1), true);
+                else Utility.pasteSchematic(main.main(), schematic, gen.clone().add(14, 0, 14), true);
 
             }
 

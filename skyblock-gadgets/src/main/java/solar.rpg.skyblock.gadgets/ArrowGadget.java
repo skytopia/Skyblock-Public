@@ -47,10 +47,9 @@ abstract class ArrowGadget extends Gadget {
      */
     private boolean isCorrectArrow(Entity en) {
         switch (getIcon().getType()) {
-            case TIPPED_ARROW:
-                return en instanceof TippedArrow;
             case SPECTRAL_ARROW:
                 return en instanceof SpectralArrow;
+            case TIPPED_ARROW:
             case ARROW:
                 return en instanceof Arrow;
             default:
