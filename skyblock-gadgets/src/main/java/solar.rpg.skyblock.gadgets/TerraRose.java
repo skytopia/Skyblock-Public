@@ -54,7 +54,7 @@ public class TerraRose extends Gadget {
             if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
             if (!event.getClickedBlock().getType().equals(Material.DIRT)) return;
             event.getPlayer().updateInventory();
-            event.getClickedBlock().setType(Material.GRASS);
+            event.getClickedBlock().setType(Material.GRASS_BLOCK);
         }
     }
 }

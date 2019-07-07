@@ -211,7 +211,7 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
             clickable.put(loc.getBlock(), (short) allocation);
             placed.add(loc.getBlock());
             Block bl = loc.getBlock();
-            bl.getRelative(BlockFace.DOWN).setType(Material.GRASS);
+            bl.getRelative(BlockFace.DOWN).setType(Material.GRASS_BLOCK);
             bl.setType(Material.NOTE_BLOCK);
             NoteBlock nbl = (NoteBlock) bl.getState();
             nbl.setNote(new Note(allocation * 3));
