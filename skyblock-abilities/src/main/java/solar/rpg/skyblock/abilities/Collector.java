@@ -3,11 +3,11 @@ package solar.rpg.skyblock.abilities;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.entity.Monster;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.island.Ability;
+import solar.rpg.skyblock.util.Utility;
 
 
 /**
@@ -39,7 +39,7 @@ public class Collector extends Ability {
 
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
-        if (!(event.getEntity() instanceof Monster)) return; // Only execute on monsters and animals.
+        if (!(Utility.isHostile(event.getEntity()))) return; // Only execute on monsters and animals.
         if (strictCheck(event.getEntity().getWorld())) return; // Don't execute if not in the islands world.
 
         // Run the emerald drop code if this is an eligible island.

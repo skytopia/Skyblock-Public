@@ -15,6 +15,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import solar.rpg.skyblock.util.ItemUtility;
 import solar.rpg.skyblock.util.Title;
+import solar.rpg.skyblock.util.Utility;
+
 
 /**
  * An arrow that splits apart when it comes into
@@ -100,8 +102,8 @@ public class DivergentArrow extends ArrowGadget {
         for (Entity nearby : proj.getNearbyEntities(20, 20, 20)) {
             if (limit == 0) break;
             limit--;
-            if (nearby instanceof Monster) {
-                TippedArrow newProj = proj.getWorld().spawnArrow(proj.getLocation(), ((Monster) nearby).getEyeLocation().toVector().subtract(proj.getLocation().toVector()).multiply(0.3), 3F, 0, TippedArrow.class);
+            if (Utility.isHostile(nearby)) {
+                Arrow newProj = proj.getWorld().spawnArrow(proj.getLocation(), ((Monster) nearby).getEyeLocation().toVector().subtract(proj.getLocation().toVector()).multiply(0.3), 3F, 0, Arrow.class);
                 newProj.setShooter(proj.getShooter());
                 newProj.setCritical(true);
                 newProj.setMetadata("diverge", new FixedMetadataValue(main().plugin(), ""));

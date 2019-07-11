@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import solar.rpg.skyblock.util.ItemUtility;
 import solar.rpg.skyblock.util.Title;
+import solar.rpg.skyblock.util.Utility;
 
 /**
  * On contact with a monster, this arrow makes them erupt in ores.
@@ -85,7 +86,7 @@ public class DrillpeckArrow extends ArrowGadget {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onProjHit(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) return;
-        if (!(event.getEntity() instanceof Monster)) return;
+        if (!Utility.isHostile(event.getEntity())) return;
         arrowMetaCheck(event.getDamager(), "drill", () -> {
             Projectile proj = (Projectile) event.getDamager();
             Player shooter = (Player) proj.getShooter();

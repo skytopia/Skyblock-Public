@@ -2,12 +2,12 @@ package solar.rpg.skyblock.abilities;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Monster;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.island.Ability;
 import solar.rpg.skyblock.island.Island;
+import solar.rpg.skyblock.util.Utility;
 
 
 /**
@@ -44,7 +44,7 @@ public class Silence extends Ability {
         if (strictCheck(event.getLocation().getWorld())) return;
 
         // Apply the effect to monsters on eligible items 25% of the time.
-        if (event.getEntity() instanceof Monster) {
+        if (Utility.isHostile(event.getEntity())) {
             Island found = main().islands().getIslandAt(event.getLocation());
             if (eligible(found))
                 if (main().rng().nextInt(4) == 2)

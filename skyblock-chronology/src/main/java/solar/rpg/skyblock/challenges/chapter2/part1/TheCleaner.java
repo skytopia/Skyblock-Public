@@ -3,7 +3,6 @@ package solar.rpg.skyblock.challenges.chapter2.part1;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -16,9 +15,11 @@ import solar.rpg.skyblock.island.chronology.reward.ItemReward;
 import solar.rpg.skyblock.island.chronology.reward.MoneyReward;
 import solar.rpg.skyblock.island.chronology.reward.Reward;
 import solar.rpg.skyblock.util.ItemUtility;
+import solar.rpg.skyblock.util.Utility;
 
 import java.util.HashMap;
 import java.util.UUID;
+
 
 public class TheCleaner extends Chronicle implements Live {
 
@@ -47,7 +48,7 @@ public class TheCleaner extends Chronicle implements Live {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Monster)) return;
+        if (!Utility.isHostile(event.getEntity())) return;
         if (!(event.getDamager() instanceof Player)) return;
         Chronicle theCleaner = this;
         if (!sweeps.containsKey(event.getDamager().getUniqueId())) {

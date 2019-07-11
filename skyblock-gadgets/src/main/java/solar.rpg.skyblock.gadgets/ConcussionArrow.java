@@ -13,6 +13,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import solar.rpg.skyblock.util.ItemUtility;
+import solar.rpg.skyblock.util.Utility;
 
 /**
  * Knocks nearby mobs away from the impact location.
@@ -77,7 +78,7 @@ public class ConcussionArrow extends ArrowGadget {
             for (Entity nearby : proj.getNearbyEntities(5, 5, 5))
                 if (nearby instanceof LivingEntity)
                     if (!(nearby instanceof Player))
-                        if (!restricted || (nearby instanceof Monster)) {
+                        if (!restricted || Utility.isHostile(nearby)) {
                             Location targetLoc = nearby.getLocation();
                             nearby.setVelocity(targetLoc.toVector().subtract(event.getEntity().getLocation().toVector()).setY(1).multiply(1.5));
                             ((LivingEntity) nearby).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, main().rng().nextInt(5) * 20 + 5 * 20, 100));

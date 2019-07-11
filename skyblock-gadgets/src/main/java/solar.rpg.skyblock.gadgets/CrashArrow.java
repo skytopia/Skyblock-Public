@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
+import solar.rpg.skyblock.util.Utility;
+
 
 /**
  * Upon impact, this arrow splits apart into 9 arrows
@@ -85,7 +87,7 @@ public class CrashArrow extends ArrowGadget {
             loc.getWorld().createExplosion(loc, 0F);
             loc.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 20);
             for (Entity nearby : proj.getNearbyEntities(2.5, 2.5, 2.5))
-                if (nearby instanceof Monster && nearby.getVelocity().getY() < 0.15) {
+                if (Utility.isHostile(nearby) && nearby.getVelocity().getY() < 0.15) {
                     nearby.setVelocity(new Vector(Math.random(), 2, Math.random()));
                     nearby.getWorld().spawnParticle(Particle.PORTAL, nearby.getLocation(), 8);
                     Bukkit.getScheduler().runTaskLater(main().plugin(), () -> {

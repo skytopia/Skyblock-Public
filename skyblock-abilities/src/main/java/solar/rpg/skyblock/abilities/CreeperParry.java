@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.island.Ability;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.util.Title;
+import solar.rpg.skyblock.util.Utility;
 
 
 /**
@@ -55,7 +56,7 @@ public class CreeperParry extends Ability {
                     event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 1F, 1.175F);
                     Bukkit.getScheduler().runTaskLater(main().plugin(), () -> {
                         for (Entity nearby : event.getEntity().getNearbyEntities(10, 5, 10))
-                            if (nearby instanceof Monster) {
+                            if (Utility.isHostile(nearby)) {
                                 ((Monster) nearby).damage(event.getDamage() * 2);
                                 nearby.getWorld().playSound(nearby.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.5F, 0.75F);
                                 nearby.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, nearby.getLocation(), 2);

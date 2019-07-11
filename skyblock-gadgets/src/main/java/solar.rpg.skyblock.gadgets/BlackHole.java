@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import solar.rpg.skyblock.island.Gadget;
+import solar.rpg.skyblock.util.Utility;
 
 /**
  * Consuming this gadget attracts all nearby monsters.
@@ -66,7 +67,7 @@ public class BlackHole extends Gadget {
                         at.getWorld().spawnParticle(Particle.SMOKE_LARGE, at, 5);
                     }
                     for (Entity nearby : at.getWorld().getNearbyEntities(at, 25, 25, 25))
-                        if (nearby instanceof Monster) {
+                        if (Utility.isHostile(nearby)) {
                             Location targetLoc = nearby.getLocation();
                             nearby.setVelocity(at.toVector().subtract(targetLoc.toVector()).multiply(0.33));
                         }
