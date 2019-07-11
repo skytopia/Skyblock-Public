@@ -3,7 +3,8 @@ package solar.rpg.skyblock.minigames;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.NoteBlock;
+import org.bukkit.block.data.Powerable;
+import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -158,8 +159,11 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
                     currentlyAt++;
 
                     clickable.entrySet().stream().filter(entry ->
-                            Objects.equals(entry.getValue(), order.get(currentlyAt))).findFirst().ifPresent(entry ->
-                            ((NoteBlock) entry.getKey().getState()).play());
+                            Objects.equals(entry.getValue(), order.get(currentlyAt))).findFirst().ifPresent(entry -> {
+                        Powerable power = (Powerable) entry.getKey().getBlockData();
+                        power.setPowered(true);
+                        entry.getKey().setBlockData(power);
+                    });
 
                     if (currentlyAt + 1 == order.size()) {
                         this.cancel();
@@ -213,9 +217,9 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
             Block bl = loc.getBlock();
             bl.getRelative(BlockFace.DOWN).setType(Material.GRASS_BLOCK);
             bl.setType(Material.NOTE_BLOCK);
-            NoteBlock nbl = (NoteBlock) bl.getState();
-            nbl.setNote(new Note(allocation * 3));
-            nbl.update(true);
+            NoteBlock data = (NoteBlock) bl.getBlockData();
+            data.setNote(new Note(allocation * 3));
+            bl.setBlockData(data);
         }
 
         @Override
