@@ -3,8 +3,8 @@ package solar.rpg.skyblock.minigames;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Powerable;
 import org.bukkit.block.data.type.NoteBlock;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -160,9 +160,11 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
 
                     clickable.entrySet().stream().filter(entry ->
                             Objects.equals(entry.getValue(), order.get(currentlyAt))).findFirst().ifPresent(entry -> {
-                        Powerable power = (Powerable) entry.getKey().getBlockData();
-                        power.setPowered(true);
-                        entry.getKey().setBlockData(power);
+                        Location above = entry.getKey().getLocation().add(0, 1, 0);
+                        NoteBlock note = (NoteBlock) entry.getKey().getBlockData();
+                        for (Entity entity : gen.getWorld().getNearbyEntities(above, 25, 25, 25))
+                            if (entity instanceof Player)
+                                ((Player) entity).playNote(above, note.getInstrument(), note.getNote());
                     });
 
                     if (currentlyAt + 1 == order.size()) {
