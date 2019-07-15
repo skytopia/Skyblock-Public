@@ -119,7 +119,7 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
             canMove = false;
 
             /* The generated location where the minigame will play. */
-            Location gen = generateLocation(100, 20, 140, true, false);
+            gen = generateLocation(100, 20, 140, true, false);
 
             if (!isEmpty(gen, 10, 6, 9)) {
                 error();
@@ -160,11 +160,13 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
 
                     clickable.entrySet().stream().filter(entry ->
                             Objects.equals(entry.getValue(), order.get(currentlyAt))).findFirst().ifPresent(entry -> {
-                        Location above = entry.getKey().getLocation().add(0, 1, 0);
+                        Location above = entry.getKey().getLocation().add(0.5, 1.5, 0.5);
                         NoteBlock note = (NoteBlock) entry.getKey().getBlockData();
                         for (Entity entity : gen.getWorld().getNearbyEntities(above, 25, 25, 25))
-                            if (entity instanceof Player)
+                            if (entity instanceof Player) {
                                 ((Player) entity).playNote(above, note.getInstrument(), note.getNote());
+                                ((Player) entity).spawnParticle(Particle.NOTE, above, 0, note.getNote().getId() / 24D, 0, 0, 1);
+                            }
                     });
 
                     if (currentlyAt + 1 == order.size()) {
