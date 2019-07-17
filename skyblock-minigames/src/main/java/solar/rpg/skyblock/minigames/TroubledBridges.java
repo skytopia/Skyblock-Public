@@ -5,7 +5,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -18,9 +17,12 @@ import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.Minigame;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.tasks.TimeCountdownMinigameTask;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class TroubledBridges extends Minigame {
 
@@ -67,6 +69,16 @@ public class TroubledBridges extends Minigame {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 420;
     }
@@ -78,7 +90,12 @@ public class TroubledBridges extends Minigame {
 
     @Override
     public int getMaxReward() {
-        return 6000;
+        return 4000;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COMPETITIVE;
     }
 
     @Override
@@ -90,9 +107,6 @@ public class TroubledBridges extends Minigame {
 
         /* The end crystal pointing towards home. */
         private EnderCrystal crystal;
-
-        /* Players that have made it back safely. */
-        private Set<UUID> safe;
 
         /* Task that destroys glass every 30 seconds. */
         private BukkitTask fall;
@@ -106,9 +120,13 @@ public class TroubledBridges extends Minigame {
         }
 
         @Override
-        public void onStart() {
-            safe = new HashSet<>();
+        protected boolean isNoScoreIfOutOfTime() {
+            // Finished users should keep their score, and unfinished users will always have a score of 0 if time is up.
+            return false;
+        }
 
+        @Override
+        public void onStart() {
             crystal = (EnderCrystal) Bukkit.getPlayer(participants.get(0)).getWorld().spawnEntity(generateLocation(20, 150, -1, true, false), EntityType.ENDER_CRYSTAL);
             crystal.setShowingBottom(true);
             crystal.setBeamTarget(main.main().islands().getHomeOrSpawnpoint(owner));
@@ -133,8 +151,6 @@ public class TroubledBridges extends Minigame {
 
         @Override
         public void onFinish() {
-            safe.clear();
-            safe = null;
             genCyl(crystal.getLocation().clone().subtract(0, 1, 0), Material.AIR);
             if (crystal != null) {
                 crystal.remove();
@@ -171,6 +187,7 @@ public class TroubledBridges extends Minigame {
             if (!participants.contains(event.getPlayer().getUniqueId())) return;
             if (disqualified.contains(event.getPlayer().getUniqueId())) return;
             if (!owner.isInside(event.getBlockPlaced().getLocation())) return;
+            ItemStack itemUsed = getItemInHand(event.getPlayer(), event.getHand());
             if (main.main().rng().nextInt(10) == 7) {
                 if (difficulty == Difficulty.HARDER && main.main().rng().nextBoolean())
                     event.getBlockPlaced().getLocation().getBlock().setType(Material.GLASS);
@@ -180,23 +197,11 @@ public class TroubledBridges extends Minigame {
                 event.getBlockPlaced().getLocation().getBlock().setType(Material.GLASS);
             placed.add(event.getBlock());
             main.main().listener().bypass.add(event.getPlayer().getUniqueId());
-            event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() + 1);
-            Bukkit.getScheduler().runTaskLater(main.main().plugin(), () -> event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() - 1), 1L);
-        }
-
-        @Override
-        public void disqualify(Player pl) {
-            super.disqualify(pl);
-            if (disqualified.size() == getParticipants().size()) return;
-            checkWin();
-        }
-
-        /**
-         * Checks if all participants have made it back safely.
-         */
-        private void checkWin() {
-            if (safe.size() >= getParticipants().size() - disqualified.size())
-                stop();
+            itemUsed.setAmount(2);
+            Bukkit.getScheduler().runTaskLater(main.main().plugin(), () -> {
+                itemUsed.setAmount(1);
+                event.getPlayer().updateInventory();
+            }, 1L);
         }
 
         @EventHandler(priority = EventPriority.HIGHEST)
@@ -208,16 +213,18 @@ public class TroubledBridges extends Minigame {
 
         @EventHandler
         public void onMove(PlayerMoveEvent event) {
-            if (!participants.contains(event.getPlayer().getUniqueId())) return;
-            if (disqualified.contains(event.getPlayer().getUniqueId())) return;
-            if (!safe.contains(event.getPlayer().getUniqueId())) {
-                if (main.main().islands().getHomeOrSpawnpoint(owner).distanceSquared(event.getTo()) >= 225)
-                    return;
-                safe.add(event.getPlayer().getUniqueId());
-                main.messageAll(getParticipants(), event.getPlayer().getDisplayName() + ChatColor.GOLD + " made it back safe! (" + safe.size() + "/" + (getParticipants().size() - disqualified.size()) + ")");
+            if (!isValidParticipant(event.getPlayer().getUniqueId())) return;
+            if (!finished.contains(event.getPlayer().getUniqueId())) {
+                if (main.main().islands().getHomeOrSpawnpoint(owner).distanceSquared(event.getTo()) >= 225) return;
+
+                finished.add(event.getPlayer().getUniqueId());
+                titleParticipants(ChatColor.GOLD + "Finished!", event.getPlayer().getDisplayName() + ChatColor.RED + " made it back safe!");
                 main.soundAll(getParticipants(), Sound.ENTITY_PLAYER_LEVELUP, 2F);
                 main.soundAll(getParticipants(), Sound.ENTITY_BLAZE_AMBIENT, 3F);
-                checkWin();
+
+                // Stop minigame once all participants have either finished or been disqualified.
+                if (finished.size() + disqualified.size() == participants.size())
+                    Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::stop, 60L);
             }
         }
     }

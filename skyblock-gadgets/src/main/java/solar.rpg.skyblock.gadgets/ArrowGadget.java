@@ -1,6 +1,5 @@
 package solar.rpg.skyblock.gadgets;
 
-import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.island.Gadget;
@@ -25,7 +24,9 @@ abstract class ArrowGadget extends Gadget {
         if (!isCorrectArrow(en)) return;
         if (!(((Projectile) en).getShooter() instanceof Player)) return;
         Player shooter = (Player) ((Projectile) en).getShooter();
-        ItemStack arrow = shooter.getInventory().getItem(shooter.getInventory().first(getIcon().getType()));
+        int first = shooter.getInventory().first(getIcon().getType());
+        if (first == -1) return;
+        ItemStack arrow = shooter.getInventory().getItem(first);
         if (usable(shooter, arrow)) after.run();
     }
 

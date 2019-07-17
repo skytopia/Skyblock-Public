@@ -18,6 +18,7 @@ import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.Minigame;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.tasks.TimeCountdownMinigameTask;
 import solar.rpg.skyblock.stored.Settings;
 
@@ -69,13 +70,28 @@ public class CharcoalMoon extends Minigame {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 300;
     }
 
     @Override
     public int getMaxReward() {
-        return 7500;
+        return 4000;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COOPERATIVE;
     }
 
     @Override
@@ -96,6 +112,9 @@ public class CharcoalMoon extends Minigame {
         /* Keeps track of the alive skeletons spawned in relation to this minigame. */
         private Set<UUID> aliveSkeletons;
 
+        /* How many wither skeletons have been killed. */
+        private int score;
+
         CharcoalMoonTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty);
             rules.put("flying", false);
@@ -105,6 +124,7 @@ public class CharcoalMoon extends Minigame {
         @Override
         public void onStart() {
             aliveSkeletons = new HashSet<>();
+            score = 0;
             // Set the apparent time to night for all participants.
             for (UUID part : getParticipants())
                 if (Bukkit.getPlayer(part) != null)
@@ -159,12 +179,12 @@ public class CharcoalMoon extends Minigame {
                     if (aliveSkeletons.contains(event.getEntity().getUniqueId())) {
                         event.getDrops().clear();
                         aliveSkeletons.remove(event.getEntity().getUniqueId());
-                        points++;
+                        score++;
                         main.soundAll(getParticipants(), Sound.BLOCK_LEVER_CLICK, 2F);
-                        if (points == 50)
+                        if (score == 50)
                             stop();
-                        else if (points % 10 == 0)
-                            titleParticipants(ChatColor.GOLD + "Progress!", ChatColor.RED + "" + points + "/50 skeletons killed!");
+                        else if (score % 10 == 0)
+                            titleParticipants(ChatColor.GOLD + "Progress!", ChatColor.RED + "" + score + "/50 skeletons killed!");
                     }
             }
         }

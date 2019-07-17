@@ -58,7 +58,7 @@
         <dependency>
             <groupId>solar.rpg</groupId>
             <artifactId>skyblock</artifactId>
-            <version>3.1.1</version>
+            <version>3.1.2</version>
         </dependency>
 
         <!-- Economy/permissions hook -->

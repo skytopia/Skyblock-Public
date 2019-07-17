@@ -48,7 +48,7 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
 
     @Override
     public Difficulty[] getDifficulties() {
-        return new Difficulty[]{Difficulty.NORMAL, Difficulty.HARDER};
+        return new Difficulty[]{Difficulty.NORMAL};
     }
 
     @Override
@@ -59,6 +59,16 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
     @Override
     public String getObjectiveWord() {
         return "guesses made";
+    }
+
+    @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
     }
 
     @Override
@@ -82,8 +92,18 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
     }
 
     @Override
+    public int getFlawlessPlayerMinimum() {
+        return 1;
+    }
+
+    @Override
     public int getMaxReward() {
         return 1500;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COOPERATIVE;
     }
 
     private class MastermindTask extends LeastAttemptsMinigameTask {
@@ -105,6 +125,11 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
 
         MastermindTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty, 1, 12);
+        }
+
+        @Override
+        protected boolean isNoScoreIfOutOfTime() {
+            return true;
         }
 
         @Override
@@ -196,7 +221,7 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
             Integer ID = clickable.get(block);
 
             // Place guess on the board.
-            Location loc = genColumnLoc(turn, points);
+            Location loc = genColumnLoc(turn, getActualResult(null));
             loc.getBlock().setType(translateColor(ID));
             main.soundAll(getParticipants(), Sound.ENTITY_CREEPER_DEATH, 2F);
             cooldown = System.currentTimeMillis() + 250;
@@ -214,7 +239,7 @@ public class Mastermind extends Minigame implements FlawlessEnabled, BoardGame, 
                     if (solved[0] && solved[1] && solved[2] && solved[3]) {
                         stop();
                     } else {
-                        points--;
+                        scorePoints(null, -1);
                         selectPlayer();
                         canMove = true;
                     }

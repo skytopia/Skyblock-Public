@@ -12,10 +12,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
-import solar.rpg.skyblock.island.minigames.BoardGame;
 import solar.rpg.skyblock.island.minigames.Difficulty;
-import solar.rpg.skyblock.island.minigames.FlawlessEnabled;
-import solar.rpg.skyblock.island.minigames.Minigame;
+import solar.rpg.skyblock.island.minigames.*;
 import solar.rpg.skyblock.minigames.tasks.AttemptsMinigameTask;
 import solar.rpg.skyblock.util.StringUtility;
 
@@ -67,6 +65,16 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 600;
     }
@@ -87,8 +95,18 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
     }
 
     @Override
+    public int getFlawlessPlayerMinimum() {
+        return 1;
+    }
+
+    @Override
     public int getMaxReward() {
         return 5000;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COOPERATIVE;
     }
 
     private class MinesweeperTask extends AttemptsMinigameTask {
@@ -127,6 +145,12 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
 
         MinesweeperTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty, 1);
+        }
+
+        @Override
+        protected boolean isNoScoreIfOutOfTime() {
+            // If time runs out, no points should be awarded.
+            return true;
         }
 
         @Override
@@ -170,11 +194,9 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
             bombs.clear();
             clickable.clear();
             solved.clear();
-            bronze = false;
-            silver = false;
-            gold = false;
+            medal = Medal.NONE;
             canMove = true;
-            points = 0;
+            setStartingPoints(0);
             delay = scoreDelay;
             resetTurns();
 
@@ -322,7 +344,7 @@ public class Minesweeper extends Minigame implements FlawlessEnabled, BoardGame 
             if (difficulty.equals(Difficulty.SIMPLE)) return;
             delay--;
             if (delay == 0) {
-                scorePoints(responsible, true, 1);
+                scorePoints(responsible, false, true, 1);
                 delay = scoreDelay;
             }
         }

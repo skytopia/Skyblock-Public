@@ -10,10 +10,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
-import solar.rpg.skyblock.island.minigames.BoardGame;
+import solar.rpg.skyblock.island.minigames.*;
 import solar.rpg.skyblock.island.minigames.Difficulty;
-import solar.rpg.skyblock.island.minigames.Minigame;
-import solar.rpg.skyblock.island.minigames.NewbieFriendly;
 import solar.rpg.skyblock.minigames.extra.tictactoe.AIPlayerMinimax;
 import solar.rpg.skyblock.minigames.extra.tictactoe.TicTacToeBoard;
 import solar.rpg.skyblock.minigames.tasks.AttemptsMinigameTask;
@@ -66,6 +64,16 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 240;
     }
@@ -85,6 +93,11 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
         return 2500;
     }
 
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COOPERATIVE;
+    }
+
     private class TicTacToeTask extends AttemptsMinigameTask {
 
         /* Tic Tac Toe implementation classes. */
@@ -100,6 +113,14 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
 
         TicTacToeTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty, 1);
+            rules.put("breaking", false);
+            rules.put("placing", false);
+        }
+
+        @Override
+        protected boolean isNoScoreIfOutOfTime() {
+            // The players should be able to finish this minigame in time no problem.
+            return true;
         }
 
         @Override
@@ -207,15 +228,15 @@ public class TicTacToe extends Minigame implements BoardGame, NewbieFriendly {
         private void addPoints() {
             switch (currentState) {
                 case DRAW:
-                    points += 1;
+                    scorePoints(null, 1);
                     break;
                 case NOUGHT_WON:
                     if (playerSeed == TicTacToeBoard.Seed.NOUGHT)
-                        points += 2;
+                        scorePoints(null, 2);
                     break;
                 case CROSS_WON:
                     if (playerSeed == TicTacToeBoard.Seed.CROSS)
-                        points += 2;
+                        scorePoints(null, 2);
                     break;
             }
         }

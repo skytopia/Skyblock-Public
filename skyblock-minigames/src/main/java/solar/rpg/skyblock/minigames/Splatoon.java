@@ -20,8 +20,10 @@ import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.Minigame;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.tasks.DefaultMinigameTask;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -69,6 +71,16 @@ public class Splatoon extends Minigame {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 35;
     }
@@ -80,12 +92,17 @@ public class Splatoon extends Minigame {
 
     @Override
     public boolean isScoreDivisible() {
-        return true;
+        return false;
     }
 
     @Override
     public int getMaxReward() {
-        return 4000;
+        return 2000;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COMPETITIVE;
     }
 
     private class SplatoonTask extends DefaultMinigameTask {
@@ -117,6 +134,8 @@ public class Splatoon extends Minigame {
 
         SplatoonTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty);
+            rules.put("breaking", false);
+            rules.put("placing", false);
         }
 
         @Override
@@ -165,20 +184,35 @@ public class Splatoon extends Minigame {
             if (disqualified.contains(((Player) event.getEntity().getShooter()).getUniqueId())) return;
             Location bottomLeft = event.getEntity().getLocation().clone().subtract(1, 1, 1);
             Location topRight = event.getEntity().getLocation().clone().add(1, 1, 1);
+            int pointsScored = 0;
             // Search nearby blocks.
             for (int x = bottomLeft.getBlockX(); x <= topRight.getBlockX(); x++)
                 for (int y = bottomLeft.getBlockY(); y <= topRight.getBlockY(); y++)
                     for (int z = bottomLeft.getBlockZ(); z <= topRight.getBlockZ(); z++) {
                         Block found = event.getEntity().getWorld().getBlockAt(x, y, z);
-                        if (found.getType().isBlock() && !found.isLiquid() && found.getType() != Material.AIR && !found.getType().toString().endsWith("_TERRACOTTA") && !found.isBlockPowered() && !(found.getState() instanceof InventoryHolder)
-                                && found.getRelative(BlockFace.DOWN).getType() != Material.FARMLAND && !found.getType().toString().endsWith("_BANNER") && !found.getType().toString().endsWith("_HEAD") && !found.getType().toString().contains("REDSTONE") &&
-                                !found.getType().toString().contains("SIGN") && found.getType() != Material.SPAWNER) {
-                            scorePoints((Player) event.getEntity().getShooter(), false, 1);
+                        if (found.getType().isBlock()
+                                && !found.isLiquid()
+                                && found.getType() != Material.AIR
+                                && !found.getType().toString().endsWith("_TERRACOTTA")
+                                && !found.isBlockPowered()
+                                && !(found.getState() instanceof InventoryHolder)
+                                && found.getRelative(BlockFace.DOWN).getType() != Material.FARMLAND
+                                && !found.getType().toString().endsWith("_BANNER")
+                                && !found.getType().toString().endsWith("_HEAD")
+                                && !found.getType().toString().endsWith("_DOOR")
+                                && !found.getType().toString().endsWith("_BED")
+                                && !found.getType().toString().contains("REDSTONE")
+                                && !found.getType().toString().contains("SIGN")
+                                && found.getType() != Material.SPAWNER
+                                && found.getType() != Material.FARMLAND) {
+                            pointsScored++;
                             placed.put(found.getLocation(), found.getType());
                             placed2.put(found.getLocation(), found.getBlockData());
                             found.setType(splatTypes[main.main().rng().nextInt(splatTypes.length)]);
                         }
                     }
+            if (pointsScored > 0)
+                scorePoints((Player) event.getEntity().getShooter(), true, false, pointsScored);
         }
     }
 }

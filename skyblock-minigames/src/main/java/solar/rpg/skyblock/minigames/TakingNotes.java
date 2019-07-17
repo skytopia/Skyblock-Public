@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import solar.rpg.skyblock.Main;
 import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
@@ -66,6 +68,16 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 0;
     }
@@ -86,8 +98,18 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
     }
 
     @Override
+    public int getFlawlessPlayerMinimum() {
+        return 1;
+    }
+
+    @Override
     public int getMaxReward() {
-        return 10000;
+        return 7500;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COOPERATIVE;
     }
 
     private class TakingNotesTask extends AttemptsMinigameTask {
@@ -101,14 +123,24 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
         /* The current combination the note blocks have been played in. */
         private LinkedList<Short> attempt;
 
+        private BukkitTask playerTask;
+
         TakingNotesTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty, 1);
+            rules.put("breaking", false);
+            rules.put("placing", false);
         }
 
         /* The only thing that should end the game is pressing a wrong note. */
         @Override
         public boolean ascendingTimer() {
             return true;
+        }
+
+        @Override
+        protected boolean isNoScoreIfOutOfTime() {
+            // The timer never reaches zero, so no.
+            return false;
         }
 
         @Override
@@ -149,6 +181,8 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
             canMove = false;
             titleParticipants("", ChatColor.GOLD + "Get ready!");
 
+            Main.log("next");
+
             // Play each note block at a delay.
             // Normal mode: every 3/4 of a second.
             // Harder mode: every 1/4 of a second.
@@ -169,7 +203,7 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
                             }
                     });
 
-                    if (currentlyAt + 1 == order.size()) {
+                    if (currentlyAt + 1 >= order.size()) {
                         this.cancel();
                         Bukkit.getScheduler().runTaskLater(main.main().plugin(), () -> {
                             // After the sequence has been played, the next player can make their move.
@@ -203,7 +237,7 @@ public class TakingNotes extends Minigame implements FlawlessEnabled, BoardGame,
             } else if (attempt.size() == order.size()) {
                 canMove = false;
                 attempt.clear();
-                scorePoints(player, true, 1);
+                scorePoints(player, false, true, 1);
                 titleParticipants("", ChatColor.GREEN + "Nice work! Keep going!");
                 Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::playNextTone, 30L);
             }

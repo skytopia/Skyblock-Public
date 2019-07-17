@@ -17,6 +17,7 @@ import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.Minigame;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.tasks.TimeCountdownMinigameTask;
 
 import java.util.List;
@@ -65,6 +66,16 @@ public class WitherBusters extends Minigame {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 180;
     }
@@ -77,6 +88,11 @@ public class WitherBusters extends Minigame {
     @Override
     public int getMaxReward() {
         return 3000;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COOPERATIVE;
     }
 
     @Override

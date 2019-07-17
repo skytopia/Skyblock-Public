@@ -12,18 +12,19 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import solar.rpg.skyblock.Main;
 import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.Minigame;
 import solar.rpg.skyblock.island.minigames.NewbieFriendly;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.tasks.TimeCountupMinigameTask;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+//FIXME: Finish this minigame, make it competitive.
 public class Volleyball extends Minigame implements NewbieFriendly {
 
     @Override
@@ -67,6 +68,16 @@ public class Volleyball extends Minigame implements NewbieFriendly {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 0;
     }
@@ -83,7 +94,12 @@ public class Volleyball extends Minigame implements NewbieFriendly {
 
     @Override
     public int getMaxReward() {
-        return 17500;
+        return 0;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COOPERATIVE;
     }
 
     private class VolleyballTask extends TimeCountupMinigameTask {
@@ -106,11 +122,9 @@ public class Volleyball extends Minigame implements NewbieFriendly {
 
         VolleyballTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty);
-        }
-
-        @Override
-        public int getResult() {
-            return points;
+            rules.put("breaking", false);
+            rules.put("placing", false);
+            rules.put("flying", false);
         }
 
         @Override
@@ -184,8 +198,8 @@ public class Volleyball extends Minigame implements NewbieFriendly {
                             ball = gen.getWorld().spawnFallingBlock(serveSpot.add(0, 1, 0), new MaterialData(Material.SLIME_BLOCK));
                             ball.setDropItem(false);
 
-                            if (getResult() > 0 && (main.main().rng().nextInt(getResult()) > 45 ||
-                                    getResult() < 45 && main.main().rng().nextInt(50) < 5)) {
+                            if (getActualResult(null) > 0 && (main.main().rng().nextInt(getActualResult(null)) > 45 ||
+                                    getActualResult(null) < 45 && main.main().rng().nextInt(50) < 5)) {
                                 // Spike the ball every now and then during the start.
                                 // Spike the ball more often as the amount of rallies increases.
                                 Vector vel = centreSpot.toVector().subtract(serveSpot.toVector()).multiply(0.0285).setY(1.525);
@@ -221,7 +235,7 @@ public class Volleyball extends Minigame implements NewbieFriendly {
                                         gen.getWorld().playSound(ball.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, combo);
                                         Location landLoc = pl.getLocation().clone().add(7, 0, 0);
                                         Vector vel = landLoc.toVector().subtract(ball.getLocation().toVector()).multiply(0.0285).setY(1.255);
-                                        scorePoints(pl, true, 1);
+                                        scorePoints(pl, false, true, 1);
                                         ball.setVelocity(vel);
                                         state = BallState.RETURNING;
                                         combo += 0.1F;

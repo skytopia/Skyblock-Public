@@ -11,6 +11,7 @@ import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.*;
+import solar.rpg.skyblock.minigames.tasks.AttemptsMinigameTask;
 import solar.rpg.skyblock.minigames.tasks.LeastAttemptsMinigameTask;
 import solar.rpg.skyblock.util.Utility;
 
@@ -53,12 +54,22 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
 
     @Override
     public String getSummary() {
-        return "Match 10 data efficiently!";
+        return "Match as many colour pairs as possible!";
     }
 
     @Override
     public String getObjectiveWord() {
-        return "guesses remaining";
+        return "pairs matched";
+    }
+
+    @Override
+    public int getMinimumPlayers() {
+        return 2;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return true;
     }
 
     @Override
@@ -68,7 +79,7 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
 
     @Override
     public int getGold() {
-        return 20;
+        return 5;
     }
 
     @Override
@@ -78,7 +89,12 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
 
     @Override
     public int getFlawless() {
-        return 30;
+        return 10;
+    }
+
+    @Override
+    public int getFlawlessPlayerMinimum() {
+        return 2;
     }
 
     @Override
@@ -86,7 +102,12 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
         return 5000;
     }
 
-    private class MemoryMatchTask extends LeastAttemptsMinigameTask {
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COMPETITIVE;
+    }
+
+    private class MemoryMatchTask extends AttemptsMinigameTask {
 
         /* Maps clickable blocks to their corresponding grid index. */
         private HashMap<Block, Short> clickable;
@@ -101,7 +122,13 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
         private Set<Short> solved;
 
         MemoryMatchTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
-            super(island, owner, participants, main, difficulty, 1, 40);
+            super(island, owner, participants, main, difficulty, 1);
+        }
+
+        @Override
+        public boolean isNoScoreIfOutOfTime() {
+            // Scores should be kept even if time runs out.
+            return false;
         }
 
         @Override
@@ -179,6 +206,7 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
                     main.soundAll(getParticipants(), Sound.ENTITY_PLAYER_LEVELUP, 1F);
                     Utility.spawnFirework(block.getLocation().add(0.5, 1, 0.5));
                     solved.add(clickedGroup);
+                    scorePoints(getSelected(), 1);
                 } else {
                     cooldown = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(3);
                     main.messageAll(getParticipants(), ChatColor.RED + "It was not a match..");
@@ -189,7 +217,6 @@ public class MemoryMatch extends Minigame implements FlawlessEnabled, BoardGame,
                         selectPlayer();
                     }, 60L);
                 }
-                points--;
 
                 // They've solved the 10 data.
                 if (solved.size() == 10)

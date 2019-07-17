@@ -10,10 +10,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
-import solar.rpg.skyblock.island.minigames.BoardGame;
+import solar.rpg.skyblock.island.minigames.*;
 import solar.rpg.skyblock.island.minigames.Difficulty;
-import solar.rpg.skyblock.island.minigames.FlawlessEnabled;
-import solar.rpg.skyblock.island.minigames.Minigame;
 import solar.rpg.skyblock.minigames.tasks.TimedTurnBasedMinigameTask;
 
 import java.util.ArrayList;
@@ -67,6 +65,16 @@ public class TileSwap extends Minigame implements FlawlessEnabled, BoardGame {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 420;
     }
@@ -87,8 +95,18 @@ public class TileSwap extends Minigame implements FlawlessEnabled, BoardGame {
     }
 
     @Override
+    public int getFlawlessPlayerMinimum() {
+        return 1;
+    }
+
+    @Override
     public int getMaxReward() {
         return 5000;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COOPERATIVE;
     }
 
     /**
@@ -109,6 +127,14 @@ public class TileSwap extends Minigame implements FlawlessEnabled, BoardGame {
 
         TileRun(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty, 16);
+            rules.put("breaking", false);
+            rules.put("placing", false);
+        }
+
+        @Override
+        protected boolean isNoScoreIfOutOfTime() {
+            // Either way, the players have no score if time runs out.
+            return true;
         }
 
         @Override

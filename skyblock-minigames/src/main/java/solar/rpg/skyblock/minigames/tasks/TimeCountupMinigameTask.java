@@ -20,8 +20,8 @@ import java.util.UUID;
  *
  * @author lavuh
  * @author JacquiRose
- * @version 3.0
- * @since 3.0
+ * @version 1.1
+ * @since 1.0
  */
 public class TimeCountupMinigameTask extends MinigameTask {
 
@@ -40,8 +40,8 @@ public class TimeCountupMinigameTask extends MinigameTask {
     }
 
     @Override
-    public int getResult() {
-        return clock;
+    protected boolean scoreTimer() {
+        return true;
     }
 
     @Override

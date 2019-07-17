@@ -12,6 +12,7 @@ import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.FlawlessEnabled;
 import solar.rpg.skyblock.island.minigames.Minigame;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.tasks.DefaultMinigameTask;
 import solar.rpg.skyblock.util.Utility;
 
@@ -62,6 +63,16 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 0;
     }
@@ -82,14 +93,21 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
     }
 
     @Override
+    public int getFlawlessPlayerMinimum() {
+        return 1;
+    }
+
+    @Override
     public int getMaxReward() {
         return 8000;
     }
 
-    private class TheStairwellTask extends DefaultMinigameTask {
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COMPETITIVE;
+    }
 
-        /* The highest Y value reached. */
-        private int highest;
+    private class TheStairwellTask extends DefaultMinigameTask {
 
         /* The Y value of the next slice of blocks that will be removed. */
         private int yRemove;
@@ -109,13 +127,7 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
         }
 
         @Override
-        public int getResult() {
-            return highest;
-        }
-
-        @Override
         public void onStart() {
-            highest = 1;
             yRemove = -15;
 
             gen = generateLocation(100, 70, 140, false, false);
@@ -174,10 +186,9 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
                     for (int z = 0; z < 16; z++) {
                         Block at = gen.getWorld().getBlockAt(gen.getBlockX() + x, yRemove, gen.getBlockZ() + z);
                         Material type = at.getType();
-                        byte data = at.getData();
                         if (type != Material.AIR) {
                             at.setType(Material.AIR);
-                            at.getWorld().spawnFallingBlock(at.getLocation(), type, data);
+                            at.getWorld().spawnFallingBlock(at.getLocation(), at.getBlockData());
                         }
                     }
             }
@@ -185,16 +196,23 @@ public class TheStairwell extends Minigame implements FlawlessEnabled {
 
         @EventHandler
         public void onMove(PlayerMoveEvent event) {
-            if (isValidParticipant(event.getPlayer().getUniqueId()))
-                if (event.getTo().getBlockY() > highest && highest < 250) {
-                    highest = event.getTo().getBlockY();
-                    if (highest >= 250) {
-                        highest = 250;
-                        titleParticipants(ChatColor.GOLD + "Winner!", event.getPlayer().getDisplayName() + ChatColor.RED + " made it to the top!");
-                        Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::stop, 60L);
+            if (finished.contains(event.getPlayer().getUniqueId())) return;
+            if (isValidParticipant(event.getPlayer().getUniqueId())) {
+                int currentY = event.getTo().getBlockY();
+                int highestY = getActualResult(event.getPlayer().getUniqueId());
+                if (currentY > highestY && highestY < 250) {
+                    if (currentY >= 250) {
+                        currentY = 250;
+                        titleParticipants(ChatColor.GOLD + "Finished!", event.getPlayer().getDisplayName() + ChatColor.RED + " made it to the top!");
+                        finished.add(event.getPlayer().getUniqueId());
+
+                        // Stop minigame once all participants have either finished or been disqualified.
+                        if (finished.size() + disqualified.size() == participants.size())
+                            Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::stop, 60L);
                     }
-                    medalCheck();
+                    scorePoints(event.getPlayer().getUniqueId(), currentY - highestY);
                 }
+            }
         }
     }
 }

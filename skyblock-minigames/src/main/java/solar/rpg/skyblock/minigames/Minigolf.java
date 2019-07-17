@@ -14,9 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
-import solar.rpg.skyblock.island.minigames.FlawlessEnabled;
-import solar.rpg.skyblock.island.minigames.Minigame;
-import solar.rpg.skyblock.island.minigames.NewbieFriendly;
+import solar.rpg.skyblock.island.minigames.*;
 import solar.rpg.skyblock.minigames.tasks.AttemptsMinigameTask;
 import solar.rpg.skyblock.util.Utility;
 
@@ -67,6 +65,16 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 0;
     }
@@ -78,7 +86,7 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
 
     @Override
     public boolean isScoreDivisible() {
-        return true;
+        return false;
     }
 
     @Override
@@ -87,8 +95,18 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
     }
 
     @Override
+    public int getFlawlessPlayerMinimum() {
+        return 1;
+    }
+
+    @Override
     public int getMaxReward() {
-        return 8000;
+        return 5000;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COMPETITIVE;
     }
 
     /**
@@ -192,6 +210,12 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
             return true;
         }
 
+        @Override
+        protected boolean isNoScoreIfOutOfTime() {
+            // Players should be able to complete the whole course no problem.
+            return false;
+        }
+
         public void onStart() {
             canMove = false;
 
@@ -277,7 +301,7 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
             if (disqualified != null)
                 if (disqualified.size() == participants.size()) {
                     if (!ascendingTimer()) {
-                        points = 0;
+                        setStartingPoints(0);
                         clock = 0;
                     }
                     stop();
@@ -408,7 +432,7 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
                     break;
             }
             titleParticipants(ChatColor.GOLD + type, ChatColor.RED + "+" + points + " Points!");
-            scorePoints(scorer, true, data.par - tries + 3);
+            scorePoints(scorer, true, false, data.par - tries + 3);
         }
 
         @EventHandler

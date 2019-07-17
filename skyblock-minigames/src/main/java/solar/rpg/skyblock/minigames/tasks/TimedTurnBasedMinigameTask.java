@@ -14,14 +14,14 @@ import java.util.UUID;
  * <li>Timer: counts down to zero.</li>
  * <li>Score: starts as amount of time remaining, decreases over time.</li>
  * <li>Medals: start with best medal, lose medals over time.</li>
- * <li>Gameover occurs when time runs out or when objective is completed.</li>
+ * <li>Gameover occurs when time runs out or when objective is finished.</li>
  * <li>Final score is always zero if time runs out.</li>
  * </ul>
  *
  * @author lavuh
  * @author JacquiRose
- * @version 3.0
- * @since 3.0
+ * @version 1.1
+ * @since 1.0
  */
 public abstract class TimedTurnBasedMinigameTask extends TurnBasedMinigameTask {
 
@@ -37,11 +37,6 @@ public abstract class TimedTurnBasedMinigameTask extends TurnBasedMinigameTask {
     @Override
     public boolean isMedalAchieved() {
         return false;
-    }
-
-    @Override
-    public int getResult() {
-        return clock;
     }
 
     @Override

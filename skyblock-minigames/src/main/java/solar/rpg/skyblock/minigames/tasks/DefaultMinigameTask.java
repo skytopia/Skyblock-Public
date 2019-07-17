@@ -19,8 +19,8 @@ import java.util.UUID;
  *
  * @author lavuh
  * @author JacquiRose
- * @version 3.0
- * @since 3.0
+ * @version 1.1
+ * @since 1.0
  */
 public class DefaultMinigameTask extends MinigameTask {
 
@@ -34,13 +34,13 @@ public class DefaultMinigameTask extends MinigameTask {
     }
 
     @Override
-    public boolean isMedalAchieved() {
-        return true;
+    protected boolean scoreTimer() {
+        return false;
     }
 
     @Override
-    public int getResult() {
-        return points;
+    public boolean isMedalAchieved() {
+        return true;
     }
 
     @Override

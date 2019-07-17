@@ -11,10 +11,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
-import solar.rpg.skyblock.island.minigames.BoardGame;
 import solar.rpg.skyblock.island.minigames.Difficulty;
-import solar.rpg.skyblock.island.minigames.Minigame;
-import solar.rpg.skyblock.island.minigames.NewbieFriendly;
+import solar.rpg.skyblock.island.minigames.*;
 import solar.rpg.skyblock.minigames.extra.connectfour.ConnectFourAI;
 import solar.rpg.skyblock.minigames.extra.connectfour.ConnectFourBoard;
 import solar.rpg.skyblock.minigames.tasks.AttemptsMinigameTask;
@@ -66,6 +64,16 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 600;
     }
@@ -82,7 +90,12 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
 
     @Override
     public int getMaxReward() {
-        return 5000;
+        return 2500;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COOPERATIVE;
     }
 
     /**
@@ -100,6 +113,11 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
 
         ConnectFourTask(Minigame owner, Island island, List<UUID> participants, MinigameController main, Difficulty difficulty) {
             super(island, owner, participants, main, difficulty, 1);
+        }
+
+        @Override
+        protected boolean isNoScoreIfOutOfTime() {
+            return true;
         }
 
         @Override
@@ -177,17 +195,17 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
          * Player lost: 1 point (bronze)
          * Player lost in less than 10 turns: 0 points (none)
          */
-        private void addPoints() {
+        private void addPoints(UUID who) {
             if (board.full()) {
-                points += 2;
+                scorePoints(who, 2);
                 main.messageAll(getParticipants(), ChatColor.GRAY + "The match ended in a draw.");
             } else {
                 if (difficulty.equals(Difficulty.NORMAL) && board.getPlayer() == 1
                         || difficulty.equals(Difficulty.HARDER) && board.getPlayer() != 1) {
-                    points += board.totalMoves < 10 ? 0 : 1;
+                    scorePoints(null, board.totalMoves < 10 ? 0 : 1);
                     main.messageAll(getParticipants(), ChatColor.GRAY + "The computer won this match.");
                 } else {
-                    points += 3;
+                    scorePoints(null, 3);
                     main.messageAll(getParticipants(), ChatColor.GRAY + "Congratulations! You won!");
                 }
             }
@@ -217,7 +235,7 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
 
             // If the player won or the board is full, the game is over.
             if (board.win() || board.full())
-                addPoints();
+                addPoints(player.getUniqueId());
 
             main.soundAll(getParticipants(), Sound.ENTITY_CREEPER_DEATH, 2F);
 
@@ -232,7 +250,7 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
             canMove = false;
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(main.main().plugin(), () -> {
-                if (points > 0)
+                if (getActualResult(null) > 0)
                     Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::stop, 39L);
                 else {
                     // Create a new computer with latest board information.
@@ -251,7 +269,7 @@ public class ConnectFour extends Minigame implements BoardGame, NewbieFriendly {
 
                         // If the player won or the board is full, the game is over.
                         if (board.win() || board.full()) {
-                            addPoints();
+                            addPoints(null);
                             Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::stop, 39L);
                         } else {
                             // Otherwise, move again!

@@ -19,14 +19,14 @@ import java.util.UUID;
  *
  * @author lavuh
  * @author JacquiRose
- * @version 3.0
- * @since 3.0
+ * @version 1.1
+ * @since 1.0
  */
 public abstract class LeastAttemptsMinigameTask extends TurnBasedMinigameTask {
 
     public LeastAttemptsMinigameTask(Island owner, Minigame minigame, List<UUID> participants, MinigameController main, Difficulty difficulty, int maxGoes, int startingPoints) {
         super(owner, minigame, participants, main, difficulty, maxGoes);
-        points = startingPoints;
+        setStartingPoints(startingPoints);
     }
 
     @Override

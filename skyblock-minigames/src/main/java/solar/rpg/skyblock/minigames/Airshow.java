@@ -11,6 +11,7 @@ import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.Minigame;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.tasks.DefaultMinigameTask;
 import solar.rpg.skyblock.stored.Settings;
 
@@ -64,6 +65,16 @@ public class Airshow extends Minigame {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 2;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 180;
     }
@@ -75,12 +86,17 @@ public class Airshow extends Minigame {
 
     @Override
     public int getMaxReward() {
-        return 7500;
+        return 2500;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COMPETITIVE;
     }
 
     @Override
     public boolean isScoreDivisible() {
-        return true;
+        return false;
     }
 
     private class AirshowTask extends DefaultMinigameTask {
@@ -275,7 +291,7 @@ public class Airshow extends Minigame {
                         removeRing(datum);
                         toRemove = datum;
                         // Smaller ring = more points.
-                        scorePoints(event.getPlayer(), true, 3 - datum[4]);
+                        scorePoints(event.getPlayer(), false,true, 3 - datum[4]);
                         event.getPlayer().getWorld().playSound(event.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 5F, 1F);
                     }
                 }

@@ -19,8 +19,8 @@ import java.util.UUID;
  *
  * @author lavuh
  * @author JacquiRose
- * @version 3.0
- * @since 3.0
+ * @version 1.0
+ * @since 1.0
  */
 public abstract class AttemptsMinigameTask extends TurnBasedMinigameTask {
 

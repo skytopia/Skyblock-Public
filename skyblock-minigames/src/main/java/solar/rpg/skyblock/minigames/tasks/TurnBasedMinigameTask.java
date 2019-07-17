@@ -9,6 +9,7 @@ import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.Minigame;
 import solar.rpg.skyblock.island.minigames.MinigameTask;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,15 +20,15 @@ import java.util.UUID;
  * Completing an action makes it someone else's turn.
  * <ul>
  * <li>Timer: counts up from zero.</li>
- * <li>Score: starts at zero, increases as objectives are completed.</li>
+ * <li>Score: starts at zero, increases as objectives are finished.</li>
  * <li>Medals: earn medals as score is increased.</li>
  * <li>Gameover happens as defined in each minigame.</li>
  * </ul>
  *
  * @author lavuh
  * @author JacquiRose
- * @version 3.1.1
- * @since 3.0
+ * @version 1.1
+ * @since 1.0
  */
 public abstract class TurnBasedMinigameTask extends MinigameTask {
 
@@ -69,17 +70,12 @@ public abstract class TurnBasedMinigameTask extends MinigameTask {
     }
 
     @Override
+    public boolean scoreTimer() {
+        return false;
+    }
+
+    @Override
     public boolean isMedalAchieved() {
-        return true;
-    }
-
-    @Override
-    public int getResult() {
-        return points;
-    }
-
-    @Override
-    public boolean isNoScoreIfOutOfTime() {
         return true;
     }
 
@@ -108,11 +104,13 @@ public abstract class TurnBasedMinigameTask extends MinigameTask {
         // Skip picking someone if there is no one available.
         if (disqualified.size() == getParticipants().size()) return;
 
-        // End the round if they have run out of points.
-        if (points < 0) {
-            stop();
-            return;
-        }
+        // End the round if the amount of overall points is zero.
+        // This is only applicable to cooperative minigames.
+        if (minigame.getPlaystyle() == Playstyle.COOPERATIVE)
+            if (getActualResult(null) < 0) {
+                stop();
+                return;
+            }
 
         // Is there more actions left? Keep going!
         if (actions > 1) {

@@ -17,6 +17,7 @@ import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.FlawlessEnabled;
 import solar.rpg.skyblock.island.minigames.Minigame;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.tasks.TimeCountdownMinigameTask;
 
 import java.util.List;
@@ -57,12 +58,22 @@ public class CaptureTheWool extends Minigame implements FlawlessEnabled {
 
     @Override
     public String getSummary() {
-        return "Capture all the flags!";
+        return "Capture all the flags in order!";
     }
 
     @Override
     public String getObjectiveWord() {
         return "seconds remaining";
+    }
+
+    @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
     }
 
     @Override
@@ -76,13 +87,23 @@ public class CaptureTheWool extends Minigame implements FlawlessEnabled {
     }
 
     @Override
+    public int getFlawlessPlayerMinimum() {
+        return 1;
+    }
+
+    @Override
     public int getGold() {
         return 300;
     }
 
     @Override
     public int getMaxReward() {
-        return 7500;
+        return 4000;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COOPERATIVE;
     }
 
     @Override
@@ -192,11 +213,15 @@ public class CaptureTheWool extends Minigame implements FlawlessEnabled {
             if (disqualified.contains(event.getPlayer().getUniqueId())) return;
             if (!owner.isInside(event.getBlockPlaced().getLocation())) return;
             // Turn all placed blocks into glass. Refund the block used to place the glass.
+            ItemStack itemUsed = getItemInHand(event.getPlayer(), event.getHand());
             placed.add(event.getBlock());
             event.getBlockPlaced().getLocation().getBlock().setType(Material.GLASS);
             main.main().listener().bypass.add(event.getPlayer().getUniqueId());
-            event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() + 1);
-            Bukkit.getScheduler().runTaskLater(main.main().plugin(), () -> event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() - 1), 1L);
+            itemUsed.setAmount(2);
+            Bukkit.getScheduler().runTaskLater(main.main().plugin(), () -> {
+                itemUsed.setAmount(1);
+                event.getPlayer().updateInventory();
+            }, 1L);
         }
 
         @EventHandler(priority = EventPriority.LOWEST)

@@ -14,6 +14,7 @@ import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.Minigame;
 import solar.rpg.skyblock.island.minigames.NewbieFriendly;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.tasks.TimeCountupMinigameTask;
 import solar.rpg.skyblock.util.Title;
 
@@ -70,6 +71,16 @@ public class MrCloudSays extends Minigame implements NewbieFriendly {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 0;
     }
@@ -81,7 +92,12 @@ public class MrCloudSays extends Minigame implements NewbieFriendly {
 
     @Override
     public int getMaxReward() {
-        return 9000;
+        return 5000;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COMPETITIVE;
     }
 
     /**
@@ -120,7 +136,7 @@ public class MrCloudSays extends Minigame implements NewbieFriendly {
 
     private class MrCloudSaysTask extends TimeCountupMinigameTask {
 
-        /* Players who have completed the most recent command. */
+        /* Players who have finished the most recent command. */
         private Set<UUID> done;
 
         /* What Mr Cloud has said to do. */
@@ -183,7 +199,7 @@ public class MrCloudSays extends Minigame implements NewbieFriendly {
         /**
          * Called when a player successfully completes the prompt.
          *
-         * @param pl The player who completed the prompt.
+         * @param pl The player who finished the prompt.
          */
         private void done(Player pl) {
             if (done.contains(pl.getUniqueId())) return;
@@ -364,7 +380,7 @@ public class MrCloudSays extends Minigame implements NewbieFriendly {
                     if (done == null) break;
                     Player tar = Bukkit.getPlayer(target);
                     if (count > 0 && !disqualified.contains(target)) {
-                        // Show them the prompt if they haven't completed it yet.
+                        // Show them the prompt if they haven't finished it yet.
                         tar.playSound(tar.getLocation(), Sound.ENTITY_COW_MILK, 2F, 2F);
                         Title.showTitle(tar, ChatColor.GOLD + "Mr Cloud Says..", ChatColor.RED + command.getDesc() + ChatColor.GRAY + " (" + count + "!)", 0, 20, 0);
                     } else {

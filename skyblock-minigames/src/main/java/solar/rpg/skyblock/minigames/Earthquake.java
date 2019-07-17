@@ -12,6 +12,7 @@ import solar.rpg.skyblock.controllers.MinigameController;
 import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.Minigame;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.tasks.TimeCountupMinigameTask;
 import solar.rpg.skyblock.util.Title;
 
@@ -35,7 +36,7 @@ public class Earthquake extends Minigame {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.STONE, 1, (short) 6);
+        return new ItemStack(Material.ANDESITE);
     }
 
     @Override
@@ -68,6 +69,16 @@ public class Earthquake extends Minigame {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 0;
     }
@@ -79,7 +90,12 @@ public class Earthquake extends Minigame {
 
     @Override
     public int getMaxReward() {
-        return 8500;
+        return 4000;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COMPETITIVE;
     }
 
     private class EarthquakeTask extends TimeCountupMinigameTask {

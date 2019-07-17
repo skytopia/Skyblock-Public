@@ -12,6 +12,7 @@ import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.Minigame;
 import solar.rpg.skyblock.island.minigames.NewbieFriendly;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.extra.maze.MazeGenerator;
 import solar.rpg.skyblock.minigames.tasks.TimeCountdownMinigameTask;
 
@@ -62,6 +63,16 @@ public class MazeRunner extends Minigame implements NewbieFriendly {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 180;
     }
@@ -78,13 +89,15 @@ public class MazeRunner extends Minigame implements NewbieFriendly {
 
     @Override
     public int getMaxReward() {
-        return 2750;
+        return 2500;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COMPETITIVE;
     }
 
     private class MazeRunnerTask extends TimeCountdownMinigameTask {
-
-        /* True when a player has solved the maze. */
-        private boolean win;
 
         /* Maze generation helper. */
         private MazeGenerator mazeGen;
@@ -97,9 +110,14 @@ public class MazeRunner extends Minigame implements NewbieFriendly {
         }
 
         @Override
-        public void onStart() {
-            win = false;
+        protected boolean isNoScoreIfOutOfTime() {
+            // Not necessarily.
+            // Time can run out because of unfinished players, but finished players should keep their scores.
+            return false;
+        }
 
+        @Override
+        public void onStart() {
             // Normal: Regular 10x14 dimension maze.
             // Harder: Double-sized 20x28 dimension maze.
             if (difficulty == Difficulty.NORMAL)
@@ -108,9 +126,16 @@ public class MazeRunner extends Minigame implements NewbieFriendly {
 
             gen = generateLocation(100, 20, 140, true, false);
 
-            if (!isEmpty(gen, mazeGen.gridDimensionX + 8, 5, mazeGen.gridDimensionY + 8)) {
-                error();
-                return;
+            int maximumAttempts = 50;
+
+            while (!isEmpty(gen, mazeGen.gridDimensionX + 8, 5, mazeGen.gridDimensionY + 8)) {
+                gen = generateLocation(100, 20, 140, true, false);
+
+                maximumAttempts--;
+                if (maximumAttempts == 0) {
+                    error();
+                    return;
+                }
             }
 
             // Generate glass cube
@@ -181,13 +206,15 @@ public class MazeRunner extends Minigame implements NewbieFriendly {
 
         @EventHandler
         public void onMove(PlayerMoveEvent event) {
-            if (win) return;
+            if (finished.contains(event.getPlayer().getUniqueId())) return;
             if (!isValidParticipant(event.getPlayer().getUniqueId())) return;
             if (event.getPlayer().getLocation().getX() > gen.getX() + mazeGen.gridDimensionX + 4) {
-                win = true;
-                titleParticipants(ChatColor.GOLD + "Winner!", event.getPlayer().getDisplayName() + ChatColor.GOLD + " solved the maze!");
-                clock += 3;
-                Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::stop, 60L);
+                finished.add(event.getPlayer().getUniqueId());
+                titleParticipants(ChatColor.GOLD + "Finished!", event.getPlayer().getDisplayName() + ChatColor.GOLD + " solved the maze!");
+
+                // Stop minigame once all participants have either finished or been disqualified.
+                if (finished.size() + disqualified.size() == participants.size())
+                    Bukkit.getScheduler().runTaskLater(main.main().plugin(), this::stop, 60L);
             }
         }
     }

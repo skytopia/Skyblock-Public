@@ -2,6 +2,7 @@ package solar.rpg.skyblock.minigames;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -20,12 +21,14 @@ import solar.rpg.skyblock.island.Island;
 import solar.rpg.skyblock.island.minigames.Difficulty;
 import solar.rpg.skyblock.island.minigames.Minigame;
 import solar.rpg.skyblock.island.minigames.NewbieFriendly;
+import solar.rpg.skyblock.island.minigames.Playstyle;
 import solar.rpg.skyblock.minigames.tasks.DefaultMinigameTask;
 import solar.rpg.skyblock.stored.Settings;
 
 import java.util.List;
 import java.util.UUID;
 
+//FIXME: Make snowman spawn less predictably.
 public class TheAbominable extends Minigame implements NewbieFriendly {
 
     @Override
@@ -69,6 +72,16 @@ public class TheAbominable extends Minigame implements NewbieFriendly {
     }
 
     @Override
+    public int getMinimumPlayers() {
+        return 1;
+    }
+
+    @Override
+    public boolean enforceMinimum() {
+        return false;
+    }
+
+    @Override
     public int getDuration() {
         return 180;
     }
@@ -85,7 +98,12 @@ public class TheAbominable extends Minigame implements NewbieFriendly {
 
     @Override
     public int getMaxReward() {
-        return 9000;
+        return 3500;
+    }
+
+    @Override
+    public Playstyle getPlaystyle() {
+        return Playstyle.COMPETITIVE;
     }
 
     private class TheAbominableTask extends DefaultMinigameTask {
@@ -128,7 +146,7 @@ public class TheAbominable extends Minigame implements NewbieFriendly {
             if (((LivingEntity) event.getEntity()).getHealth() <= event.getDamage()) {
                 ((LivingEntity) event.getEntity()).setHealth(0);
                 titleParticipants("", ((Player) event.getDamager()).getDisplayName() + ChatColor.RED + " killed the snowman!");
-                scorePoints((Player) event.getDamager(), true, 1);
+                scorePoints((Player) event.getDamager(), true, false, 1);
                 new BukkitRunnable() {
                     public void run() {
                         dead = null;
@@ -148,7 +166,7 @@ public class TheAbominable extends Minigame implements NewbieFriendly {
             tracked = null;
             if (event.getEntity().getKiller() == null)
                 titleParticipants("", ChatColor.GRAY + "The snowman died!");
-            scorePoints(event.getEntity().getKiller(), true, 1);
+            scorePoints(event.getEntity().getKiller(), true, false, 1);
             new BukkitRunnable() {
                 public void run() {
                     dead = null;
@@ -160,8 +178,12 @@ public class TheAbominable extends Minigame implements NewbieFriendly {
         public void onTick() {
             if (tracked != null) return;
             Player random = Bukkit.getPlayer(getParticipants().get(main.main().rng().nextInt(getParticipants().size())));
+
             // Respawn the snowman once it's dead.
-            tracked = (Snowman) Bukkit.getWorld(Settings.ADMIN_WORLD_ID).spawnEntity(generateLocation(30, 10, random.getLocation().getBlockY(), true, true), EntityType.SNOWMAN);
+            Location newLoc = generateLocation(30, 5, random.getLocation().getBlockY(), true, false);
+            while (newLoc.getWorld().getHighestBlockAt(newLoc.getBlockX(), newLoc.getBlockZ()).getY() < 2)
+                newLoc = generateLocation(30, 5, random.getLocation().getBlockY(), true, false);
+            tracked = (Snowman) Bukkit.getWorld(Settings.ADMIN_WORLD_ID).spawnEntity(newLoc.getWorld().getHighestBlockAt(newLoc.getBlockX(), newLoc.getBlockZ()).getLocation(), EntityType.SNOWMAN);
         }
 
         @Override
