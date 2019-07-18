@@ -61,7 +61,7 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
 
     @Override
     public String getObjectiveWord() {
-        return "points earnt";
+        return "golfing score";
     }
 
     @Override
@@ -394,7 +394,7 @@ public class Minigolf extends Minigame implements FlawlessEnabled, NewbieFriendl
                                 this.cancel();
                             }
                         }
-                    }.runTaskTimer(main.main().plugin(), 0L, 5L);
+                    }.runTaskTimer(main.main().plugin(), 10L, 5L);
                 } else event.setCancelled(true);
         }
 
